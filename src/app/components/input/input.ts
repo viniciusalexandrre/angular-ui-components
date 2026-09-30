@@ -1,32 +1,34 @@
-import { Component, ElementRef, input, model, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, Component, computed, input, model } from '@angular/core';
+import { FormValueControl, ValidationError } from '@angular/forms/signals';
+import { Field } from '../field/field';
 
 @Component({
-  selector: 'app-input',
-  template: `
-    <div class="input-wrapper">
-      <label>{{ label() }}</label>
-      <input
-        #nativeInput
-        [value]="value()"
-        (input)="onInput($event)"
-      />
-    </div>
-  `,
-  exportAs: 'appInput' // ✅ Permite acesso via template reference
+  selector: 'component-input',
+  templateUrl: './input.html',
+  imports: [Field],
+  styleUrl: './input.scss',
+  // host: { ['hidden']: 'hidden()' },
 })
-export class Input {
-  @ViewChild('nativeInput') nativeInput!: ElementRef<HTMLInputElement>;
+export class Input implements FormValueControl<string | null> {
+  readonly value = model<string | null>('');
+  readonly touched = model<boolean>(false);
+  readonly disabled = input<boolean>(false);
+  readonly readonly = input<boolean>(false);
+  // readonly hidden = input<boolean>(false);
+  readonly invalid = input<boolean>(false);
+  readonly required = input<boolean>(false);
+  readonly errors = input<readonly ValidationError[]>([]);
+  readonly name = input<string>('');
 
-  label = input.required<string>();
-  value = model<string>('');
+  readonly label = input.required<string>();
+  readonly id = input.required<string>();
+  readonly type = input<'text' | 'email'>('text');
+  readonly placeholder = input<string>('');
+  readonly autocomplete = input<string>('off');
 
-  // API pública para acessar o elemento nativo
-  get element(): HTMLInputElement {
-    return this.nativeInput.nativeElement;
-  }
+  protected readonly showErrors = computed(() => this.invalid() && this.touched());
 
-   protected onInput(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    this.value.set(target.value);
+  handleInput(event: Event) {
+    this.value.set((event.target as HTMLInputElement).value);
   }
 }

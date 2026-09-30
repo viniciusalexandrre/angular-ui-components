@@ -1,0 +1,31 @@
+.input-search {
+  width: 100%;
+
+  & > input {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid var(--b1);
+    border-radius: 25px;
+    outline: 0;
+    font-size: 14px;
+    background-color: var(--b-white);
+    color: var(--c8);
+    height: 40px;
+
+    &:focus {
+      border-color: var(--b2);
+    }
+  }
+  & > button {
+    position: absolute;
+    padding: 8px;
+    border: none;
+    border-radius: 20px;
+    background-color: var(--b1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 5px;
+    top: 5px;
+  }
+}

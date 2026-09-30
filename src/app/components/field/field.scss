@@ -1,0 +1,18 @@
+.field {
+  display: grid;
+  gap: var(--component-field-gap, 4px);
+
+  & > label {
+    color: var(--component-field-label-color, #333);
+    font-family: var(--component-field-label-font-family, inherit);
+    font-size: var(--component-field-label-font-size, 14px);
+    font-weight: var(--component-field-label-font-weight, 500);
+  }
+
+  & > [role='alert'] {
+    display: grid;
+    gap: var(--component-field-error-gap, 2px);
+    color: var(--component-field-error-color, #b3261e);
+    font-size: var(--component-field-error-font-size, 13px);
+  }
+}

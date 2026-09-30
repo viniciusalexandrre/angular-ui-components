@@ -1,0 +1,45 @@
+<div class="autocomplete" [class.invalid]="invalid() && touched()">
+  <label [for]="id()">{{ label() }}</label>
+  <input
+    [id]="id()"
+    type="text"
+    [value]="searchTerm()"
+    [placeholder]="placeholder()"
+    [disabled]="disabled()"
+    autocomplete="off"
+    role="combobox"
+    [attr.aria-expanded]="isOpen()"
+    [attr.aria-controls]="id() + '-options'"
+    [attr.aria-invalid]="hasInvalidValue() || invalid()"
+    (focus)="handleFocus()"
+    (input)="onInput($any($event.target).value)"
+    (blur)="handleBlur()"
+  />
+  @if (isOpen()) {
+    <div class="options" [id]="id() + '-options'" role="listbox">
+      @if (isLoading()) {
+        <span>Pesquisando...</span>
+      } @else if (error(); as message) {
+        <span>{{ message }}</span>
+      } @else if (options().length === 0) {
+        <span>Nenhum valor encontrado.</span>
+      } @else {
+        @for (option of options(); track option) {
+          <button
+            type="button"
+            role="option"
+            (mousedown)="$event.preventDefault()"
+            (click)="handleSelect(option)"
+          >
+            {{ option }}
+          </button>
+        }
+      }
+    </div>
+  }
+  @if (hasInvalidValue()) {
+    <small> Selecione uma opção válida. </small>
+  } @else if (invalid() && touched()) {
+    <small>{{ error() }}</small>
+  }
+</div>

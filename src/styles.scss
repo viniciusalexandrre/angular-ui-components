@@ -1,1 +1,162 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  /* Gradient - Light Mode */
+  --green: linear-gradient(274.05deg, #12a454 33.64%, #7fdfbd 122.13%);
+
+  --g6: linear-gradient(274.05deg, #152557 33.64%, #213b89 122.13%);
+  --g5: linear-gradient(274.05deg, #213b89 33.64%, #335cd6 122.13%);
+  --g4: linear-gradient(274.05deg, #335cd6 33.64%, #6184eb 122.13%);
+  --g3: linear-gradient(274.05deg, #7191ef 33.64%, #b5c6f9 122.13%);
+  --g2: linear-gradient(274.05deg, #b5c6f9 33.64%, #e7ecff 122.13%);
+  --g1: linear-gradient(274.05deg, #d9e2ff 33.64%, #f0f3ff 122.13%);
+  --g0: linear-gradient(-32.63deg, #f0f4ff -7.16%, #e7ecff 184.17%);
+
+  /* Colors - Light Mode */
+  --b12: #152557;
+  --b11: #213b89;
+  --b10: #335cd6;
+  --b9: #4c72e2;
+  --b8: #6184eb;
+  --b7: #7191ef;
+  --b6: #8ba7f9;
+  --b5: #9bb3fa;
+  --b4: #b5c6f9;
+  --b3: #c6d4fe;
+  --b2: #d9e2ff;
+  --b1: #e7ecff;
+  --b0: #f0f3ff;
+  --b-white: #f6f9ff;
+
+  /* Base Colors - Light Mode */
+  --c12: #000000;
+  --c11: #121212;
+  --c10: #2e2e2e;
+  --c9: #404040;
+  --c8: #595959;
+  --c7: #707070;
+  --c6: #9c9c9c;
+  --c5: #b2b2b2;
+  --c4: #cccccc;
+  --c3: #dedede;
+  --c2: #ededed;
+  --c1: #f7f7f7;
+  --white: #ffffff;
+
+  /* Box-shadow - Light Mode */
+  --shadow-1:
+    0.625rem 0.9375rem 1.5625rem rgba(192, 192, 192, 0.25),
+    -0.625rem -0.3125rem 1.5625rem rgba(228, 228, 228, 0.25);
+
+  --shadow-2:
+    0.25rem 0.5rem 1.5625rem rgba(97, 132, 235, 0.15),
+    -0.3125rem -0.125rem 1.5625rem rgba(51, 92, 214, 0.15);
+
+  --shadow-hover:
+    0rem 0rem 0rem 0.25rem rgba(240, 243, 255, 0.92),
+    0rem 0rem 0rem 0.3125rem rgba(155, 179, 250, 0.79);
+
+  --shadow-erro:
+    0rem 0rem 0rem 0.25rem rgba(255, 219, 219, 0.5),
+    0rem 0rem 0rem 0.3125rem rgba(226, 180, 180, 0.8);
+
+  /* Error Color - Light Mode */
+  --erro: #f18f9f;
+  --bg-erro: rgba(255, 197, 206, 0.1);
+}
+
+/* dark Mode Colors */
+:root[data-theme='dark'] {
+  /* Gradient - Dark Mode */
+  --green: linear-gradient(274.05deg, #0d803a 33.64%, #5dc09e 122.13%);
+
+  --g6: linear-gradient(-35.97deg, #f3f3f3 35.53%, #dcdcdc 140.77%);
+  --g5: linear-gradient(-35.97deg, #cccccc 35.53%, #a6a6a6 140.77%);
+  --g4: linear-gradient(-35.97deg, #909090 35.53%, #6f6f6f 140.77%);
+  --g3: linear-gradient(-35.97deg, #575757 35.53%, #434343 140.77%);
+  --g2: linear-gradient(-35.97deg, #444444 35.53%, #343434 140.77%);
+  --g1: linear-gradient(-35.97deg, #272727 35.53%, #1d1d1d 140.77%);
+  --g0: linear-gradient(-32.63deg, #151515 -7.16%, #050505 184.17%);
+
+  /* Colors - Dark Mode */
+  --b12: #f0f0f0; /* Cinza claro */
+  --b11: #e0e0e0; /* Cinza claro */
+  --b10: #d0d0d0; /* Cinza médio */
+  --b9: #c0c0c0; /* Cinza médio */
+  /* --b8: #a0a0a0; Cinza escuro */
+  --b8: #6184eb;
+  --b7: #909090; /* Cinza escuro */
+  --b6: #808080; /* Cinza escuro */
+  --b5: #707070; /* Cinza escuro */
+  --b4: #606060; /* Cinza escuro */
+  --b3: #505050; /* Cinza escuro */
+  --b2: #404040; /* Cinza escuro */
+  --b1: #303030; /* Cinza escuro */
+  --b0: #202020; /* Cinza escuro */
+  --b-white: #101010; /* Preto quase puro */
+
+  /* Base Colors - Dark Mode */
+  --c12: #ffffff; /* Branco */
+  --c11: #f2f2f2; /* Branco */
+  --c10: #e5e5e5; /* Branco */
+  --c9: #d8d8d8; /* Cinza claro */
+  --c8: #bcbcbc; /* Cinza médio */
+  --c7: #9e9e9e; /* Cinza médio */
+  --c6: #818181; /* Cinza médio */
+  --c5: #646464; /* Cinza escuro */
+  --c4: #484848; /* Cinza escuro */
+  --c3: #2e2e2e; /* Cinza escuro */
+  --c2: #1a1a1a; /* Cinza escuro */
+  --c1: #121212; /* Preto quase puro */
+  --white: #000000; /* Preto */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Mona Sans', sans-serif;
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  display: grid;
+  overflow: hidden;
+  background-color: var(--white);
+}
+
+body,
+input,
+textarea,
+select,
+option,
+button {
+  font-family: var(--font-MonaSans), 'Montserrat', sans-serif;
+  font-weight: 400;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+strong {
+  font-weight: 600;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style-type: none;
+}

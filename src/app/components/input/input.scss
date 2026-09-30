@@ -1,0 +1,46 @@
+:host {
+  display: block;
+}
+
+.input {
+  box-sizing: border-box;
+  width: var(--component-input-width, 100%);
+  min-width: 0;
+  height: var(--component-input-height, 40px);
+  padding: var(--component-input-padding, 8px 12px);
+  color: var(--component-input-color, #202124);
+  background-color: var(--component-input-background, #fff);
+  border: var(--component-input-border, 1px solid #767676);
+  border-radius: var(--component-input-border-radius, 6px);
+  font-family: var(--component-input-font-family, inherit);
+  font-size: var(--component-input-font-size, 14px);
+  margin-top: var(--component-input-margin-top, 4px);
+}
+
+.input::placeholder {
+  color: var(--component-input-placeholder-color, #666);
+  opacity: 1;
+}
+
+.input:hover:not(:disabled) {
+  border-color: var(--component-input-hover-border-color, #4d4d4d);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--component-input-focus-color, #1769aa);
+  outline-offset: 2px;
+}
+
+.input[aria-invalid='true'] {
+  border-color: var(--component-input-error-color, #b3261e);
+}
+
+.input:disabled {
+  color: var(--component-input-disabled-color, #595959);
+  background-color: var(--component-input-disabled-background, #f2f2f2);
+  cursor: not-allowed;
+}
+
+.input[readonly] {
+  background-color: var(--component-input-readonly-background, #f7f7f7);
+}

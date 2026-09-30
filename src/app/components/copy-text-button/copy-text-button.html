@@ -1,0 +1,8 @@
+<button
+  class="btn-copy"
+  [cdkCopyToClipboard]="code()"
+  (cdkCopyToClipboardCopied)="onCopy()"
+  type="button"
+>
+  <img [src]="isCopied() ? 'check.svg' : 'copy-alt.svg'" alt="icon-copy" height="12" width="12" />
+</button>

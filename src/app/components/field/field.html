@@ -1,0 +1,13 @@
+<div class="field" [class.field-invalid]="showErrors()">
+  <label [for]="id()">{{ label() }}</label>
+
+  <ng-content />
+
+  @if (showErrors()) {
+    <div [id]="id() + '-error'" role="alert">
+      @for (error of errors(); track error.kind + error.message) {
+        <small>{{ error.message }}</small>
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,18 @@
+<component-field [id]="id()" [label]="label()" [errors]="errors()" [showErrors]="showErrors()">
+  <input
+    [id]="id()"
+    [name]="name()"
+    [type]="type()"
+    [value]="value()"
+    [disabled]="disabled()"
+    [readOnly]="readonly()"
+    [required]="required()"
+    [placeholder]="placeholder()"
+    [attr.autocomplete]="autocomplete()"
+    [attr.aria-invalid]="showErrors()"
+    [attr.aria-describedby]="showErrors() ? id() + '-error' : null"
+    (input)="handleInput($event)"
+    (blur)="touched.set(true)"
+    class="input"
+  />
+</component-field>

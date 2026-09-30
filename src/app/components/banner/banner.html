@@ -1,0 +1,16 @@
+<div class="banner">
+  <ng-content />
+  <div>
+    <img [ngSrc]="img()" alt="banner" width="160" height="209" priority />
+  </div>
+  <div class="container-texts">
+    <div>
+      <h2>{{ title() }}</h2>
+      <span>{{ subtitle() }}</span>
+    </div>
+    <p>{{ informative() }}</p>
+    <component-button (clickButton)="onClick.emit()" [name]="buttonText()">
+      {{ buttonText() }}
+    </component-button>
+  </div>
+</div>
