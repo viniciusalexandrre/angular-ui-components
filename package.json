@@ -1,0 +1,30 @@
+{
+  "name": "reusable-union-kit",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^22.2.0",
+    "@angular/core": "^22.2.0",
+    "@angular/forms": "^22.2.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "exports": {
+    "./styles": {
+      "sass": "./styles/_index.scss"
+    },
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./types/reusable-union-kit.d.ts",
+      "default": "./fesm2022/reusable-union-kit.mjs"
+    }
+  },
+  "sideEffects": [
+    "*.scss"
+  ],
+  "module": "fesm2022/reusable-union-kit.mjs",
+  "typings": "types/reusable-union-kit.d.ts",
+  "type": "module"
+}
