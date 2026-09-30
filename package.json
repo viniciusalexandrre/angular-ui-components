@@ -3,10 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "start": "ng serve showcase",
+    "build": "ng build reusable-union-kit",
+    "build:showcase": "ng build showcase",
+    "watch": "ng build reusable-union-kit --watch --configuration development",
+    "test": "ng test reusable-union-kit",
+    "test:showcase": "ng test showcase",
+    "pack": "npm run build && cd dist/reusable-union-kit && npm pack"
   },
   "prettier": {
     "printWidth": 100,
@@ -23,7 +26,6 @@
   "private": true,
   "packageManager": "npm@11.6.2",
   "dependencies": {
-    "@angular/cdk": "^22.2.0",
     "@angular/common": "^22.2.0",
     "@angular/compiler": "^22.2.0",
     "@angular/core": "^22.2.0",
@@ -38,6 +40,7 @@
     "@angular/cli": "^22.2.0",
     "@angular/compiler-cli": "^22.2.0",
     "jsdom": "^27.1.0",
+    "ng-packagr": "^22.2.0",
     "typescript": "~6.0.3",
     "vitest": "^4.0.8"
   }

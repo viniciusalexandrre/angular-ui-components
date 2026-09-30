@@ -1,13 +1,13 @@
-import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Input } from './components/input/input';
+import { UiInput } from 'reusable-union-kit';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Input],
+  imports: [RouterOutlet, UiInput],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App {
-  protected readonly title = signal('angular-ui-components');
+  protected readonly title = signal('showcase');
 }

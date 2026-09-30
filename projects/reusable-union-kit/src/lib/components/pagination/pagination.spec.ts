@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Pagination } from './pagination';
+import { UiPagination } from './pagination';
 
-describe('Pagination', () => {
-  let component: Pagination;
-  let fixture: ComponentFixture<Pagination>;
+describe('UiPagination', () => {
+  let component: UiPagination;
+  let fixture: ComponentFixture<UiPagination>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Pagination]
+      imports: [UiPagination]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(Pagination);
+    fixture = TestBed.createComponent(UiPagination);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

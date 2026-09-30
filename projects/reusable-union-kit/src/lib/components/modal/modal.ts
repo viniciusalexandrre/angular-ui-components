@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   imports: [],
-  selector: 'app-modal',
+  selector: 'ui-modal',
   styleUrl: './modal.scss',
   templateUrl: './modal.html',
 })
-export class Modal {
+export class UiModal {
 }

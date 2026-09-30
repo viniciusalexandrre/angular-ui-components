@@ -1,0 +1,20 @@
+{
+  "name": "reusable-union-kit",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^22.2.0",
+    "@angular/core": "^22.2.0",
+    "@angular/forms": "^22.2.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "exports": {
+    "./styles": {
+      "sass": "./styles/_index.scss"
+    }
+  },
+  "sideEffects": [
+    "*.scss"
+  ]
+}

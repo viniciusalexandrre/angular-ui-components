@@ -1,0 +1,77 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-sizing: border-box;
+  height: var(--ui-button-height, 40px);
+  padding: var(--ui-button-padding, 0 20px);
+  border: 1px solid transparent;
+  border-radius: var(--ui-button-border-radius, 10px);
+  font-family: var(--ui-button-font-family, inherit);
+  font-size: var(--ui-button-font-size, 14px);
+  font-weight: var(--ui-button-font-weight, 600);
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+}
+
+:host(.ui-button-primary) {
+  background: var(--ui-button-primary-background, var(--b10, #335cd6));
+  color: var(--ui-button-primary-color, #fff);
+
+  &:hover:not(:disabled) {
+    background: var(--ui-button-primary-hover-background, var(--b11, #213b89));
+  }
+}
+
+:host(.ui-button-secondary) {
+  border-color: var(--ui-button-secondary-border-color, var(--b4, #b5c6f9));
+  background: var(--ui-button-secondary-background, var(--b-white, #fff));
+  color: var(--ui-button-secondary-color, var(--b10, #335cd6));
+
+  &:hover:not(:disabled) {
+    background: var(--ui-button-secondary-hover-background, var(--b1, #e7ecff));
+  }
+}
+
+:host(.ui-button-ghost) {
+  background: transparent;
+  color: var(--ui-button-ghost-color, var(--b10, #335cd6));
+
+  &:hover:not(:disabled) {
+    background: var(--ui-button-ghost-hover-background, var(--b1, #e7ecff));
+  }
+}
+
+:host(.ui-button-sm) {
+  height: var(--ui-button-height-sm, 32px);
+  padding: var(--ui-button-padding-sm, 0 12px);
+  font-size: var(--ui-button-font-size-sm, 13px);
+}
+
+:host(.ui-button-lg) {
+  height: var(--ui-button-height-lg, 48px);
+  padding: var(--ui-button-padding-lg, 0 28px);
+  font-size: var(--ui-button-font-size-lg, 16px);
+}
+
+:host(:focus-visible) {
+  outline: 2px solid var(--ui-button-focus-color, var(--b10, #1769aa));
+  outline-offset: 2px;
+}
+
+:host(:disabled) {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    transition: none;
+  }
+}

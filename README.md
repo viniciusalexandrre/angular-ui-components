@@ -1,59 +1,48 @@
-# AngularUiComponents
+# Angular UI Components
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.4.
+Workspace Angular com uma biblioteca de componentes reutilizáveis (`reusable-union-kit`) e uma aplicação de demonstração (`showcase`).
 
-## Development server
+## Estrutura
 
-To start a local development server, run:
-
-```bash
-ng serve
+```
+projects/
+├── reusable-union-kit/      # Biblioteca publicável
+│   ├── styles/              # Design tokens (tema claro/escuro) → @use 'reusable-union-kit/styles'
+│   └── src/
+│       ├── lib/components/  # Um diretório por componente (ícones ficam inline no template)
+│       ├── lib/styles/      # Mixins SCSS compartilhados entre componentes
+│       └── public-api.ts    # Tudo que a biblioteca expõe
+└── showcase/                # App de demonstração que consome 'reusable-union-kit'
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Convenções da biblioteca:
 
-## Code scaffolding
+- Seletores usam o prefixo `ui-` (ex.: `<ui-input>`).
+- Classes usam o prefixo `Ui` (ex.: `UiInput`), evitando colisões com APIs do Angular.
+- Todo novo componente precisa ser exportado em `projects/reusable-union-kit/src/public-api.ts`.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Scripts
 
-```bash
-ng generate component component-name
-```
+| Comando                  | Descrição                                               |
+| ------------------------ | ------------------------------------------------------- |
+| `npm start`              | Sobe a showcase em `http://localhost:4200`              |
+| `npm run build`          | Gera o pacote da biblioteca em `dist/reusable-union-kit` |
+| `npm run watch`          | Build da biblioteca em modo watch                       |
+| `npm test`               | Testes unitários da biblioteca                          |
+| `npm run build:showcase` | Build da showcase                                       |
+| `npm run test:showcase`  | Testes unitários da showcase                            |
+| `npm run pack`           | Build + gera o `.tgz` instalável em outros projetos     |
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Na showcase, o import `reusable-union-kit` aponta para o código-fonte da biblioteca (via `paths` no `tsconfig.json`), então alterações nos componentes recarregam sem precisar buildar a lib.
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Gerando um novo componente
 
 ```bash
-ng test
+ng generate component components/nome-do-componente --project reusable-union-kit
 ```
 
-## Running end-to-end tests
+Depois, exporte-o em `projects/reusable-union-kit/src/public-api.ts`.
 
-For end-to-end (e2e) testing, run:
+## Usando em outro projeto
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Veja [projects/reusable-union-kit/README.md](projects/reusable-union-kit/README.md).

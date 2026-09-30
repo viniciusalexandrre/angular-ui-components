@@ -13,7 +13,12 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve"
+    "module": "preserve",
+    "paths": {
+      "reusable-union-kit": [
+        "./projects/reusable-union-kit/src/public-api.ts"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
@@ -24,10 +29,16 @@
   "files": [],
   "references": [
     {
-      "path": "./tsconfig.app.json"
+      "path": "./projects/showcase/tsconfig.app.json"
     },
     {
-      "path": "./tsconfig.spec.json"
+      "path": "./projects/showcase/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/reusable-union-kit/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/reusable-union-kit/tsconfig.spec.json"
     }
   ]
 }

@@ -1,22 +1,31 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Button } from './button';
+import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 
-describe('Button', () => {
-  let component: Button;
-  let fixture: ComponentFixture<Button>;
+import { UiButton } from './button';
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [Button]
-    })
-      .compileComponents();
+@Component({
+  imports: [UiButton],
+  template: `
+    <button ui-button type="submit" disabled aria-describedby="x">Salvar</button>
+    <a ui-button variant="secondary" size="sm" href="/home">Início</a>
+  `,
+})
+class Host {}
 
-    fixture = TestBed.createComponent(Button);
-    component = fixture.componentInstance;
+describe('UiButton', () => {
+  it('mantém os atributos nativos e aplica as classes de variante', async () => {
+    const fixture = TestBed.createComponent(Host);
     await fixture.whenStable();
-  });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+    const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+    expect(button.type).toBe('submit');
+    expect(button.disabled).toBe(true);
+    expect(button.getAttribute('aria-describedby')).toBe('x');
+    expect(button.classList).toContain('ui-button-primary');
+
+    const link: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(link.getAttribute('href')).toBe('/home');
+    expect(link.classList).toContain('ui-button-secondary');
+    expect(link.classList).toContain('ui-button-sm');
   });
 });

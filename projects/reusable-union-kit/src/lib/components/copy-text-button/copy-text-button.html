@@ -1,8 +1,19 @@
 <button
   class="btn-copy"
-  [cdkCopyToClipboard]="code()"
-  (cdkCopyToClipboardCopied)="onCopy()"
   type="button"
+  [class.copied]="isCopied()"
+  [attr.aria-label]="isCopied() ? copiedLabel() : copyLabel()"
+  (click)="copy()"
 >
-  <img [src]="isCopied() ? 'check.svg' : 'copy-alt.svg'" alt="icon-copy" height="12" width="12" />
+  @if (isCopied()) {
+    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M2.5 8.5l3.5 3.5 7.5-8" />
+    </svg>
+  } @else {
+    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <rect x="5" y="5" width="9.25" height="9.25" rx="1.5" />
+      <path d="M11 5V3.25C11 2.42 10.33 1.75 9.5 1.75H3.25c-.83 0-1.5.67-1.5 1.5V9.5c0 .83.67 1.5 1.5 1.5H5" />
+    </svg>
+  }
 </button>
+<span class="visually-hidden" aria-live="polite">{{ isCopied() ? copiedLabel() : '' }}</span>

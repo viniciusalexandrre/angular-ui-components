@@ -3,14 +3,16 @@ import { ValidationError } from '@angular/forms/signals';
 
 @Component({
   imports: [],
-  selector: 'component-field',
+  selector: 'ui-field',
   styleUrl: './field.scss',
   templateUrl: './field.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Field {
+export class UiField {
   readonly id = input.required<string>();
   readonly label = input.required<string>();
+  readonly hint = input<string>('');
+  readonly required = input<boolean>(false);
   readonly errors = input<readonly ValidationError[]>([]);
   readonly showErrors = input<boolean>(false);
 }

@@ -1,0 +1,87 @@
+// Estilo base dos campos de texto (ui-input, ui-input-password, ui-input-search, ui-autocomplete).
+// Cada cor usa a variável do componente, depois o token global e por fim um valor fixo,
+// para funcionar mesmo sem importar 'reusable-union-kit/styles'.
+@mixin input-base {
+  box-sizing: border-box;
+  width: var(--ui-input-width, 100%);
+  min-width: 0;
+  height: var(--ui-input-height, 40px);
+  padding: var(--ui-input-padding, 8px 12px);
+  color: var(--ui-input-color, var(--c9, #202124));
+  background-color: var(--ui-input-background, var(--b-white, #fff));
+  border: var(--ui-input-border, 1px solid var(--b3, #767676));
+  border-radius: var(--ui-input-border-radius, 10px);
+  font-family: var(--ui-input-font-family, inherit);
+  font-size: var(--ui-input-font-size, 14px);
+
+  &::placeholder {
+    color: var(--ui-input-placeholder-color, var(--c7, #666));
+    opacity: 1;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: var(--ui-input-hover-border-color, var(--b6, #4d4d4d));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-input-focus-color, var(--b10, #1769aa));
+    outline-offset: 2px;
+  }
+
+  &[aria-invalid='true'] {
+    border-color: var(--ui-input-error-color, var(--erro, #b3261e));
+    background-color: var(--ui-input-error-background, var(--bg-erro, transparent));
+  }
+
+  &:disabled {
+    color: var(--ui-input-disabled-color, var(--c7, #595959));
+    background-color: var(--ui-input-disabled-background, var(--c2, #f2f2f2));
+    cursor: not-allowed;
+  }
+
+  &[readonly] {
+    background-color: var(--ui-input-readonly-background, var(--c1, #f7f7f7));
+  }
+}
+
+// Botão de ícone posicionado dentro do campo (mostrar senha, pesquisar).
+@mixin icon-button {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ui-icon-button-background, transparent);
+  color: var(--ui-icon-button-color, var(--c8, #595959));
+  cursor: pointer;
+  transform: translateY(-50%);
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-input-focus-color, var(--b10, #1769aa));
+    outline-offset: 1px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+// Esconde visualmente, mas mantém acessível para leitores de tela.
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

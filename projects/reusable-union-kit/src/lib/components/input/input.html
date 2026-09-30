@@ -1,18 +1,27 @@
-<component-field [id]="id()" [label]="label()" [errors]="errors()" [showErrors]="showErrors()">
+<ui-field
+  [id]="id()"
+  [label]="label()"
+  [hint]="hint()"
+  [required]="required()"
+  [errors]="errors()"
+  [showErrors]="showErrors()"
+>
   <input
     [id]="id()"
     [name]="name()"
     [type]="type()"
-    [value]="value()"
+    [value]="value() ?? ''"
     [disabled]="disabled()"
     [readOnly]="readonly()"
     [required]="required()"
     [placeholder]="placeholder()"
+    [attr.minlength]="minLength()"
+    [attr.maxlength]="maxLength()"
     [attr.autocomplete]="autocomplete()"
     [attr.aria-invalid]="showErrors()"
-    [attr.aria-describedby]="showErrors() ? id() + '-error' : null"
+    [attr.aria-describedby]="describedBy()"
     (input)="handleInput($event)"
-    (blur)="touched.set(true)"
+    (blur)="touch.emit()"
     class="input"
   />
-</component-field>
+</ui-field>

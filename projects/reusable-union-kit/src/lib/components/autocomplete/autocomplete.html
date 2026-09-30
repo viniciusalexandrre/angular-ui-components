@@ -1,45 +1,61 @@
-<div class="autocomplete" [class.invalid]="invalid() && touched()">
-  <label [for]="id()">{{ label() }}</label>
-  <input
-    [id]="id()"
-    type="text"
-    [value]="searchTerm()"
-    [placeholder]="placeholder()"
-    [disabled]="disabled()"
-    autocomplete="off"
-    role="combobox"
-    [attr.aria-expanded]="isOpen()"
-    [attr.aria-controls]="id() + '-options'"
-    [attr.aria-invalid]="hasInvalidValue() || invalid()"
-    (focus)="handleFocus()"
-    (input)="onInput($any($event.target).value)"
-    (blur)="handleBlur()"
-  />
-  @if (isOpen()) {
-    <div class="options" [id]="id() + '-options'" role="listbox">
-      @if (isLoading()) {
-        <span>Pesquisando...</span>
-      } @else if (error(); as message) {
-        <span>{{ message }}</span>
-      } @else if (options().length === 0) {
-        <span>Nenhum valor encontrado.</span>
-      } @else {
-        @for (option of options(); track option) {
-          <button
-            type="button"
-            role="option"
-            (mousedown)="$event.preventDefault()"
-            (click)="handleSelect(option)"
-          >
-            {{ option }}
-          </button>
+<ui-field
+  [id]="id()"
+  [label]="label()"
+  [hint]="hint()"
+  [required]="required()"
+  [errors]="displayedErrors()"
+  [showErrors]="showErrors()"
+>
+  <div class="control">
+    <input
+      class="input"
+      type="text"
+      role="combobox"
+      autocomplete="off"
+      aria-autocomplete="list"
+      [id]="id()"
+      [name]="name()"
+      [value]="searchTerm()"
+      [placeholder]="placeholder()"
+      [disabled]="disabled()"
+      [readOnly]="readonly()"
+      [required]="required()"
+      [attr.aria-expanded]="showPanel()"
+      [attr.aria-controls]="listboxId()"
+      [attr.aria-activedescendant]="activeDescendant()"
+      [attr.aria-invalid]="showErrors()"
+      [attr.aria-describedby]="describedBy()"
+      (focus)="handleFocus()"
+      (input)="onInput($any($event.target).value)"
+      (keydown)="handleKeydown($event)"
+      (blur)="handleBlur()"
+    />
+
+    @if (showPanel()) {
+      <div class="panel">
+        @if (isLoading()) {
+          <span class="panel-message" role="status">{{ loadingText() }}</span>
+        } @else if (loadError(); as message) {
+          <span class="panel-message" role="alert">{{ message }}</span>
+        } @else if (options().length === 0) {
+          <span class="panel-message" role="status">{{ emptyText() }}</span>
+        } @else {
+          <ul class="options" role="listbox" [id]="listboxId()" [attr.aria-label]="label()">
+            @for (option of options(); track option.value; let i = $index) {
+              <li
+                role="option"
+                [id]="optionId(i)"
+                [class.active]="i === activeIndex()"
+                [attr.aria-selected]="option.value === value()"
+                (mousedown)="$event.preventDefault()"
+                (click)="select(option)"
+              >
+                {{ option.label }}
+              </li>
+            }
+          </ul>
         }
-      }
-    </div>
-  }
-  @if (hasInvalidValue()) {
-    <small> Selecione uma opção válida. </small>
-  } @else if (invalid() && touched()) {
-    <small>{{ error() }}</small>
-  }
-</div>
+      </div>
+    }
+  </div>
+</ui-field>

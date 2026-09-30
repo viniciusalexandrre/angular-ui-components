@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   imports: [],
-  selector: 'app-otp-input',
+  selector: 'ui-otp-input',
   styleUrl: './otp-input.scss',
   templateUrl: './otp-input.html',
 })
-export class OtpInput {
+export class UiOtpInput {
 }

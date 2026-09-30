@@ -5,11 +5,11 @@ import { filter } from 'rxjs';
 
 @Component({
   imports: [],
-  selector: 'component-breadcrumb',
+  selector: 'ui-breadcrumb',
   styleUrl: './breadcrumb.scss',
   templateUrl: './breadcrumb.html',
 })
-export class Breadcrumb {
+export class UiBreadcrumb {
   private router = inject(Router);
 
   private navigationEnd = toSignal(

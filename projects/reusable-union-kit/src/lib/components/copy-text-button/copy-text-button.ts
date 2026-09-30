@@ -1,18 +1,50 @@
-import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
-import { Component, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 
 @Component({
-  imports: [CdkCopyToClipboard],
-  selector: 'component-copy-text-button',
+  imports: [],
+  selector: 'ui-copy-text-button',
   styleUrl: './copy-text-button.scss',
   templateUrl: './copy-text-button.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CopyTextButton {
-  readonly code = input.required<string>();
+export class UiCopyTextButton {
+  readonly text = input.required<string>();
+  /** Tempo (ms) que o estado "copiado" fica visível. */
+  readonly resetDelay = input<number>(2000);
+  readonly copyLabel = input<string>('Copiar');
+  readonly copiedLabel = input<string>('Copiado!');
+
+  readonly copied = output<string>();
+  readonly copyFailed = output<unknown>();
+
   readonly isCopied = signal<boolean>(false);
 
-  onCopy(): void {
+  private resetTimer?: ReturnType<typeof setTimeout>;
+
+  constructor() {
+    inject(DestroyRef).onDestroy(() => clearTimeout(this.resetTimer));
+  }
+
+  async copy(): Promise<void> {
+    const text = this.text();
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (error) {
+      this.copyFailed.emit(error);
+      return;
+    }
+
     this.isCopied.set(true);
-    setTimeout(() => this.isCopied.set(false), 4000);
+    this.copied.emit(text);
+    clearTimeout(this.resetTimer);
+    this.resetTimer = setTimeout(() => this.isCopied.set(false), this.resetDelay());
   }
 }

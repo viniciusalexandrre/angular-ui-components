@@ -1,0 +1,36 @@
+@use '../../styles/input-base' as base;
+
+:host {
+  display: inline-block;
+}
+
+.btn-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ui-copy-button-size, 28px);
+  height: var(--ui-copy-button-size, 28px);
+  padding: 0;
+  border: var(--ui-copy-button-border, 1px solid var(--b3, #c6d4fe));
+  border-radius: var(--ui-copy-button-border-radius, 6px);
+  background: var(--ui-copy-button-background, var(--b-white, #fff));
+  color: var(--ui-copy-button-color, var(--c8, #595959));
+  cursor: pointer;
+
+  &:hover {
+    background: var(--ui-copy-button-hover-background, var(--b1, #e7ecff));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-input-focus-color, var(--b10, #1769aa));
+    outline-offset: 2px;
+  }
+
+  &.copied {
+    color: var(--ui-copy-button-success-color, #12a454);
+  }
+}
+
+.visually-hidden {
+  @include base.visually-hidden;
+}

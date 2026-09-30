@@ -1,16 +1,30 @@
-<div class="banner">
-  <ng-content />
-  <div>
-    <img [ngSrc]="img()" alt="banner" width="160" height="209" priority />
-  </div>
-  <div class="container-texts">
-    <div>
-      <h2>{{ title() }}</h2>
-      <span>{{ subtitle() }}</span>
+<section class="banner" [class.banner-with-image]="img()">
+  @if (img()) {
+    <div class="banner-media">
+      <img
+        [ngSrc]="img()"
+        [alt]="imgAlt()"
+        [width]="imgWidth()"
+        [height]="imgHeight()"
+        [priority]="imgPriority()"
+      />
     </div>
-    <p>{{ informative() }}</p>
-    <component-button (clickButton)="onClick.emit()" [name]="buttonText()">
-      {{ buttonText() }}
-    </component-button>
+  }
+  <div class="banner-content">
+    <div class="banner-heading">
+      <h2>{{ heading() }}</h2>
+      @if (subtitle()) {
+        <span class="banner-subtitle">{{ subtitle() }}</span>
+      }
+    </div>
+    @if (description()) {
+      <p class="banner-description">{{ description() }}</p>
+    }
+    <ng-content />
+    @if (buttonText()) {
+      <button ui-button type="button" (click)="buttonClick.emit()">
+        {{ buttonText() }}
+      </button>
+    }
   </div>
-</div>
+</section>

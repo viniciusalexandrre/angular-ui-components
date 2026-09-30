@@ -7,32 +7,68 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "angular-ui-components": {
+    "reusable-union-kit": {
+      "projectType": "library",
+      "root": "projects/reusable-union-kit",
+      "sourceRoot": "projects/reusable-union-kit/src",
+      "prefix": "ui",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/reusable-union-kit/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/reusable-union-kit/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/reusable-union-kit/tsconfig.spec.json"
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "showcase": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
         }
       },
-      "root": "",
-      "sourceRoot": "src",
+      "root": "projects/showcase",
+      "sourceRoot": "projects/showcase/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "browser": "src/main.ts",
-            "tsConfig": "tsconfig.app.json",
+            "browser": "projects/showcase/src/main.ts",
+            "tsConfig": "projects/showcase/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "projects/showcase/public"
               }
             ],
             "styles": [
-              "src/styles.scss"
-            ]
+              "projects/showcase/src/styles.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "projects"
+              ]
+            }
           },
           "configurations": {
             "production": {
@@ -62,16 +98,19 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-ui-components:build:production"
+              "buildTarget": "showcase:build:production"
             },
             "development": {
-              "buildTarget": "angular-ui-components:build:development"
+              "buildTarget": "showcase:build:development"
             }
           },
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/showcase/tsconfig.spec.json"
+          }
         }
       }
     }

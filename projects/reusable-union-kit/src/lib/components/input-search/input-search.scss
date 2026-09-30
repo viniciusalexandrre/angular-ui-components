@@ -1,31 +1,37 @@
-.input-search {
+@use '../../styles/input-base' as base;
+
+:host {
+  display: block;
   width: 100%;
+}
 
-  & > input {
-    width: 100%;
-    padding: 16px;
-    border: 1px solid var(--b1);
-    border-radius: 25px;
-    outline: 0;
-    font-size: 14px;
-    background-color: var(--b-white);
-    color: var(--c8);
-    height: 40px;
+label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--ui-field-label-color, var(--c8, #333));
+  font-size: var(--ui-field-label-font-size, 14px);
+}
 
-    &:focus {
-      border-color: var(--b2);
-    }
+.visually-hidden {
+  @include base.visually-hidden;
+}
+
+.control {
+  position: relative;
+}
+
+.input {
+  @include base.input-base;
+  padding: var(--ui-input-search-padding, 8px 44px 8px 16px);
+  border: var(--ui-input-search-border, 1px solid var(--b1, #d0d0d0));
+  border-radius: var(--ui-input-search-border-radius, 25px);
+
+  &::-webkit-search-cancel-button {
+    display: none;
   }
-  & > button {
-    position: absolute;
-    padding: 8px;
-    border: none;
-    border-radius: 20px;
-    background-color: var(--b1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    right: 5px;
-    top: 5px;
-  }
+}
+
+.search-button {
+  @include base.icon-button;
+  background: var(--ui-input-search-button-background, var(--b1, #e7ecff));
 }

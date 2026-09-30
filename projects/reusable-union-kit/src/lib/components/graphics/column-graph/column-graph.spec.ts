@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ColumnGraph } from './column-graph';
+import { UiColumnGraph } from './column-graph';
 
-describe('ColumnGraph', () => {
-  let component: ColumnGraph;
-  let fixture: ComponentFixture<ColumnGraph>;
+describe('UiColumnGraph', () => {
+  let component: UiColumnGraph;
+  let fixture: ComponentFixture<UiColumnGraph>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ColumnGraph]
+      imports: [UiColumnGraph]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(ColumnGraph);
+    fixture = TestBed.createComponent(UiColumnGraph);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   imports: [],
-  selector: 'app-column-graph',
+  selector: 'ui-column-graph',
   styleUrl: './column-graph.scss',
   templateUrl: './column-graph.html',
 })
-export class ColumnGraph {
+export class UiColumnGraph {
 }

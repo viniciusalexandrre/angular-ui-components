@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   imports: [],
-  selector: 'app-skeleton',
+  selector: 'ui-skeleton',
   styleUrl: './skeleton.scss',
   templateUrl: './skeleton.html',
 })
-export class Skeleton {
+export class UiSkeleton {
 }

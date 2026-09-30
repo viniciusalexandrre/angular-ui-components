@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   imports: [],
-  selector: 'app-table',
+  selector: 'ui-table',
   styleUrl: './table.scss',
   templateUrl: './table.html',
 })
-export class Table {
+export class UiTable {
 }

@@ -1,7 +1,16 @@
 <div class="field" [class.field-invalid]="showErrors()">
-  <label [for]="id()">{{ label() }}</label>
+  <label [for]="id()">
+    {{ label() }}
+    @if (required()) {
+      <span class="field-required" aria-hidden="true">*</span>
+    }
+  </label>
 
   <ng-content />
+
+  @if (hint() && !showErrors()) {
+    <small class="field-hint" [id]="id() + '-hint'">{{ hint() }}</small>
+  }
 
   @if (showErrors()) {
     <div [id]="id() + '-error'" role="alert">
