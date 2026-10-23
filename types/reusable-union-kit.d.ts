@@ -35,6 +35,7 @@ export declare class UiAutocomplete implements FormValueControl<string | null> {
   readonly hasInvalidValue: import("@angular/core").WritableSignal<boolean>;
   protected readonly listboxId: import("@angular/core").Signal<string>;
   protected readonly showPanel: import("@angular/core").Signal<boolean>;
+  protected readonly panelState: import("@angular/core").Signal<"loading" | "error" | "empty" | "options">;
   protected readonly showErrors: import("@angular/core").Signal<boolean>;
   protected readonly displayedErrors: import("@angular/core").Signal<readonly ValidationError[]>;
   protected readonly describedBy: import("@angular/core").Signal<string | null>;
@@ -113,7 +114,7 @@ export declare class UiAutocomplete implements FormValueControl<string | null> {
     };
     "options": {
       "alias": "options";
-      "required": false;
+      "required": true;
       "isSignal": true;
     };
     "isLoading": {
@@ -217,13 +218,6 @@ export declare class UiBanner {
 }
 export type UiButtonVariant = 'primary' | 'secondary' | 'ghost';
 export type UiButtonSize = 'sm' | 'md' | 'lg';
-/**
- * Aplicado direto no elemento nativo, preservando todos os atributos dele
- * (type, disabled, form, aria-*, routerLink...):
- *
- * <button ui-button type="submit">Salvar</button>
- * <a ui-button variant="secondary" routerLink="/home">Início</a>
- */
 export declare class UiButton {
   readonly variant: import("@angular/core").InputSignal<UiButtonVariant>;
   readonly size: import("@angular/core").InputSignal<UiButtonSize>;
@@ -243,7 +237,6 @@ export declare class UiButton {
 }
 export declare class UiCopyTextButton {
   readonly text: import("@angular/core").InputSignal<string>;
-  /** Tempo (ms) que o estado "copiado" fica visível. */
   readonly resetDelay: import("@angular/core").InputSignal<number>;
   readonly copyLabel: import("@angular/core").InputSignal<string>;
   readonly copiedLabel: import("@angular/core").InputSignal<string>;
@@ -445,7 +438,6 @@ export declare class UiInputPassword implements FormValueControl<string> {
   readonly id: import("@angular/core").InputSignal<string>;
   readonly hint: import("@angular/core").InputSignal<string>;
   readonly placeholder: import("@angular/core").InputSignal<string>;
-  /** Use 'new-password' em telas de cadastro/troca de senha. */
   readonly autocomplete: import("@angular/core").InputSignal<"off" | "current-password" | "new-password">;
   readonly showPasswordLabel: import("@angular/core").InputSignal<string>;
   readonly hidePasswordLabel: import("@angular/core").InputSignal<string>;
@@ -607,5 +599,119 @@ export declare class UiInputSearch implements FormValueControl<string> {
     "value": "valueChange";
     "touch": "touch";
     "search": "search";
+  }, never, never, true, never>;
+}
+export type UiSelectValue = string | number | null;
+export interface UiSelectOption {
+  label: string;
+  value: UiSelectValue;
+  disabled?: boolean;
+}
+export declare class UiSelect implements FormValueControl<UiSelectValue> {
+  readonly id: import("@angular/core").InputSignal<string>;
+  readonly label: import("@angular/core").InputSignal<string>;
+  readonly hint: import("@angular/core").InputSignal<string>;
+  readonly placeholder: import("@angular/core").InputSignal<string>;
+  readonly emptyText: import("@angular/core").InputSignal<string>;
+  readonly options: import("@angular/core").InputSignal<readonly UiSelectOption[]>;
+  readonly disabled: import("@angular/core").InputSignal<boolean>;
+  readonly readonly: import("@angular/core").InputSignal<boolean>;
+  readonly required: import("@angular/core").InputSignal<boolean>;
+  readonly invalid: import("@angular/core").InputSignal<boolean>;
+  readonly touched: import("@angular/core").InputSignal<boolean>;
+  readonly errors: import("@angular/core").InputSignal<readonly ValidationError[]>;
+  readonly value: import("@angular/core").ModelSignal<UiSelectValue>;
+  readonly touch: import("@angular/core").OutputEmitterRef<void>;
+  /** Emitido apenas quando o usuário escolhe uma opção (não em patch/reset do formulário). */
+  readonly selectionChange: import("@angular/core").OutputEmitterRef<UiSelectValue>;
+  readonly isOpen: import("@angular/core").WritableSignal<boolean>;
+  readonly activeIndex: import("@angular/core").WritableSignal<number>;
+  protected readonly listboxId: import("@angular/core").Signal<string>;
+  readonly selectedOption: import("@angular/core").Signal<UiSelectOption | null>;
+  protected readonly displayText: import("@angular/core").Signal<string>;
+  protected readonly showErrors: import("@angular/core").Signal<boolean>;
+  protected readonly describedBy: import("@angular/core").Signal<string | null>;
+  protected readonly activeDescendant: import("@angular/core").Signal<string | null>;
+  optionId(index: number): string;
+  toggle(): void;
+  select(option: UiSelectOption): void;
+  handleKeydown(event: KeyboardEvent): void;
+  handleBlur(): void;
+  private open;
+  private close;
+  /** Move a opção ativa pulando as desabilitadas. */
+  private moveActive;
+  private isInteractive;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiSelect, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiSelect, "ui-select", never, {
+    "id": {
+      "alias": "id";
+      "required": true;
+      "isSignal": true;
+    };
+    "label": {
+      "alias": "label";
+      "required": true;
+      "isSignal": true;
+    };
+    "hint": {
+      "alias": "hint";
+      "required": false;
+      "isSignal": true;
+    };
+    "placeholder": {
+      "alias": "placeholder";
+      "required": false;
+      "isSignal": true;
+    };
+    "emptyText": {
+      "alias": "emptyText";
+      "required": false;
+      "isSignal": true;
+    };
+    "options": {
+      "alias": "options";
+      "required": false;
+      "isSignal": true;
+    };
+    "disabled": {
+      "alias": "disabled";
+      "required": false;
+      "isSignal": true;
+    };
+    "readonly": {
+      "alias": "readonly";
+      "required": false;
+      "isSignal": true;
+    };
+    "required": {
+      "alias": "required";
+      "required": false;
+      "isSignal": true;
+    };
+    "invalid": {
+      "alias": "invalid";
+      "required": false;
+      "isSignal": true;
+    };
+    "touched": {
+      "alias": "touched";
+      "required": false;
+      "isSignal": true;
+    };
+    "errors": {
+      "alias": "errors";
+      "required": false;
+      "isSignal": true;
+    };
+    "value": {
+      "alias": "value";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {
+    "value": "valueChange";
+    "touch": "touch";
+    "selectionChange": "selectionChange";
   }, never, never, true, never>;
 }

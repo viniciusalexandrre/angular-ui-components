@@ -31,7 +31,8 @@ O tema escuro é ativado com `data-theme="dark"` no elemento `<html>`.
 
 ### Personalização
 
-Cada componente expõe variáveis CSS `--ui-<componente>-*`, que têm prioridade sobre os tokens globais:
+Todo componente já vem estilizado. Para mudar a aparência, cada componente expõe variáveis CSS
+`--ui-<componente>-*`, que têm prioridade sobre os tokens globais:
 
 ```scss
 ui-input {
@@ -39,6 +40,9 @@ ui-input {
   --ui-input-focus-color: rebeccapurple;
 }
 ```
+
+O guia completo, com todas as variáveis de cada componente e as formas de personalizar (global,
+por componente, por instância, por tema), está em [docs/ESTILOS.md](docs/ESTILOS.md).
 
 ## Uso
 
