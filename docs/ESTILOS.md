@@ -226,7 +226,7 @@ os tokens em vez de cores fixas quando quiser que algo acompanhe o tema.
 Nas tabelas, **Padrão** mostra o valor usado quando você não define a variável. Quando o padrão é
 um token (ex.: `var(--b10)`), o valor acompanha o tema claro/escuro.
 
-> **Status:** os componentes marcados com 🚧 ainda **não são exportados** em `public-api.ts`.
+> **Status:** os componentes marcados com ainda **não são exportados** em `public-api.ts`.
 > Os estilos já seguem este padrão, mas a API pode mudar até eles serem publicados.
 
 ### Campos de formulário (base comum)
@@ -342,7 +342,7 @@ Base comum + `ui-field` + painel de opções:
 | `--ui-autocomplete-option-selected-font-weight` | `600`               | Peso da opção selecionada      |
 | `--ui-autocomplete-message-color`             | `var(--c7)`           | "Pesquisando…", "Nenhum valor…" |
 
-### `ui-select` 🚧
+### `ui-select`
 
 ```html
 <ui-select id="estado" label="Estado" placeholder="Escolha" [options]="estados" [formField]="form.estado" />
@@ -467,7 +467,7 @@ também o `href`/`routerLink` enquanto estiver desabilitado.
 
 O botão interno é um `ui-button`: personalize-o com `--ui-button-*` no `ui-banner`.
 
-### `ui-fieldset` 🚧
+### `ui-fieldset`
 
 ```html
 <ui-fieldset title="Endereço" description="Usado para entrega.">
@@ -490,7 +490,7 @@ O botão interno é um `ui-button`: personalize-o com `--ui-button-*` no `ui-ban
 | `--ui-fieldset-content-gap`           | `16px`      | Espaço entre os campos projetados      |
 | `--ui-fieldset-content-margin-top`    | `10px`      | Espaço acima dos campos                |
 
-### `ui-modal` 🚧
+### `ui-modal`
 
 ```html
 @if (aberto()) {
@@ -524,7 +524,7 @@ o clique no fundo). Ao abrir, o foco vai para o diálogo; ao fechar, volta para 
 | `--ui-modal-close-color`           | `var(--c8)`             | Cor do ícone fechar            |
 | `--ui-modal-focus-color`           | `var(--b10)`            | Contorno de foco               |
 
-### `ui-popup` 🚧
+### `ui-popup`
 
 ```html
 @if (aviso(); as a) {
@@ -571,7 +571,7 @@ ui-popup {
 }
 ```
 
-### `ui-otp-input` 🚧
+### `ui-otp-input`
 
 ```html
 <ui-otp-input [length]="6" [error]="codigoInvalido()" (completed)="verificar($event)" />
@@ -594,7 +594,7 @@ ui-popup {
 | `--ui-otp-input-error-background`     | `var(--bg-erro)`      | Fundo com erro                 |
 | `--ui-otp-input-error-focus-shadow`   | `var(--shadow-erro)`  | Anel de foco com erro          |
 
-### `ui-pagination` 🚧
+### `ui-pagination`
 
 ```html
 <ui-pagination [total]="totalItens()" [pageSize]="20" [currentPage]="pagina()" (pageChange)="pagina.set($event)" />
@@ -619,7 +619,7 @@ aparecem ao mesmo tempo.
 | `--ui-pagination-focus-color`           | `var(--b10)`          | Contorno de foco                  |
 | `--ui-pagination-disabled-opacity`      | `0.5`                 | Opacidade de anterior/próxima desabilitados |
 
-### `ui-skeleton` 🚧
+### `ui-skeleton`
 
 ```html
 @if (carregando()) {
@@ -651,7 +651,7 @@ As variáveis abaixo têm prioridade sobre a variante:
 | `--ui-skeleton-highlight-color`    | `var(--b0)`     | Cor do brilho animado          |
 | `--ui-skeleton-animation-duration` | `1.4s`          | Velocidade do brilho           |
 
-### `ui-theme-toggle` 🚧
+### `ui-theme-toggle`
 
 ```html
 <ui-theme-toggle label="Tema escuro" />
@@ -668,7 +668,7 @@ As variáveis abaixo têm prioridade sobre a variante:
 | `--ui-theme-toggle-focus-color`         | `var(--b10)`     | Contorno de foco            |
 | `--ui-theme-toggle-transition-duration` | `0.4s`           | Velocidade do deslize       |
 
-### `ui-breadcrumb` 🚧
+### `ui-breadcrumb`
 
 Os itens vêm de `data: { breadcrumb: 'Rótulo' }` nas rotas:
 
@@ -693,7 +693,7 @@ Os itens vêm de `data: { breadcrumb: 'Rótulo' }` nas rotas:
 | `--ui-breadcrumb-separator-color`     | `var(--c5)`  | Cor do separador              |
 | `--ui-breadcrumb-focus-color`         | `var(--b10)` | Contorno de foco              |
 
-### `ui-column-graph` 🚧
+### `ui-column-graph`
 
 ```html
 <ui-column-graph title="Vendas por mês" [data]="vendas()" highlight="Ago" />
@@ -721,7 +721,7 @@ Os itens vêm de `data: { breadcrumb: 'Rótulo' }` nas rotas:
 | `--ui-column-graph-highlight-color`   | `var(--b6)`           | Barra e label destacados     |
 | `--ui-column-graph-value-color`       | `var(--c7)`           | Valor exibido no hover       |
 
-### `ui-pie-chart` 🚧
+### `ui-pie-chart`
 
 Donut de progresso: o 1º item de `data` é a parte preenchida e o 2º é o total.
 
@@ -754,7 +754,7 @@ As cores podem vir de dois lugares:
 | `--ui-pie-chart-value-color`        | `var(--c7)`           | Cor do valor na legenda          |
 | `--ui-pie-chart-label-color`        | `var(--c7)`           | Cor do label na legenda          |
 
-### `ui-table` 🚧
+### `ui-table`
 
 A tabela é montada a partir de arrays. Você descreve colunas e ações; o componente gera
 `<th>`, `<td>`, o botão de detalhes e o menu de cada linha.
@@ -820,7 +820,7 @@ acoes: UiTableAction<Arquivo>[] = [
 
 O carregamento usa `ui-skeleton` (`--ui-skeleton-*`) e o menu de ações usa `ui-menu` (`--ui-menu-*`).
 
-### `ui-menu` 🚧
+### `ui-menu`
 
 Botão "⋮" com uma lista de ações. É o menu usado pela tabela, mas funciona sozinho:
 
@@ -860,7 +860,7 @@ devolve o foco ao botão. Fecha também com clique fora, rolagem e redimensionam
 | `--ui-menu-item-danger-color`        | `#c0392b`                      | Cor de itens `danger`        |
 | `--ui-menu-item-disabled-opacity`    | `0.45`                         | Opacidade de itens desabilitados |
 
-### Layouts 🚧
+### Layouts
 
 Estruturas de página inteira. Elas **não** têm `<router-outlet>` dentro: você envolve o seu
 `<router-outlet>` (ou qualquer conteúdo) com o layout, num componente de rota próprio. Assim dá
@@ -975,7 +975,7 @@ maior elemento da tela). O título do painel não é um `<h1>`: o `<h1>` fica co
 
 ### Em construção
 
-`ui-file-table` ainda não tem template nem estilos. Ele pode ser montado sobre o `ui-table`
+`ui-file-table` ainda não tem template nem estilos e não é exportado. Ele pode ser montado sobre o `ui-table`
 (pastas e arquivos como linhas, `uiTableCell` para os ícones).
 
 ---

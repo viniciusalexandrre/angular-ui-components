@@ -1,5 +1,6 @@
 import { FormValueControl, ValidationError } from "@angular/forms/signals";
 import * as i0 from "@angular/core";
+import { TemplateRef } from "@angular/core";
 export interface AutocompleteOption {
   label: string;
   value: string;
@@ -153,126 +154,6 @@ export declare class UiAutocomplete implements FormValueControl<string | null> {
     "searchChange": "searchChange";
   }, never, never, true, never>;
 }
-export declare class UiBanner {
-  readonly heading: import("@angular/core").InputSignal<string>;
-  readonly subtitle: import("@angular/core").InputSignal<string>;
-  readonly description: import("@angular/core").InputSignal<string>;
-  readonly buttonText: import("@angular/core").InputSignal<string>;
-  readonly img: import("@angular/core").InputSignal<string>;
-  readonly imgAlt: import("@angular/core").InputSignal<string>;
-  readonly imgWidth: import("@angular/core").InputSignal<number>;
-  readonly imgHeight: import("@angular/core").InputSignal<number>;
-  /** Ative apenas quando o banner estiver acima da dobra (LCP). */
-  readonly imgPriority: import("@angular/core").InputSignal<boolean>;
-  readonly buttonClick: import("@angular/core").OutputEmitterRef<void>;
-  static ɵfac: i0.ɵɵFactoryDeclaration<UiBanner, never>;
-  static ɵcmp: i0.ɵɵComponentDeclaration<UiBanner, "ui-banner", never, {
-    "heading": {
-      "alias": "heading";
-      "required": true;
-      "isSignal": true;
-    };
-    "subtitle": {
-      "alias": "subtitle";
-      "required": false;
-      "isSignal": true;
-    };
-    "description": {
-      "alias": "description";
-      "required": false;
-      "isSignal": true;
-    };
-    "buttonText": {
-      "alias": "buttonText";
-      "required": false;
-      "isSignal": true;
-    };
-    "img": {
-      "alias": "img";
-      "required": false;
-      "isSignal": true;
-    };
-    "imgAlt": {
-      "alias": "imgAlt";
-      "required": false;
-      "isSignal": true;
-    };
-    "imgWidth": {
-      "alias": "imgWidth";
-      "required": false;
-      "isSignal": true;
-    };
-    "imgHeight": {
-      "alias": "imgHeight";
-      "required": false;
-      "isSignal": true;
-    };
-    "imgPriority": {
-      "alias": "imgPriority";
-      "required": false;
-      "isSignal": true;
-    };
-  }, {
-    "buttonClick": "buttonClick";
-  }, never, ["*"], true, never>;
-}
-export type UiButtonVariant = 'primary' | 'secondary' | 'ghost';
-export type UiButtonSize = 'sm' | 'md' | 'lg';
-export declare class UiButton {
-  readonly variant: import("@angular/core").InputSignal<UiButtonVariant>;
-  readonly size: import("@angular/core").InputSignal<UiButtonSize>;
-  static ɵfac: i0.ɵɵFactoryDeclaration<UiButton, never>;
-  static ɵcmp: i0.ɵɵComponentDeclaration<UiButton, "button[ui-button], a[ui-button]", never, {
-    "variant": {
-      "alias": "variant";
-      "required": false;
-      "isSignal": true;
-    };
-    "size": {
-      "alias": "size";
-      "required": false;
-      "isSignal": true;
-    };
-  }, {}, never, ["*"], true, never>;
-}
-export declare class UiCopyTextButton {
-  readonly text: import("@angular/core").InputSignal<string>;
-  readonly resetDelay: import("@angular/core").InputSignal<number>;
-  readonly copyLabel: import("@angular/core").InputSignal<string>;
-  readonly copiedLabel: import("@angular/core").InputSignal<string>;
-  readonly copied: import("@angular/core").OutputEmitterRef<string>;
-  readonly copyFailed: import("@angular/core").OutputEmitterRef<unknown>;
-  readonly isCopied: import("@angular/core").WritableSignal<boolean>;
-  private resetTimer?;
-  constructor();
-  copy(): Promise<void>;
-  static ɵfac: i0.ɵɵFactoryDeclaration<UiCopyTextButton, never>;
-  static ɵcmp: i0.ɵɵComponentDeclaration<UiCopyTextButton, "ui-copy-text-button", never, {
-    "text": {
-      "alias": "text";
-      "required": true;
-      "isSignal": true;
-    };
-    "resetDelay": {
-      "alias": "resetDelay";
-      "required": false;
-      "isSignal": true;
-    };
-    "copyLabel": {
-      "alias": "copyLabel";
-      "required": false;
-      "isSignal": true;
-    };
-    "copiedLabel": {
-      "alias": "copiedLabel";
-      "required": false;
-      "isSignal": true;
-    };
-  }, {
-    "copied": "copied";
-    "copyFailed": "copyFailed";
-  }, never, never, true, never>;
-}
 export declare class UiField {
   readonly id: import("@angular/core").InputSignal<string>;
   readonly label: import("@angular/core").InputSignal<string>;
@@ -309,6 +190,23 @@ export declare class UiField {
     };
     "showErrors": {
       "alias": "showErrors";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {}, never, ["*"], true, never>;
+}
+export declare class UiFieldset {
+  readonly title: import("@angular/core").InputSignal<string>;
+  readonly description: import("@angular/core").InputSignal<string>;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiFieldset, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiFieldset, "ui-fieldset", never, {
+    "title": {
+      "alias": "title";
+      "required": true;
+      "isSignal": true;
+    };
+    "description": {
+      "alias": "description";
       "required": false;
       "isSignal": true;
     };
@@ -601,6 +499,57 @@ export declare class UiInputSearch implements FormValueControl<string> {
     "search": "search";
   }, never, never, true, never>;
 }
+export declare class UiOtpInput {
+  readonly length: import("@angular/core").InputSignal<number>;
+  readonly error: import("@angular/core").InputSignal<boolean>;
+  readonly disabled: import("@angular/core").InputSignal<boolean>;
+  readonly label: import("@angular/core").InputSignal<string>;
+  /** Prefixo do `aria-label` de cada campo, seguido da posição (ex.: "Dígito 1"). */
+  readonly digitLabel: import("@angular/core").InputSignal<string>;
+  /** Emitido quando todos os dígitos estão preenchidos. */
+  readonly completed: import("@angular/core").OutputEmitterRef<string>;
+  /** Recriado sempre que `length` muda. */
+  protected readonly otp: import("@angular/core").WritableSignal<string[]>;
+  private readonly inputRefs;
+  /** Limpa todos os dígitos e foca o primeiro campo. */
+  reset(): void;
+  handleInput(index: number, event: Event): void;
+  handleKeyDown(index: number, event: KeyboardEvent): void;
+  handlePaste(event: ClipboardEvent): void;
+  handleFocus(event: FocusEvent): void;
+  private setDigits;
+  private getInputs;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiOtpInput, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiOtpInput, "ui-otp-input", never, {
+    "length": {
+      "alias": "length";
+      "required": false;
+      "isSignal": true;
+    };
+    "error": {
+      "alias": "error";
+      "required": false;
+      "isSignal": true;
+    };
+    "disabled": {
+      "alias": "disabled";
+      "required": false;
+      "isSignal": true;
+    };
+    "label": {
+      "alias": "label";
+      "required": false;
+      "isSignal": true;
+    };
+    "digitLabel": {
+      "alias": "digitLabel";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {
+    "completed": "completed";
+  }, never, never, true, never>;
+}
 export type UiSelectValue = string | number | null;
 export interface UiSelectOption {
   label: string;
@@ -715,3 +664,756 @@ export declare class UiSelect implements FormValueControl<UiSelectValue> {
     "selectionChange": "selectionChange";
   }, never, never, true, never>;
 }
+export interface UiBreadcrumbItem {
+  label: string;
+  url: string;
+}
+/** Monta os itens a partir de `data: { breadcrumb: 'Rótulo' }` nas rotas ativas. */
+export declare class UiBreadcrumb {
+  private readonly router;
+  readonly label: import("@angular/core").InputSignal<string>;
+  readonly separator: import("@angular/core").InputSignal<string>;
+  private readonly navigationEnd;
+  readonly breadcrumbs: import("@angular/core").Signal<UiBreadcrumbItem[]>;
+  private buildBreadcrumbs;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiBreadcrumb, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiBreadcrumb, "ui-breadcrumb", never, {
+    "label": {
+      "alias": "label";
+      "required": false;
+      "isSignal": true;
+    };
+    "separator": {
+      "alias": "separator";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {}, never, never, true, never>;
+}
+export type UiButtonVariant = 'primary' | 'secondary' | 'ghost';
+export type UiButtonSize = 'sm' | 'md' | 'lg';
+export declare class UiButton {
+  readonly variant: import("@angular/core").InputSignal<UiButtonVariant>;
+  readonly size: import("@angular/core").InputSignal<UiButtonSize>;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiButton, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiButton, "button[ui-button], a[ui-button]", never, {
+    "variant": {
+      "alias": "variant";
+      "required": false;
+      "isSignal": true;
+    };
+    "size": {
+      "alias": "size";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {}, never, ["*"], true, never>;
+}
+export declare class UiCopyTextButton {
+  readonly text: import("@angular/core").InputSignal<string>;
+  readonly resetDelay: import("@angular/core").InputSignal<number>;
+  readonly copyLabel: import("@angular/core").InputSignal<string>;
+  readonly copiedLabel: import("@angular/core").InputSignal<string>;
+  readonly copied: import("@angular/core").OutputEmitterRef<string>;
+  readonly copyFailed: import("@angular/core").OutputEmitterRef<unknown>;
+  readonly isCopied: import("@angular/core").WritableSignal<boolean>;
+  private resetTimer?;
+  constructor();
+  copy(): Promise<void>;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiCopyTextButton, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiCopyTextButton, "ui-copy-text-button", never, {
+    "text": {
+      "alias": "text";
+      "required": true;
+      "isSignal": true;
+    };
+    "resetDelay": {
+      "alias": "resetDelay";
+      "required": false;
+      "isSignal": true;
+    };
+    "copyLabel": {
+      "alias": "copyLabel";
+      "required": false;
+      "isSignal": true;
+    };
+    "copiedLabel": {
+      "alias": "copiedLabel";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {
+    "copied": "copied";
+    "copyFailed": "copyFailed";
+  }, never, never, true, never>;
+}
+export interface UiMenuItem {
+  id: string;
+  label: string;
+  /** Ação destrutiva (ex.: excluir): exibida com a cor de perigo. */
+  danger?: boolean;
+  disabled?: boolean;
+}
+/**
+ * Botão "⋮" que abre uma lista de ações.
+ * O painel usa position: fixed para não ser cortado por contêineres com overflow (ex.: tabelas).
+ */
+export declare class UiMenu {
+  readonly items: import("@angular/core").InputSignal<readonly UiMenuItem[]>;
+  /** Nome acessível do botão e da lista (ex.: "Ações para relatorio.pdf"). */
+  readonly label: import("@angular/core").InputSignal<string>;
+  readonly itemSelect: import("@angular/core").OutputEmitterRef<UiMenuItem>;
+  readonly isOpen: import("@angular/core").WritableSignal<boolean>;
+  protected readonly position: import("@angular/core").WritableSignal<{
+    top: number;
+    right: number;
+  }>;
+  protected readonly menuId: string;
+  private readonly host;
+  private readonly injector;
+  private readonly trigger;
+  private readonly panel;
+  private readonly itemRefs;
+  private readonly closeOnScroll;
+  constructor();
+  toggle(): void;
+  open(focus?: 'first' | 'last'): void;
+  close(returnFocus?: boolean): void;
+  choose(item: UiMenuItem): void;
+  handleTriggerKeydown(event: KeyboardEvent): void;
+  handleMenuKeydown(event: KeyboardEvent): void;
+  handleDocumentClick(event: MouseEvent): void;
+  private focusItem;
+  /** Abre para cima quando não há espaço abaixo do botão. */
+  private flipIfNeeded;
+  private removeScrollListener;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiMenu, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiMenu, "ui-menu", never, {
+    "items": {
+      "alias": "items";
+      "required": true;
+      "isSignal": true;
+    };
+    "label": {
+      "alias": "label";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {
+    "itemSelect": "itemSelect";
+  }, never, never, true, never>;
+}
+export declare class UiPagination {
+  readonly total: import("@angular/core").InputSignalWithTransform<number, string | number>;
+  /** Página atual, começando em 0. */
+  readonly currentPage: import("@angular/core").InputSignal<number>;
+  readonly pageSize: import("@angular/core").InputSignal<number>;
+  /** Quantidade máxima de números de página exibidos ao mesmo tempo. */
+  readonly maxVisible: import("@angular/core").InputSignal<number>;
+  readonly label: import("@angular/core").InputSignal<string>;
+  readonly previousLabel: import("@angular/core").InputSignal<string>;
+  readonly nextLabel: import("@angular/core").InputSignal<string>;
+  readonly pageLabel: import("@angular/core").InputSignal<string>;
+  /** Emite a nova página, começando em 0. */
+  readonly pageChange: import("@angular/core").OutputEmitterRef<number>;
+  protected readonly displayPage: import("@angular/core").Signal<number>;
+  readonly totalPages: import("@angular/core").Signal<number>;
+  readonly pages: import("@angular/core").Signal<number[]>;
+  goTo(page: number): void;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiPagination, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiPagination, "ui-pagination", never, {
+    "total": {
+      "alias": "total";
+      "required": true;
+      "isSignal": true;
+    };
+    "currentPage": {
+      "alias": "currentPage";
+      "required": true;
+      "isSignal": true;
+    };
+    "pageSize": {
+      "alias": "pageSize";
+      "required": true;
+      "isSignal": true;
+    };
+    "maxVisible": {
+      "alias": "maxVisible";
+      "required": false;
+      "isSignal": true;
+    };
+    "label": {
+      "alias": "label";
+      "required": false;
+      "isSignal": true;
+    };
+    "previousLabel": {
+      "alias": "previousLabel";
+      "required": false;
+      "isSignal": true;
+    };
+    "nextLabel": {
+      "alias": "nextLabel";
+      "required": false;
+      "isSignal": true;
+    };
+    "pageLabel": {
+      "alias": "pageLabel";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {
+    "pageChange": "pageChange";
+  }, never, never, true, never>;
+}
+export type Theme = 'light' | 'dark';
+export declare class UiThemeToggle {
+  private readonly isBrowser;
+  readonly label: import("@angular/core").InputSignal<string>;
+  readonly theme: import("@angular/core").WritableSignal<Theme>;
+  protected readonly isDark: import("@angular/core").Signal<boolean>;
+  constructor();
+  toggle(): void;
+  private getInitialTheme;
+  private getSystemPreference;
+  private listenToSystemThemeChanges;
+  private readStorage;
+  private writeStorage;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiThemeToggle, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiThemeToggle, "ui-theme-toggle", never, {
+    "label": {
+      "alias": "label";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {}, never, never, true, never>;
+}
+export declare class UiModal {
+  /** Nome acessível do diálogo. Use `labelledBy` quando o título estiver no conteúdo projetado. */
+  readonly label: import("@angular/core").InputSignal<string>;
+  readonly labelledBy: import("@angular/core").InputSignal<string | null>;
+  readonly closeLabel: import("@angular/core").InputSignal<string>;
+  readonly closeOnBackdrop: import("@angular/core").InputSignal<boolean>;
+  readonly close: import("@angular/core").OutputEmitterRef<void>;
+  private readonly dialog;
+  constructor();
+  handleBackdropClick(): void;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiModal, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiModal, "ui-modal", never, {
+    "label": {
+      "alias": "label";
+      "required": false;
+      "isSignal": true;
+    };
+    "labelledBy": {
+      "alias": "labelledBy";
+      "required": false;
+      "isSignal": true;
+    };
+    "closeLabel": {
+      "alias": "closeLabel";
+      "required": false;
+      "isSignal": true;
+    };
+    "closeOnBackdrop": {
+      "alias": "closeOnBackdrop";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {
+    "close": "close";
+  }, never, ["*"], true, never>;
+}
+export type PopupType = 'success' | 'error' | 'warning' | 'info';
+export declare class UiPopup {
+  readonly message: import("@angular/core").InputSignal<string>;
+  readonly type: import("@angular/core").InputSignal<PopupType>;
+  readonly closeLabel: import("@angular/core").InputSignal<string>;
+  readonly icon: import("@angular/core").Signal<string>;
+  readonly closed: import("@angular/core").OutputEmitterRef<void>;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiPopup, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiPopup, "ui-popup", never, {
+    "message": {
+      "alias": "message";
+      "required": true;
+      "isSignal": true;
+    };
+    "type": {
+      "alias": "type";
+      "required": false;
+      "isSignal": true;
+    };
+    "closeLabel": {
+      "alias": "closeLabel";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {
+    "closed": "closed";
+  }, never, never, true, never>;
+}
+export type UiSkeletonVariant = 'menu' | 'table' | 'form' | 'input' | 'banner' | 'card';
+export declare class UiSkeleton {
+  readonly variant: import("@angular/core").InputSignal<UiSkeletonVariant>;
+  readonly quantity: import("@angular/core").InputSignal<number>;
+  /** Texto lido por leitores de tela enquanto o conteúdo carrega. */
+  readonly label: import("@angular/core").InputSignal<string>;
+  protected readonly blocks: import("@angular/core").Signal<number[]>;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiSkeleton, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiSkeleton, "ui-skeleton", never, {
+    "variant": {
+      "alias": "variant";
+      "required": false;
+      "isSignal": true;
+    };
+    "quantity": {
+      "alias": "quantity";
+      "required": false;
+      "isSignal": true;
+    };
+    "label": {
+      "alias": "label";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {}, never, never, true, never>;
+}
+export declare class UiBanner {
+  readonly heading: import("@angular/core").InputSignal<string>;
+  readonly subtitle: import("@angular/core").InputSignal<string>;
+  readonly description: import("@angular/core").InputSignal<string>;
+  readonly buttonText: import("@angular/core").InputSignal<string>;
+  readonly img: import("@angular/core").InputSignal<string>;
+  readonly imgAlt: import("@angular/core").InputSignal<string>;
+  readonly imgWidth: import("@angular/core").InputSignal<number>;
+  readonly imgHeight: import("@angular/core").InputSignal<number>;
+  /** Ative apenas quando o banner estiver acima da dobra (LCP). */
+  readonly imgPriority: import("@angular/core").InputSignal<boolean>;
+  readonly buttonClick: import("@angular/core").OutputEmitterRef<void>;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiBanner, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiBanner, "ui-banner", never, {
+    "heading": {
+      "alias": "heading";
+      "required": true;
+      "isSignal": true;
+    };
+    "subtitle": {
+      "alias": "subtitle";
+      "required": false;
+      "isSignal": true;
+    };
+    "description": {
+      "alias": "description";
+      "required": false;
+      "isSignal": true;
+    };
+    "buttonText": {
+      "alias": "buttonText";
+      "required": false;
+      "isSignal": true;
+    };
+    "img": {
+      "alias": "img";
+      "required": false;
+      "isSignal": true;
+    };
+    "imgAlt": {
+      "alias": "imgAlt";
+      "required": false;
+      "isSignal": true;
+    };
+    "imgWidth": {
+      "alias": "imgWidth";
+      "required": false;
+      "isSignal": true;
+    };
+    "imgHeight": {
+      "alias": "imgHeight";
+      "required": false;
+      "isSignal": true;
+    };
+    "imgPriority": {
+      "alias": "imgPriority";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {
+    "buttonClick": "buttonClick";
+  }, never, ["*"], true, never>;
+}
+export interface ColumnGraphProps {
+  y_axios: {
+    label: string;
+    value: number;
+  }[];
+  x_axios: {
+    label: string;
+  }[];
+}
+export declare class UiColumnGraph {
+  readonly data: import("@angular/core").InputSignal<ColumnGraphProps>;
+  readonly title: import("@angular/core").InputSignal<string>;
+  /** Valor que corresponde a 100% da altura. Sem ele, usa o maior valor de `data`. */
+  readonly maxValue: import("@angular/core").InputSignal<number | null>;
+  /** Label da coluna destacada (ex.: o mês atual). */
+  readonly highlight: import("@angular/core").InputSignal<string | null>;
+  private readonly effectiveMax;
+  getBarHeight(value: number): number;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiColumnGraph, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiColumnGraph, "ui-column-graph", never, {
+    "data": {
+      "alias": "data";
+      "required": true;
+      "isSignal": true;
+    };
+    "title": {
+      "alias": "title";
+      "required": true;
+      "isSignal": true;
+    };
+    "maxValue": {
+      "alias": "maxValue";
+      "required": false;
+      "isSignal": true;
+    };
+    "highlight": {
+      "alias": "highlight";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {}, never, never, true, never>;
+}
+export interface PieChartProps {
+  label: string;
+  value: string;
+  graphValue: number;
+  /** Sem cor, usa --ui-pie-chart-fill-color (1º item) ou --ui-pie-chart-track-color (demais). */
+  color?: string;
+}
+/** Donut de progresso: o 1º item é a parte preenchida e o 2º é o total. */
+export declare class UiPieChart {
+  readonly title: import("@angular/core").InputSignal<string>;
+  readonly data: import("@angular/core").InputSignal<PieChartProps[]>;
+  readonly percentage: import("@angular/core").Signal<number>;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiPieChart, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiPieChart, "ui-pie-chart", never, {
+    "title": {
+      "alias": "title";
+      "required": true;
+      "isSignal": true;
+    };
+    "data": {
+      "alias": "data";
+      "required": true;
+      "isSignal": true;
+    };
+  }, {}, never, never, true, never>;
+}
+export interface UiTableColumn<T> {
+  /** Identificador da coluna. Sem `value`, também é a propriedade lida de cada linha. */
+  key: string;
+  header: string;
+  /** Formata o conteúdo da célula (ex.: data, moeda, tamanho de arquivo). */
+  value?: (row: T) => unknown;
+  align?: 'start' | 'center' | 'end';
+  /** Largura CSS da coluna (ex.: '120px', '20%'). */
+  width?: string;
+}
+export interface UiTableAction<T> {
+  id: string;
+  label: string;
+  danger?: boolean;
+  /** Regras por linha: esconder ou desabilitar a ação para algumas linhas. */
+  hidden?: (row: T) => boolean;
+  disabled?: (row: T) => boolean;
+}
+export interface UiTableActionEvent<T> {
+  action: string;
+  row: T;
+}
+export interface UiTableCellContext<T> {
+  $implicit: T;
+  /** Valor da célula, já passado por `column.value` quando existir. */
+  value: unknown;
+}
+/** Substitui o conteúdo de uma coluna: `<ng-template uiTableCell="link" let-row>`. */
+export declare class UiTableCell<T = any> {
+  readonly column: import("@angular/core").InputSignal<string>;
+  readonly template: TemplateRef<UiTableCellContext<T>>;
+  static ngTemplateContextGuard<T>(_dir: UiTableCell<T>, ctx: unknown): ctx is UiTableCellContext<T>;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiTableCell<any>, never>;
+  static ɵdir: i0.ɵɵDirectiveDeclaration<UiTableCell<any>, "ng-template[uiTableCell]", never, {
+    "column": {
+      "alias": "uiTableCell";
+      "required": true;
+      "isSignal": true;
+    };
+  }, {}, never, never, true, never>;
+}
+/** Conteúdo exibido ao expandir uma linha: `<ng-template uiTableDetail let-row>`. */
+export declare class UiTableDetail<T = any> {
+  readonly template: TemplateRef<{
+    $implicit: T;
+  }>;
+  static ngTemplateContextGuard<T>(_dir: UiTableDetail<T>, ctx: unknown): ctx is {
+    $implicit: T;
+  };
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiTableDetail<any>, never>;
+  static ɵdir: i0.ɵɵDirectiveDeclaration<UiTableDetail<any>, "ng-template[uiTableDetail]", never, {}, {}, never, never, true, never>;
+}
+export declare class UiTable<T> {
+  readonly columns: import("@angular/core").InputSignal<readonly UiTableColumn<T>[]>;
+  readonly rows: import("@angular/core").InputSignal<readonly T[]>;
+  /** Identidade estável de cada linha (usada no `track` e para lembrar as linhas abertas). */
+  readonly rowKey: import("@angular/core").InputSignal<(row: T) => unknown>;
+  readonly actions: import("@angular/core").InputSignal<readonly UiTableAction<T>[]>;
+  /** Nome acessível da tabela. */
+  readonly label: import("@angular/core").InputSignal<string>;
+  readonly loading: import("@angular/core").InputSignal<boolean>;
+  readonly loadingRows: import("@angular/core").InputSignal<number>;
+  readonly loadingText: import("@angular/core").InputSignal<string>;
+  readonly emptyText: import("@angular/core").InputSignal<string>;
+  readonly actionsLabel: import("@angular/core").InputSignal<string>;
+  readonly detailsLabel: import("@angular/core").InputSignal<string>;
+  readonly showDetailsLabel: import("@angular/core").InputSignal<string>;
+  readonly hideDetailsLabel: import("@angular/core").InputSignal<string>;
+  readonly action: import("@angular/core").OutputEmitterRef<UiTableActionEvent<T>>;
+  readonly rowToggle: import("@angular/core").OutputEmitterRef<{
+    row: T;
+    expanded: boolean;
+  }>;
+  protected readonly detail: import("@angular/core").Signal<UiTableDetail<any> | undefined>;
+  private readonly cellTemplates;
+  private readonly expandedKeys;
+  private readonly tableId;
+  protected readonly cellTemplateMap: import("@angular/core").Signal<Map<string, TemplateRef<UiTableCellContext<any>>>>;
+  protected readonly colspan: import("@angular/core").Signal<number>;
+  /** Itens do menu por linha, calculados uma vez por mudança de `rows`/`actions`. */
+  protected readonly menuItems: import("@angular/core").Signal<Map<T, UiMenuItem[]>>;
+  cellValue(row: T, column: UiTableColumn<T>): unknown;
+  /** Texto da primeira coluna, usado para dar contexto aos botões ("Ações: relatorio.pdf"). */
+  protected rowName(row: T): string;
+  isExpanded(row: T): boolean;
+  toggleRow(row: T): void;
+  protected detailId(index: number): string;
+  protected emitAction(item: UiMenuItem, row: T): void;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiTable<any>, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiTable<any>, "ui-table", never, {
+    "columns": {
+      "alias": "columns";
+      "required": true;
+      "isSignal": true;
+    };
+    "rows": {
+      "alias": "rows";
+      "required": true;
+      "isSignal": true;
+    };
+    "rowKey": {
+      "alias": "rowKey";
+      "required": false;
+      "isSignal": true;
+    };
+    "actions": {
+      "alias": "actions";
+      "required": false;
+      "isSignal": true;
+    };
+    "label": {
+      "alias": "label";
+      "required": false;
+      "isSignal": true;
+    };
+    "loading": {
+      "alias": "loading";
+      "required": false;
+      "isSignal": true;
+    };
+    "loadingRows": {
+      "alias": "loadingRows";
+      "required": false;
+      "isSignal": true;
+    };
+    "loadingText": {
+      "alias": "loadingText";
+      "required": false;
+      "isSignal": true;
+    };
+    "emptyText": {
+      "alias": "emptyText";
+      "required": false;
+      "isSignal": true;
+    };
+    "actionsLabel": {
+      "alias": "actionsLabel";
+      "required": false;
+      "isSignal": true;
+    };
+    "detailsLabel": {
+      "alias": "detailsLabel";
+      "required": false;
+      "isSignal": true;
+    };
+    "showDetailsLabel": {
+      "alias": "showDetailsLabel";
+      "required": false;
+      "isSignal": true;
+    };
+    "hideDetailsLabel": {
+      "alias": "hideDetailsLabel";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {
+    "action": "action";
+    "rowToggle": "rowToggle";
+  }, ["detail", "cellTemplates"], never, true, never>;
+}
+export interface UiAuthLayoutImage {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+export interface UiAuthLayoutPanel {
+  logo?: UiAuthLayoutImage;
+  /** Ilustração principal. É carregada com prioridade (costuma ser o LCP da página). */
+  image?: UiAuthLayoutImage;
+  title: string;
+  description?: string;
+}
+/**
+ * Tela dividida para login, cadastro e recuperação de senha:
+ * painel da marca à esquerda e o conteúdo projetado à direita.
+ *
+ * <ui-layout-auth [panel]="painel"><router-outlet /></ui-layout-auth>
+ */
+export declare class UiAuthLayout {
+  readonly panel: import("@angular/core").InputSignal<UiAuthLayoutPanel>;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiAuthLayout, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiAuthLayout, "ui-layout-auth", never, {
+    "panel": {
+      "alias": "panel";
+      "required": true;
+      "isSignal": true;
+    };
+  }, {}, never, ["*"], true, never>;
+}
+export interface UiDashboardMenuItem {
+  id: string | number;
+  text: string;
+  link: string;
+  icon?: string;
+}
+export interface UiDashboardUser {
+  name: string;
+  email: string;
+  avatar?: string;
+}
+export declare class UiDashboardLayout {
+  readonly menu: import("@angular/core").InputSignal<readonly UiDashboardMenuItem[]>;
+  readonly brandName: import("@angular/core").InputSignal<string>;
+  readonly brandLogo: import("@angular/core").InputSignal<string | null>;
+  readonly user: import("@angular/core").InputSignal<UiDashboardUser | null>;
+  readonly userLoading: import("@angular/core").InputSignal<boolean>;
+  readonly userError: import("@angular/core").InputSignal<string | null>;
+  readonly showThemeToggle: import("@angular/core").InputSignal<boolean>;
+  /** Menu recolhido (só ícones). Use [(collapsed)] para lembrar a escolha. */
+  readonly collapsed: import("@angular/core").ModelSignal<boolean>;
+  readonly menuLabel: import("@angular/core").InputSignal<string>;
+  readonly collapseLabel: import("@angular/core").InputSignal<string>;
+  readonly expandLabel: import("@angular/core").InputSignal<string>;
+  readonly openMenuLabel: import("@angular/core").InputSignal<string>;
+  readonly closeMenuLabel: import("@angular/core").InputSignal<string>;
+  readonly logoutLabel: import("@angular/core").InputSignal<string>;
+  readonly userLoadingLabel: import("@angular/core").InputSignal<string>;
+  readonly logout: import("@angular/core").OutputEmitterRef<void>;
+  /** Gaveta do menu no celular. */
+  readonly mobileOpen: import("@angular/core").WritableSignal<boolean>;
+  protected readonly sidebarId: string;
+  protected readonly userState: import("@angular/core").Signal<"loading" | "error" | "content" | "none">;
+  protected readonly initials: import("@angular/core").Signal<string>;
+  toggle(): void;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiDashboardLayout, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiDashboardLayout, "ui-layout-dashboard", never, {
+    "menu": {
+      "alias": "menu";
+      "required": true;
+      "isSignal": true;
+    };
+    "brandName": {
+      "alias": "brandName";
+      "required": false;
+      "isSignal": true;
+    };
+    "brandLogo": {
+      "alias": "brandLogo";
+      "required": false;
+      "isSignal": true;
+    };
+    "user": {
+      "alias": "user";
+      "required": false;
+      "isSignal": true;
+    };
+    "userLoading": {
+      "alias": "userLoading";
+      "required": false;
+      "isSignal": true;
+    };
+    "userError": {
+      "alias": "userError";
+      "required": false;
+      "isSignal": true;
+    };
+    "showThemeToggle": {
+      "alias": "showThemeToggle";
+      "required": false;
+      "isSignal": true;
+    };
+    "collapsed": {
+      "alias": "collapsed";
+      "required": false;
+      "isSignal": true;
+    };
+    "menuLabel": {
+      "alias": "menuLabel";
+      "required": false;
+      "isSignal": true;
+    };
+    "collapseLabel": {
+      "alias": "collapseLabel";
+      "required": false;
+      "isSignal": true;
+    };
+    "expandLabel": {
+      "alias": "expandLabel";
+      "required": false;
+      "isSignal": true;
+    };
+    "openMenuLabel": {
+      "alias": "openMenuLabel";
+      "required": false;
+      "isSignal": true;
+    };
+    "closeMenuLabel": {
+      "alias": "closeMenuLabel";
+      "required": false;
+      "isSignal": true;
+    };
+    "logoutLabel": {
+      "alias": "logoutLabel";
+      "required": false;
+      "isSignal": true;
+    };
+    "userLoadingLabel": {
+      "alias": "userLoadingLabel";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {
+    "collapsed": "collapsedChange";
+    "logout": "logout";
+  }, never, ["[uiDashboardHeader]", "*"], true, never>;
+}
+export declare function formatBytes(bytes: number): string;

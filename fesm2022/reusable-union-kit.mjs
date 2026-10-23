@@ -1,6 +1,9 @@
 import * as i0 from "@angular/core";
-import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, input, linkedSignal, model, output, signal, untracked } from "@angular/core";
-import { NgOptimizedImage } from "@angular/common";
+import { ChangeDetectionStrategy, Component, DestroyRef, Directive, ElementRef, Injector, PLATFORM_ID, TemplateRef, afterNextRender, computed, contentChild, contentChildren, effect, inject, input, linkedSignal, model, output, signal, untracked, viewChild, viewChildren } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { NavigationEnd, Router, RouterLink, RouterLinkActive } from "@angular/router";
+import { filter } from "rxjs";
+import { DOCUMENT, NgOptimizedImage, NgTemplateOutlet, isPlatformBrowser } from "@angular/common";
 var UiField = class UiField {
 	id = input.required(...ngDevMode ? [{ debugName: "id" }] : /* istanbul ignore next */ []);
 	label = input.required(...ngDevMode ? [{ debugName: "label" }] : /* istanbul ignore next */ []);
@@ -632,135 +635,29 @@ i0.ɵɵngDeclareClassMetadata({
 		}]
 	}
 });
-var UiButton = class UiButton {
-	variant = input("primary", ...ngDevMode ? [{ debugName: "variant" }] : /* istanbul ignore next */ []);
-	size = input("md", ...ngDevMode ? [{ debugName: "size" }] : /* istanbul ignore next */ []);
-	static ɵfac = i0.ɵɵngDeclareFactory({
-		minVersion: "12.0.0",
-		version: "22.2.1",
-		ngImport: i0,
-		type: UiButton,
-		deps: [],
-		target: i0.ɵɵFactoryTarget.Component
-	});
-	static ɵcmp = i0.ɵɵngDeclareComponent({
-		minVersion: "17.1.0",
-		version: "22.2.1",
-		type: UiButton,
-		isStandalone: true,
-		selector: "button[ui-button], a[ui-button]",
-		inputs: {
-			variant: {
-				classPropertyName: "variant",
-				publicName: "variant",
-				isSignal: true,
-				isRequired: false,
-				transformFunction: null
-			},
-			size: {
-				classPropertyName: "size",
-				publicName: "size",
-				isSignal: true,
-				isRequired: false,
-				transformFunction: null
-			}
-		},
-		host: {
-			properties: {
-				"class.ui-button-primary": "variant() === 'primary'",
-				"class.ui-button-secondary": "variant() === 'secondary'",
-				"class.ui-button-ghost": "variant() === 'ghost'",
-				"class.ui-button-sm": "size() === 'sm'",
-				"class.ui-button-lg": "size() === 'lg'"
-			},
-			classAttribute: "ui-button"
-		},
-		ngImport: i0,
-		template: "<ng-content />\n",
-		styles: [":host{display:inline-flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;height:var(--ui-button-height, 40px);padding:var(--ui-button-padding, 0 20px);border:var(--ui-button-border-width, 1px) solid transparent;border-radius:var(--ui-button-border-radius, 10px);font-family:var(--ui-button-font-family, inherit);font-size:var(--ui-button-font-size, 14px);font-weight:var(--ui-button-font-weight, 600);line-height:1;text-decoration:none;cursor:pointer;transition:background-color .12s ease,border-color .12s ease,color .12s ease}:host(.ui-button-primary){background:var(--ui-button-primary-background, var(--b10, #335cd6));color:var(--ui-button-primary-color, #fff)}:host(.ui-button-primary):hover:not(:disabled){background:var(--ui-button-primary-hover-background, var(--b11, #213b89))}:host(.ui-button-secondary){border-color:var(--ui-button-secondary-border-color, var(--b4, #b5c6f9));background:var(--ui-button-secondary-background, var(--b-white, #fff));color:var(--ui-button-secondary-color, var(--b10, #335cd6))}:host(.ui-button-secondary):hover:not(:disabled){background:var(--ui-button-secondary-hover-background, var(--b1, #e7ecff))}:host(.ui-button-ghost){background:transparent;color:var(--ui-button-ghost-color, var(--b10, #335cd6))}:host(.ui-button-ghost):hover:not(:disabled){background:var(--ui-button-ghost-hover-background, var(--b1, #e7ecff))}:host(.ui-button-sm){height:var(--ui-button-height-sm, 32px);padding:var(--ui-button-padding-sm, 0 12px);font-size:var(--ui-button-font-size-sm, 13px)}:host(.ui-button-lg){height:var(--ui-button-height-lg, 48px);padding:var(--ui-button-padding-lg, 0 28px);font-size:var(--ui-button-font-size-lg, 16px)}:host(:focus-visible){outline:2px solid var(--ui-button-focus-color, var(--b10, #1769aa));outline-offset:2px}:host(:disabled),:host([aria-disabled=true]){cursor:not-allowed;opacity:var(--ui-button-disabled-opacity, .55)}:host([aria-disabled=true]){pointer-events:none}@media(prefers-reduced-motion:reduce){:host{transition:none}}\n"],
-		changeDetection: i0.ChangeDetectionStrategy.OnPush
-	});
-};
-i0.ɵɵngDeclareClassMetadata({
-	minVersion: "12.0.0",
-	version: "22.2.1",
-	ngImport: i0,
-	type: UiButton,
-	decorators: [{
-		type: Component,
-		args: [{
-			imports: [],
-			selector: "button[ui-button], a[ui-button]",
-			changeDetection: ChangeDetectionStrategy.OnPush,
-			host: {
-				class: "ui-button",
-				"[class.ui-button-primary]": "variant() === 'primary'",
-				"[class.ui-button-secondary]": "variant() === 'secondary'",
-				"[class.ui-button-ghost]": "variant() === 'ghost'",
-				"[class.ui-button-sm]": "size() === 'sm'",
-				"[class.ui-button-lg]": "size() === 'lg'"
-			},
-			template: "<ng-content />\n",
-			styles: [":host{display:inline-flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;height:var(--ui-button-height, 40px);padding:var(--ui-button-padding, 0 20px);border:var(--ui-button-border-width, 1px) solid transparent;border-radius:var(--ui-button-border-radius, 10px);font-family:var(--ui-button-font-family, inherit);font-size:var(--ui-button-font-size, 14px);font-weight:var(--ui-button-font-weight, 600);line-height:1;text-decoration:none;cursor:pointer;transition:background-color .12s ease,border-color .12s ease,color .12s ease}:host(.ui-button-primary){background:var(--ui-button-primary-background, var(--b10, #335cd6));color:var(--ui-button-primary-color, #fff)}:host(.ui-button-primary):hover:not(:disabled){background:var(--ui-button-primary-hover-background, var(--b11, #213b89))}:host(.ui-button-secondary){border-color:var(--ui-button-secondary-border-color, var(--b4, #b5c6f9));background:var(--ui-button-secondary-background, var(--b-white, #fff));color:var(--ui-button-secondary-color, var(--b10, #335cd6))}:host(.ui-button-secondary):hover:not(:disabled){background:var(--ui-button-secondary-hover-background, var(--b1, #e7ecff))}:host(.ui-button-ghost){background:transparent;color:var(--ui-button-ghost-color, var(--b10, #335cd6))}:host(.ui-button-ghost):hover:not(:disabled){background:var(--ui-button-ghost-hover-background, var(--b1, #e7ecff))}:host(.ui-button-sm){height:var(--ui-button-height-sm, 32px);padding:var(--ui-button-padding-sm, 0 12px);font-size:var(--ui-button-font-size-sm, 13px)}:host(.ui-button-lg){height:var(--ui-button-height-lg, 48px);padding:var(--ui-button-padding-lg, 0 28px);font-size:var(--ui-button-font-size-lg, 16px)}:host(:focus-visible){outline:2px solid var(--ui-button-focus-color, var(--b10, #1769aa));outline-offset:2px}:host(:disabled),:host([aria-disabled=true]){cursor:not-allowed;opacity:var(--ui-button-disabled-opacity, .55)}:host([aria-disabled=true]){pointer-events:none}@media(prefers-reduced-motion:reduce){:host{transition:none}}\n"]
-		}]
-	}],
-	propDecorators: {
-		variant: [{
-			type: i0.Input,
-			args: [{
-				isSignal: true,
-				alias: "variant",
-				required: false
-			}]
-		}],
-		size: [{
-			type: i0.Input,
-			args: [{
-				isSignal: true,
-				alias: "size",
-				required: false
-			}]
-		}]
-	}
-});
-var UiBanner = class UiBanner {
-	heading = input.required(...ngDevMode ? [{ debugName: "heading" }] : /* istanbul ignore next */ []);
-	subtitle = input("", ...ngDevMode ? [{ debugName: "subtitle" }] : /* istanbul ignore next */ []);
+var UiFieldset = class UiFieldset {
+	title = input.required(...ngDevMode ? [{ debugName: "title" }] : /* istanbul ignore next */ []);
 	description = input("", ...ngDevMode ? [{ debugName: "description" }] : /* istanbul ignore next */ []);
-	buttonText = input("", ...ngDevMode ? [{ debugName: "buttonText" }] : /* istanbul ignore next */ []);
-	img = input("", ...ngDevMode ? [{ debugName: "img" }] : /* istanbul ignore next */ []);
-	imgAlt = input("", ...ngDevMode ? [{ debugName: "imgAlt" }] : /* istanbul ignore next */ []);
-	imgWidth = input(160, ...ngDevMode ? [{ debugName: "imgWidth" }] : /* istanbul ignore next */ []);
-	imgHeight = input(209, ...ngDevMode ? [{ debugName: "imgHeight" }] : /* istanbul ignore next */ []);
-	imgPriority = input(false, ...ngDevMode ? [{ debugName: "imgPriority" }] : /* istanbul ignore next */ []);
-	buttonClick = output();
 	static ɵfac = i0.ɵɵngDeclareFactory({
 		minVersion: "12.0.0",
 		version: "22.2.1",
 		ngImport: i0,
-		type: UiBanner,
+		type: UiFieldset,
 		deps: [],
 		target: i0.ɵɵFactoryTarget.Component
 	});
 	static ɵcmp = i0.ɵɵngDeclareComponent({
 		minVersion: "17.0.0",
 		version: "22.2.1",
-		type: UiBanner,
+		type: UiFieldset,
 		isStandalone: true,
-		selector: "ui-banner",
+		selector: "ui-fieldset",
 		inputs: {
-			heading: {
-				classPropertyName: "heading",
-				publicName: "heading",
+			title: {
+				classPropertyName: "title",
+				publicName: "title",
 				isSignal: true,
 				isRequired: true,
-				transformFunction: null
-			},
-			subtitle: {
-				classPropertyName: "subtitle",
-				publicName: "subtitle",
-				isSignal: true,
-				isRequired: false,
 				transformFunction: null
 			},
 			description: {
@@ -769,81 +666,11 @@ var UiBanner = class UiBanner {
 				isSignal: true,
 				isRequired: false,
 				transformFunction: null
-			},
-			buttonText: {
-				classPropertyName: "buttonText",
-				publicName: "buttonText",
-				isSignal: true,
-				isRequired: false,
-				transformFunction: null
-			},
-			img: {
-				classPropertyName: "img",
-				publicName: "img",
-				isSignal: true,
-				isRequired: false,
-				transformFunction: null
-			},
-			imgAlt: {
-				classPropertyName: "imgAlt",
-				publicName: "imgAlt",
-				isSignal: true,
-				isRequired: false,
-				transformFunction: null
-			},
-			imgWidth: {
-				classPropertyName: "imgWidth",
-				publicName: "imgWidth",
-				isSignal: true,
-				isRequired: false,
-				transformFunction: null
-			},
-			imgHeight: {
-				classPropertyName: "imgHeight",
-				publicName: "imgHeight",
-				isSignal: true,
-				isRequired: false,
-				transformFunction: null
-			},
-			imgPriority: {
-				classPropertyName: "imgPriority",
-				publicName: "imgPriority",
-				isSignal: true,
-				isRequired: false,
-				transformFunction: null
 			}
 		},
-		outputs: { buttonClick: "buttonClick" },
 		ngImport: i0,
-		template: "<section class=\"banner\" [class.banner-with-image]=\"img()\">\n  @if (img()) {\n    <div class=\"banner-media\">\n      <img\n        [ngSrc]=\"img()\"\n        [alt]=\"imgAlt()\"\n        [width]=\"imgWidth()\"\n        [height]=\"imgHeight()\"\n        [priority]=\"imgPriority()\"\n      />\n    </div>\n  }\n  <div class=\"banner-content\">\n    <div class=\"banner-heading\">\n      <h2>{{ heading() }}</h2>\n      @if (subtitle()) {\n        <span class=\"banner-subtitle\">{{ subtitle() }}</span>\n      }\n    </div>\n    @if (description()) {\n      <p class=\"banner-description\">{{ description() }}</p>\n    }\n    <ng-content />\n    @if (buttonText()) {\n      <button ui-button type=\"button\" (click)=\"buttonClick.emit()\">\n        {{ buttonText() }}\n      </button>\n    }\n  </div>\n</section>\n",
-		styles: [":host{display:block}.banner{box-sizing:border-box;display:grid;grid-template-columns:1fr;gap:var(--ui-banner-gap, 10px);justify-items:center;width:100%;padding:var(--ui-banner-padding, 2rem);border:var(--ui-banner-border, 1px solid var(--b0, #f0f3ff));border-radius:var(--ui-banner-border-radius, 20px);background-color:var(--ui-banner-background, var(--b-white, #f6f9ff))}.banner-with-image{grid-template-columns:.3fr 1fr}@media(max-width:980px){.banner-with-image{grid-template-columns:1fr}.banner-with-image .banner-media{display:none}}.banner-content{display:grid;justify-items:center}.banner-heading{display:grid;justify-items:center;margin:20px 0 32px;text-align:center}.banner-heading h2,.banner-heading .banner-subtitle{margin:0;font-size:var(--ui-banner-heading-font-size, clamp(24px, 3vw + 8px, 36px));font-weight:var(--ui-banner-heading-font-weight, 700);line-height:1.35}.banner-heading h2{color:var(--ui-banner-heading-color, var(--c8, #595959))}.banner-subtitle{background:var(--ui-banner-subtitle-gradient, linear-gradient(90deg, #335cd6, #61a9eb));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}.banner-description{margin:0 0 20px;color:var(--ui-banner-description-color, var(--c7, #707070));font-size:var(--ui-banner-description-font-size, 14px);font-weight:var(--ui-banner-description-font-weight, 500);line-height:1.5rem;text-align:center}\n"],
-		dependencies: [{
-			kind: "component",
-			type: UiButton,
-			selector: "button[ui-button], a[ui-button]",
-			inputs: ["variant", "size"]
-		}, {
-			kind: "directive",
-			type: NgOptimizedImage,
-			selector: "img[ngSrc]",
-			inputs: [
-				"ngSrc",
-				"ngSrcset",
-				"sizes",
-				"width",
-				"height",
-				"decoding",
-				"loading",
-				"priority",
-				"loaderParams",
-				"disableOptimizedSrcset",
-				"fill",
-				"placeholder",
-				"placeholderConfig",
-				"src",
-				"srcset"
-			]
-		}],
+		template: "<fieldset class=\"fieldset\">\n  <legend class=\"fieldset-legend\">{{ title() }}</legend>\n  @if (description()) {\n    <p class=\"fieldset-description\">{{ description() }}</p>\n  }\n  <div class=\"fieldset-content\">\n    <ng-content />\n  </div>\n</fieldset>\n",
+		styles: [":host{display:block}.fieldset{display:grid;gap:var(--ui-fieldset-gap, 10px);min-width:0;margin:0;padding:var(--ui-fieldset-padding, 0);border:var(--ui-fieldset-border, 0);border-radius:var(--ui-fieldset-border-radius, 0)}.fieldset-legend{padding:0;color:var(--ui-fieldset-title-color, var(--c8, #595959));font-size:var(--ui-fieldset-title-font-size, 16px);font-weight:var(--ui-fieldset-title-font-weight, 500)}.fieldset-description{margin:0;color:var(--ui-fieldset-description-color, var(--c7, #707070));font-size:var(--ui-fieldset-description-font-size, 14px);font-weight:400;white-space:pre-line}.fieldset-content{display:grid;gap:var(--ui-fieldset-content-gap, 16px);margin-top:var(--ui-fieldset-content-margin-top, 10px)}\n"],
 		changeDetection: i0.ChangeDetectionStrategy.OnPush
 	});
 };
@@ -851,32 +678,24 @@ i0.ɵɵngDeclareClassMetadata({
 	minVersion: "12.0.0",
 	version: "22.2.1",
 	ngImport: i0,
-	type: UiBanner,
+	type: UiFieldset,
 	decorators: [{
 		type: Component,
 		args: [{
-			imports: [UiButton, NgOptimizedImage],
-			selector: "ui-banner",
+			selector: "ui-fieldset",
+			imports: [],
 			changeDetection: ChangeDetectionStrategy.OnPush,
-			template: "<section class=\"banner\" [class.banner-with-image]=\"img()\">\n  @if (img()) {\n    <div class=\"banner-media\">\n      <img\n        [ngSrc]=\"img()\"\n        [alt]=\"imgAlt()\"\n        [width]=\"imgWidth()\"\n        [height]=\"imgHeight()\"\n        [priority]=\"imgPriority()\"\n      />\n    </div>\n  }\n  <div class=\"banner-content\">\n    <div class=\"banner-heading\">\n      <h2>{{ heading() }}</h2>\n      @if (subtitle()) {\n        <span class=\"banner-subtitle\">{{ subtitle() }}</span>\n      }\n    </div>\n    @if (description()) {\n      <p class=\"banner-description\">{{ description() }}</p>\n    }\n    <ng-content />\n    @if (buttonText()) {\n      <button ui-button type=\"button\" (click)=\"buttonClick.emit()\">\n        {{ buttonText() }}\n      </button>\n    }\n  </div>\n</section>\n",
-			styles: [":host{display:block}.banner{box-sizing:border-box;display:grid;grid-template-columns:1fr;gap:var(--ui-banner-gap, 10px);justify-items:center;width:100%;padding:var(--ui-banner-padding, 2rem);border:var(--ui-banner-border, 1px solid var(--b0, #f0f3ff));border-radius:var(--ui-banner-border-radius, 20px);background-color:var(--ui-banner-background, var(--b-white, #f6f9ff))}.banner-with-image{grid-template-columns:.3fr 1fr}@media(max-width:980px){.banner-with-image{grid-template-columns:1fr}.banner-with-image .banner-media{display:none}}.banner-content{display:grid;justify-items:center}.banner-heading{display:grid;justify-items:center;margin:20px 0 32px;text-align:center}.banner-heading h2,.banner-heading .banner-subtitle{margin:0;font-size:var(--ui-banner-heading-font-size, clamp(24px, 3vw + 8px, 36px));font-weight:var(--ui-banner-heading-font-weight, 700);line-height:1.35}.banner-heading h2{color:var(--ui-banner-heading-color, var(--c8, #595959))}.banner-subtitle{background:var(--ui-banner-subtitle-gradient, linear-gradient(90deg, #335cd6, #61a9eb));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}.banner-description{margin:0 0 20px;color:var(--ui-banner-description-color, var(--c7, #707070));font-size:var(--ui-banner-description-font-size, 14px);font-weight:var(--ui-banner-description-font-weight, 500);line-height:1.5rem;text-align:center}\n"]
+			template: "<fieldset class=\"fieldset\">\n  <legend class=\"fieldset-legend\">{{ title() }}</legend>\n  @if (description()) {\n    <p class=\"fieldset-description\">{{ description() }}</p>\n  }\n  <div class=\"fieldset-content\">\n    <ng-content />\n  </div>\n</fieldset>\n",
+			styles: [":host{display:block}.fieldset{display:grid;gap:var(--ui-fieldset-gap, 10px);min-width:0;margin:0;padding:var(--ui-fieldset-padding, 0);border:var(--ui-fieldset-border, 0);border-radius:var(--ui-fieldset-border-radius, 0)}.fieldset-legend{padding:0;color:var(--ui-fieldset-title-color, var(--c8, #595959));font-size:var(--ui-fieldset-title-font-size, 16px);font-weight:var(--ui-fieldset-title-font-weight, 500)}.fieldset-description{margin:0;color:var(--ui-fieldset-description-color, var(--c7, #707070));font-size:var(--ui-fieldset-description-font-size, 14px);font-weight:400;white-space:pre-line}.fieldset-content{display:grid;gap:var(--ui-fieldset-content-gap, 16px);margin-top:var(--ui-fieldset-content-margin-top, 10px)}\n"]
 		}]
 	}],
 	propDecorators: {
-		heading: [{
+		title: [{
 			type: i0.Input,
 			args: [{
 				isSignal: true,
-				alias: "heading",
+				alias: "title",
 				required: true
-			}]
-		}],
-		subtitle: [{
-			type: i0.Input,
-			args: [{
-				isSignal: true,
-				alias: "subtitle",
-				required: false
 			}]
 		}],
 		description: [{
@@ -886,196 +705,6 @@ i0.ɵɵngDeclareClassMetadata({
 				alias: "description",
 				required: false
 			}]
-		}],
-		buttonText: [{
-			type: i0.Input,
-			args: [{
-				isSignal: true,
-				alias: "buttonText",
-				required: false
-			}]
-		}],
-		img: [{
-			type: i0.Input,
-			args: [{
-				isSignal: true,
-				alias: "img",
-				required: false
-			}]
-		}],
-		imgAlt: [{
-			type: i0.Input,
-			args: [{
-				isSignal: true,
-				alias: "imgAlt",
-				required: false
-			}]
-		}],
-		imgWidth: [{
-			type: i0.Input,
-			args: [{
-				isSignal: true,
-				alias: "imgWidth",
-				required: false
-			}]
-		}],
-		imgHeight: [{
-			type: i0.Input,
-			args: [{
-				isSignal: true,
-				alias: "imgHeight",
-				required: false
-			}]
-		}],
-		imgPriority: [{
-			type: i0.Input,
-			args: [{
-				isSignal: true,
-				alias: "imgPriority",
-				required: false
-			}]
-		}],
-		buttonClick: [{
-			type: i0.Output,
-			args: ["buttonClick"]
-		}]
-	}
-});
-var UiCopyTextButton = class UiCopyTextButton {
-	text = input.required(...ngDevMode ? [{ debugName: "text" }] : /* istanbul ignore next */ []);
-	resetDelay = input(2e3, ...ngDevMode ? [{ debugName: "resetDelay" }] : /* istanbul ignore next */ []);
-	copyLabel = input("Copiar", ...ngDevMode ? [{ debugName: "copyLabel" }] : /* istanbul ignore next */ []);
-	copiedLabel = input("Copiado!", ...ngDevMode ? [{ debugName: "copiedLabel" }] : /* istanbul ignore next */ []);
-	copied = output();
-	copyFailed = output();
-	isCopied = signal(false, ...ngDevMode ? [{ debugName: "isCopied" }] : /* istanbul ignore next */ []);
-	resetTimer;
-	constructor() {
-		inject(DestroyRef).onDestroy(() => clearTimeout(this.resetTimer));
-	}
-	async copy() {
-		const text = this.text();
-		try {
-			await navigator.clipboard.writeText(text);
-		} catch (error) {
-			this.copyFailed.emit(error);
-			return;
-		}
-		this.isCopied.set(true);
-		this.copied.emit(text);
-		clearTimeout(this.resetTimer);
-		this.resetTimer = setTimeout(() => this.isCopied.set(false), this.resetDelay());
-	}
-	static ɵfac = i0.ɵɵngDeclareFactory({
-		minVersion: "12.0.0",
-		version: "22.2.1",
-		ngImport: i0,
-		type: UiCopyTextButton,
-		deps: [],
-		target: i0.ɵɵFactoryTarget.Component
-	});
-	static ɵcmp = i0.ɵɵngDeclareComponent({
-		minVersion: "17.0.0",
-		version: "22.2.1",
-		type: UiCopyTextButton,
-		isStandalone: true,
-		selector: "ui-copy-text-button",
-		inputs: {
-			text: {
-				classPropertyName: "text",
-				publicName: "text",
-				isSignal: true,
-				isRequired: true,
-				transformFunction: null
-			},
-			resetDelay: {
-				classPropertyName: "resetDelay",
-				publicName: "resetDelay",
-				isSignal: true,
-				isRequired: false,
-				transformFunction: null
-			},
-			copyLabel: {
-				classPropertyName: "copyLabel",
-				publicName: "copyLabel",
-				isSignal: true,
-				isRequired: false,
-				transformFunction: null
-			},
-			copiedLabel: {
-				classPropertyName: "copiedLabel",
-				publicName: "copiedLabel",
-				isSignal: true,
-				isRequired: false,
-				transformFunction: null
-			}
-		},
-		outputs: {
-			copied: "copied",
-			copyFailed: "copyFailed"
-		},
-		ngImport: i0,
-		template: "<button\n  class=\"btn-copy\"\n  type=\"button\"\n  [class.copied]=\"isCopied()\"\n  [attr.aria-label]=\"isCopied() ? copiedLabel() : copyLabel()\"\n  (click)=\"copy()\"\n>\n  @if (isCopied()) {\n    <svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n      <path d=\"M2.5 8.5l3.5 3.5 7.5-8\" />\n    </svg>\n  } @else {\n    <svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n      <rect x=\"5\" y=\"5\" width=\"9.25\" height=\"9.25\" rx=\"1.5\" />\n      <path d=\"M11 5V3.25C11 2.42 10.33 1.75 9.5 1.75H3.25c-.83 0-1.5.67-1.5 1.5V9.5c0 .83.67 1.5 1.5 1.5H5\" />\n    </svg>\n  }\n</button>\n<span class=\"visually-hidden\" aria-live=\"polite\">{{ isCopied() ? copiedLabel() : '' }}</span>\n",
-		styles: [":host{display:inline-block}.btn-copy{display:inline-flex;align-items:center;justify-content:center;width:var(--ui-copy-button-size, 28px);height:var(--ui-copy-button-size, 28px);padding:0;border:var(--ui-copy-button-border, 1px solid var(--b3, #c6d4fe));border-radius:var(--ui-copy-button-border-radius, 6px);background:var(--ui-copy-button-background, var(--b-white, #fff));color:var(--ui-copy-button-color, var(--c8, #595959));cursor:pointer}.btn-copy:hover{background:var(--ui-copy-button-hover-background, var(--b1, #e7ecff))}.btn-copy:focus-visible{outline:2px solid var(--ui-copy-button-focus-color, var(--ui-input-focus-color, var(--b10, #1769aa)));outline-offset:2px}.btn-copy.copied{color:var(--ui-copy-button-success-color, #12a454)}.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}\n"],
-		changeDetection: i0.ChangeDetectionStrategy.OnPush
-	});
-};
-i0.ɵɵngDeclareClassMetadata({
-	minVersion: "12.0.0",
-	version: "22.2.1",
-	ngImport: i0,
-	type: UiCopyTextButton,
-	decorators: [{
-		type: Component,
-		args: [{
-			imports: [],
-			selector: "ui-copy-text-button",
-			changeDetection: ChangeDetectionStrategy.OnPush,
-			template: "<button\n  class=\"btn-copy\"\n  type=\"button\"\n  [class.copied]=\"isCopied()\"\n  [attr.aria-label]=\"isCopied() ? copiedLabel() : copyLabel()\"\n  (click)=\"copy()\"\n>\n  @if (isCopied()) {\n    <svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n      <path d=\"M2.5 8.5l3.5 3.5 7.5-8\" />\n    </svg>\n  } @else {\n    <svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n      <rect x=\"5\" y=\"5\" width=\"9.25\" height=\"9.25\" rx=\"1.5\" />\n      <path d=\"M11 5V3.25C11 2.42 10.33 1.75 9.5 1.75H3.25c-.83 0-1.5.67-1.5 1.5V9.5c0 .83.67 1.5 1.5 1.5H5\" />\n    </svg>\n  }\n</button>\n<span class=\"visually-hidden\" aria-live=\"polite\">{{ isCopied() ? copiedLabel() : '' }}</span>\n",
-			styles: [":host{display:inline-block}.btn-copy{display:inline-flex;align-items:center;justify-content:center;width:var(--ui-copy-button-size, 28px);height:var(--ui-copy-button-size, 28px);padding:0;border:var(--ui-copy-button-border, 1px solid var(--b3, #c6d4fe));border-radius:var(--ui-copy-button-border-radius, 6px);background:var(--ui-copy-button-background, var(--b-white, #fff));color:var(--ui-copy-button-color, var(--c8, #595959));cursor:pointer}.btn-copy:hover{background:var(--ui-copy-button-hover-background, var(--b1, #e7ecff))}.btn-copy:focus-visible{outline:2px solid var(--ui-copy-button-focus-color, var(--ui-input-focus-color, var(--b10, #1769aa)));outline-offset:2px}.btn-copy.copied{color:var(--ui-copy-button-success-color, #12a454)}.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}\n"]
-		}]
-	}],
-	ctorParameters: () => [],
-	propDecorators: {
-		text: [{
-			type: i0.Input,
-			args: [{
-				isSignal: true,
-				alias: "text",
-				required: true
-			}]
-		}],
-		resetDelay: [{
-			type: i0.Input,
-			args: [{
-				isSignal: true,
-				alias: "resetDelay",
-				required: false
-			}]
-		}],
-		copyLabel: [{
-			type: i0.Input,
-			args: [{
-				isSignal: true,
-				alias: "copyLabel",
-				required: false
-			}]
-		}],
-		copiedLabel: [{
-			type: i0.Input,
-			args: [{
-				isSignal: true,
-				alias: "copiedLabel",
-				required: false
-			}]
-		}],
-		copied: [{
-			type: i0.Output,
-			args: ["copied"]
-		}],
-		copyFailed: [{
-			type: i0.Output,
-			args: ["copyFailed"]
 		}]
 	}
 });
@@ -1961,6 +1590,205 @@ i0.ɵɵngDeclareClassMetadata({
 		}]
 	}
 });
+var UiOtpInput = class UiOtpInput {
+	length = input(6, ...ngDevMode ? [{ debugName: "length" }] : /* istanbul ignore next */ []);
+	error = input(false, ...ngDevMode ? [{ debugName: "error" }] : /* istanbul ignore next */ []);
+	disabled = input(false, ...ngDevMode ? [{ debugName: "disabled" }] : /* istanbul ignore next */ []);
+	label = input("Código de verificação", ...ngDevMode ? [{ debugName: "label" }] : /* istanbul ignore next */ []);
+	digitLabel = input("Dígito", ...ngDevMode ? [{ debugName: "digitLabel" }] : /* istanbul ignore next */ []);
+	completed = output();
+	otp = linkedSignal(() => Array.from({ length: this.length() }, () => ""), ...ngDevMode ? [{ debugName: "otp" }] : /* istanbul ignore next */ []);
+	inputRefs = viewChildren("otpRef", ...ngDevMode ? [{ debugName: "inputRefs" }] : /* istanbul ignore next */ []);
+	reset() {
+		this.otp.set(Array.from({ length: this.length() }, () => ""));
+		this.getInputs().forEach((input) => input.value = "");
+		this.getInputs()[0]?.focus();
+	}
+	handleInput(index, event) {
+		const input = event.target;
+		const value = input.value;
+		if (!/^\d*$/.test(value)) {
+			input.value = this.otp()[index];
+			return;
+		}
+		const digit = value.slice(-1);
+		input.value = digit;
+		this.setDigits((next) => next[index] = digit);
+		if (digit && index < this.length() - 1) this.getInputs()[index + 1]?.focus();
+	}
+	handleKeyDown(index, event) {
+		const inputs = this.getInputs();
+		if (event.key === "Backspace") {
+			event.preventDefault();
+			this.setDigits((next) => {
+				if (next[index]) {
+					next[index] = "";
+					inputs[index].value = "";
+				} else if (index > 0) {
+					next[index - 1] = "";
+					inputs[index - 1].value = "";
+					inputs[index - 1].focus();
+				}
+			});
+		}
+		if (event.key === "ArrowLeft" && index > 0) inputs[index - 1].focus();
+		if (event.key === "ArrowRight" && index < this.length() - 1) inputs[index + 1].focus();
+	}
+	handlePaste(event) {
+		event.preventDefault();
+		const pasteData = event.clipboardData?.getData("text").replace(/\D/g, "").slice(0, this.length());
+		if (!pasteData) return;
+		const inputs = this.getInputs();
+		this.setDigits((next) => {
+			pasteData.split("").forEach((char, i) => {
+				next[i] = char;
+				inputs[i].value = char;
+			});
+		});
+		inputs[Math.min(pasteData.length, this.length() - 1)]?.focus();
+	}
+	handleFocus(event) {
+		event.target.select();
+	}
+	setDigits(mutate) {
+		const next = [...this.otp()];
+		mutate(next);
+		this.otp.set(next);
+		if (next.every((digit) => digit !== "")) this.completed.emit(next.join(""));
+	}
+	getInputs() {
+		return this.inputRefs().map((ref) => ref.nativeElement);
+	}
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiOtpInput,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.0.0",
+		version: "22.2.1",
+		type: UiOtpInput,
+		isStandalone: true,
+		selector: "ui-otp-input",
+		inputs: {
+			length: {
+				classPropertyName: "length",
+				publicName: "length",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			error: {
+				classPropertyName: "error",
+				publicName: "error",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			disabled: {
+				classPropertyName: "disabled",
+				publicName: "disabled",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			label: {
+				classPropertyName: "label",
+				publicName: "label",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			digitLabel: {
+				classPropertyName: "digitLabel",
+				publicName: "digitLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		outputs: { completed: "completed" },
+		viewQueries: [{
+			propertyName: "inputRefs",
+			predicate: ["otpRef"],
+			descendants: true,
+			isSignal: true
+		}],
+		ngImport: i0,
+		template: "<div class=\"otp-input\" role=\"group\" [attr.aria-label]=\"label()\" [class.otp-input-error]=\"error()\">\n  @for (digit of otp(); track $index) {\n    <input\n      #otpRef\n      type=\"text\"\n      maxlength=\"1\"\n      inputmode=\"numeric\"\n      [attr.autocomplete]=\"$first ? 'one-time-code' : 'off'\"\n      [value]=\"digit\"\n      [disabled]=\"disabled()\"\n      [attr.aria-invalid]=\"error()\"\n      [attr.aria-label]=\"digitLabel() + ' ' + ($index + 1)\"\n      (input)=\"handleInput($index, $event)\"\n      (keydown)=\"handleKeyDown($index, $event)\"\n      (paste)=\"handlePaste($event)\"\n      (focus)=\"handleFocus($event)\"\n    />\n  }\n</div>\n",
+		styles: [":host{display:block}.otp-input{display:flex;flex-wrap:wrap;gap:var(--ui-otp-gap, 10px)}.otp-input>input{box-sizing:border-box;width:var(--ui-otp-input-size, 40px);height:var(--ui-otp-input-size, 40px);padding:0;border:var(--ui-otp-input-border, 1px solid var(--b2, #d9e2ff));border-radius:var(--ui-otp-input-border-radius, 10px);background-color:var(--ui-otp-input-background, var(--white, #fff));color:var(--ui-otp-input-color, var(--c8, #595959));font-family:inherit;font-size:var(--ui-otp-input-font-size, 14px);font-weight:var(--ui-otp-input-font-weight, 500);text-align:center;outline:none;transition:border-color .12s ease,box-shadow .12s ease}.otp-input>input:focus{border-color:var(--ui-otp-input-focus-border-color, var(--b5, #9bb3fa));box-shadow:var(--ui-otp-input-focus-shadow, var(--shadow-hover, none))}.otp-input>input:disabled{background-color:var(--ui-otp-input-disabled-background, var(--c2, #ededed));cursor:not-allowed}.otp-input-error>input{border-color:var(--ui-otp-input-error-color, var(--erro, #b3261e));background-color:var(--ui-otp-input-error-background, var(--bg-erro, transparent))}.otp-input-error>input:focus{border-color:var(--ui-otp-input-error-color, var(--erro, #b3261e));box-shadow:var(--ui-otp-input-error-focus-shadow, var(--shadow-erro, none))}@media(prefers-reduced-motion:reduce){.otp-input>input{transition:none}}\n"],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiOtpInput,
+	decorators: [{
+		type: Component,
+		args: [{
+			imports: [],
+			selector: "ui-otp-input",
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			template: "<div class=\"otp-input\" role=\"group\" [attr.aria-label]=\"label()\" [class.otp-input-error]=\"error()\">\n  @for (digit of otp(); track $index) {\n    <input\n      #otpRef\n      type=\"text\"\n      maxlength=\"1\"\n      inputmode=\"numeric\"\n      [attr.autocomplete]=\"$first ? 'one-time-code' : 'off'\"\n      [value]=\"digit\"\n      [disabled]=\"disabled()\"\n      [attr.aria-invalid]=\"error()\"\n      [attr.aria-label]=\"digitLabel() + ' ' + ($index + 1)\"\n      (input)=\"handleInput($index, $event)\"\n      (keydown)=\"handleKeyDown($index, $event)\"\n      (paste)=\"handlePaste($event)\"\n      (focus)=\"handleFocus($event)\"\n    />\n  }\n</div>\n",
+			styles: [":host{display:block}.otp-input{display:flex;flex-wrap:wrap;gap:var(--ui-otp-gap, 10px)}.otp-input>input{box-sizing:border-box;width:var(--ui-otp-input-size, 40px);height:var(--ui-otp-input-size, 40px);padding:0;border:var(--ui-otp-input-border, 1px solid var(--b2, #d9e2ff));border-radius:var(--ui-otp-input-border-radius, 10px);background-color:var(--ui-otp-input-background, var(--white, #fff));color:var(--ui-otp-input-color, var(--c8, #595959));font-family:inherit;font-size:var(--ui-otp-input-font-size, 14px);font-weight:var(--ui-otp-input-font-weight, 500);text-align:center;outline:none;transition:border-color .12s ease,box-shadow .12s ease}.otp-input>input:focus{border-color:var(--ui-otp-input-focus-border-color, var(--b5, #9bb3fa));box-shadow:var(--ui-otp-input-focus-shadow, var(--shadow-hover, none))}.otp-input>input:disabled{background-color:var(--ui-otp-input-disabled-background, var(--c2, #ededed));cursor:not-allowed}.otp-input-error>input{border-color:var(--ui-otp-input-error-color, var(--erro, #b3261e));background-color:var(--ui-otp-input-error-background, var(--bg-erro, transparent))}.otp-input-error>input:focus{border-color:var(--ui-otp-input-error-color, var(--erro, #b3261e));box-shadow:var(--ui-otp-input-error-focus-shadow, var(--shadow-erro, none))}@media(prefers-reduced-motion:reduce){.otp-input>input{transition:none}}\n"]
+		}]
+	}],
+	propDecorators: {
+		length: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "length",
+				required: false
+			}]
+		}],
+		error: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "error",
+				required: false
+			}]
+		}],
+		disabled: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "disabled",
+				required: false
+			}]
+		}],
+		label: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "label",
+				required: false
+			}]
+		}],
+		digitLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "digitLabel",
+				required: false
+			}]
+		}],
+		completed: [{
+			type: i0.Output,
+			args: ["completed"]
+		}],
+		inputRefs: [{
+			type: i0.ViewChildren,
+			args: ["otpRef", { isSignal: true }]
+		}]
+	}
+});
 var UiSelect = class UiSelect {
 	id = input.required(...ngDevMode ? [{ debugName: "id" }] : /* istanbul ignore next */ []);
 	label = input.required(...ngDevMode ? [{ debugName: "label" }] : /* istanbul ignore next */ []);
@@ -2340,6 +2168,2547 @@ i0.ɵɵngDeclareClassMetadata({
 		}]
 	}
 });
-export { UiAutocomplete, UiBanner, UiButton, UiCopyTextButton, UiField, UiInput, UiInputPassword, UiInputSearch, UiSelect };
+var UiBreadcrumb = class UiBreadcrumb {
+	router = inject(Router);
+	label = input("Navegação estrutural", ...ngDevMode ? [{ debugName: "label" }] : /* istanbul ignore next */ []);
+	separator = input("/", ...ngDevMode ? [{ debugName: "separator" }] : /* istanbul ignore next */ []);
+	navigationEnd = toSignal(this.router.events.pipe(filter((event) => event instanceof NavigationEnd)));
+	breadcrumbs = computed(() => {
+		this.navigationEnd();
+		return this.buildBreadcrumbs(this.router.routerState.root);
+	}, ...ngDevMode ? [{ debugName: "breadcrumbs" }] : /* istanbul ignore next */ []);
+	buildBreadcrumbs(route, url = "", breadcrumbs = []) {
+		const child = route.firstChild;
+		if (!child) return breadcrumbs;
+		const routeURL = child.snapshot.url.map((s) => s.path).join("/");
+		let fullURL = url;
+		if (routeURL) fullURL = url ? `${url}/${routeURL}` : routeURL;
+		const label = child.snapshot.data["breadcrumb"];
+		if (label && !breadcrumbs.some((b) => b.url === `/${fullURL}`)) breadcrumbs.push({
+			label,
+			url: `/${fullURL}`
+		});
+		return this.buildBreadcrumbs(child, fullURL, breadcrumbs);
+	}
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiBreadcrumb,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.0.0",
+		version: "22.2.1",
+		type: UiBreadcrumb,
+		isStandalone: true,
+		selector: "ui-breadcrumb",
+		inputs: {
+			label: {
+				classPropertyName: "label",
+				publicName: "label",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			separator: {
+				classPropertyName: "separator",
+				publicName: "separator",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		ngImport: i0,
+		template: "<nav class=\"breadcrumb\" [attr.aria-label]=\"label()\">\n  <ol class=\"breadcrumb-list\">\n    @for (item of breadcrumbs(); track item.url; let last = $last) {\n      <li class=\"breadcrumb-item\">\n        @if (last) {\n          <span class=\"breadcrumb-current\" aria-current=\"page\">{{ item.label }}</span>\n        } @else {\n          <a class=\"breadcrumb-link\" [routerLink]=\"item.url\">{{ item.label }}</a>\n          <span class=\"breadcrumb-separator\" aria-hidden=\"true\">{{ separator() }}</span>\n        }\n      </li>\n    }\n  </ol>\n</nav>\n",
+		styles: [":host{display:block}.breadcrumb-list{display:flex;flex-wrap:wrap;align-items:center;gap:var(--ui-breadcrumb-gap, 8px);margin:0;padding:0;list-style:none;font-size:var(--ui-breadcrumb-font-size, 14px)}.breadcrumb-item{display:flex;align-items:center;gap:var(--ui-breadcrumb-gap, 8px)}.breadcrumb-link{color:var(--ui-breadcrumb-link-color, var(--c7, #707070));text-decoration:none}.breadcrumb-link:hover{color:var(--ui-breadcrumb-link-hover-color, var(--b10, #335cd6));text-decoration:underline}.breadcrumb-link:focus-visible{border-radius:2px;outline:2px solid var(--ui-breadcrumb-focus-color, var(--b10, #1769aa));outline-offset:2px}.breadcrumb-current{color:var(--ui-breadcrumb-current-color, var(--c9, #404040));font-weight:var(--ui-breadcrumb-current-font-weight, 600)}.breadcrumb-separator{color:var(--ui-breadcrumb-separator-color, var(--c5, #b2b2b2))}\n"],
+		dependencies: [{
+			kind: "directive",
+			type: RouterLink,
+			selector: "[routerLink]",
+			inputs: [
+				"target",
+				"queryParams",
+				"fragment",
+				"queryParamsHandling",
+				"state",
+				"info",
+				"relativeTo",
+				"preserveFragment",
+				"skipLocationChange",
+				"replaceUrl",
+				"browserUrl",
+				"routerLink"
+			]
+		}],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiBreadcrumb,
+	decorators: [{
+		type: Component,
+		args: [{
+			imports: [RouterLink],
+			selector: "ui-breadcrumb",
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			template: "<nav class=\"breadcrumb\" [attr.aria-label]=\"label()\">\n  <ol class=\"breadcrumb-list\">\n    @for (item of breadcrumbs(); track item.url; let last = $last) {\n      <li class=\"breadcrumb-item\">\n        @if (last) {\n          <span class=\"breadcrumb-current\" aria-current=\"page\">{{ item.label }}</span>\n        } @else {\n          <a class=\"breadcrumb-link\" [routerLink]=\"item.url\">{{ item.label }}</a>\n          <span class=\"breadcrumb-separator\" aria-hidden=\"true\">{{ separator() }}</span>\n        }\n      </li>\n    }\n  </ol>\n</nav>\n",
+			styles: [":host{display:block}.breadcrumb-list{display:flex;flex-wrap:wrap;align-items:center;gap:var(--ui-breadcrumb-gap, 8px);margin:0;padding:0;list-style:none;font-size:var(--ui-breadcrumb-font-size, 14px)}.breadcrumb-item{display:flex;align-items:center;gap:var(--ui-breadcrumb-gap, 8px)}.breadcrumb-link{color:var(--ui-breadcrumb-link-color, var(--c7, #707070));text-decoration:none}.breadcrumb-link:hover{color:var(--ui-breadcrumb-link-hover-color, var(--b10, #335cd6));text-decoration:underline}.breadcrumb-link:focus-visible{border-radius:2px;outline:2px solid var(--ui-breadcrumb-focus-color, var(--b10, #1769aa));outline-offset:2px}.breadcrumb-current{color:var(--ui-breadcrumb-current-color, var(--c9, #404040));font-weight:var(--ui-breadcrumb-current-font-weight, 600)}.breadcrumb-separator{color:var(--ui-breadcrumb-separator-color, var(--c5, #b2b2b2))}\n"]
+		}]
+	}],
+	propDecorators: {
+		label: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "label",
+				required: false
+			}]
+		}],
+		separator: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "separator",
+				required: false
+			}]
+		}]
+	}
+});
+var UiButton = class UiButton {
+	variant = input("primary", ...ngDevMode ? [{ debugName: "variant" }] : /* istanbul ignore next */ []);
+	size = input("md", ...ngDevMode ? [{ debugName: "size" }] : /* istanbul ignore next */ []);
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiButton,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.1.0",
+		version: "22.2.1",
+		type: UiButton,
+		isStandalone: true,
+		selector: "button[ui-button], a[ui-button]",
+		inputs: {
+			variant: {
+				classPropertyName: "variant",
+				publicName: "variant",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			size: {
+				classPropertyName: "size",
+				publicName: "size",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		host: {
+			properties: {
+				"class.ui-button-primary": "variant() === 'primary'",
+				"class.ui-button-secondary": "variant() === 'secondary'",
+				"class.ui-button-ghost": "variant() === 'ghost'",
+				"class.ui-button-sm": "size() === 'sm'",
+				"class.ui-button-lg": "size() === 'lg'"
+			},
+			classAttribute: "ui-button"
+		},
+		ngImport: i0,
+		template: "<ng-content />\n",
+		styles: [":host{display:inline-flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;height:var(--ui-button-height, 40px);padding:var(--ui-button-padding, 0 20px);border:var(--ui-button-border-width, 1px) solid transparent;border-radius:var(--ui-button-border-radius, 10px);font-family:var(--ui-button-font-family, inherit);font-size:var(--ui-button-font-size, 14px);font-weight:var(--ui-button-font-weight, 600);line-height:1;text-decoration:none;cursor:pointer;transition:background-color .12s ease,border-color .12s ease,color .12s ease}:host(.ui-button-primary){background:var(--ui-button-primary-background, var(--b10, #335cd6));color:var(--ui-button-primary-color, #fff)}:host(.ui-button-primary):hover:not(:disabled){background:var(--ui-button-primary-hover-background, var(--b11, #213b89))}:host(.ui-button-secondary){border-color:var(--ui-button-secondary-border-color, var(--b4, #b5c6f9));background:var(--ui-button-secondary-background, var(--b-white, #fff));color:var(--ui-button-secondary-color, var(--b10, #335cd6))}:host(.ui-button-secondary):hover:not(:disabled){background:var(--ui-button-secondary-hover-background, var(--b1, #e7ecff))}:host(.ui-button-ghost){background:transparent;color:var(--ui-button-ghost-color, var(--b10, #335cd6))}:host(.ui-button-ghost):hover:not(:disabled){background:var(--ui-button-ghost-hover-background, var(--b1, #e7ecff))}:host(.ui-button-sm){height:var(--ui-button-height-sm, 32px);padding:var(--ui-button-padding-sm, 0 12px);font-size:var(--ui-button-font-size-sm, 13px)}:host(.ui-button-lg){height:var(--ui-button-height-lg, 48px);padding:var(--ui-button-padding-lg, 0 28px);font-size:var(--ui-button-font-size-lg, 16px)}:host(:focus-visible){outline:2px solid var(--ui-button-focus-color, var(--b10, #1769aa));outline-offset:2px}:host(:disabled),:host([aria-disabled=true]){cursor:not-allowed;opacity:var(--ui-button-disabled-opacity, .55)}:host([aria-disabled=true]){pointer-events:none}@media(prefers-reduced-motion:reduce){:host{transition:none}}\n"],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiButton,
+	decorators: [{
+		type: Component,
+		args: [{
+			imports: [],
+			selector: "button[ui-button], a[ui-button]",
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			host: {
+				class: "ui-button",
+				"[class.ui-button-primary]": "variant() === 'primary'",
+				"[class.ui-button-secondary]": "variant() === 'secondary'",
+				"[class.ui-button-ghost]": "variant() === 'ghost'",
+				"[class.ui-button-sm]": "size() === 'sm'",
+				"[class.ui-button-lg]": "size() === 'lg'"
+			},
+			template: "<ng-content />\n",
+			styles: [":host{display:inline-flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;height:var(--ui-button-height, 40px);padding:var(--ui-button-padding, 0 20px);border:var(--ui-button-border-width, 1px) solid transparent;border-radius:var(--ui-button-border-radius, 10px);font-family:var(--ui-button-font-family, inherit);font-size:var(--ui-button-font-size, 14px);font-weight:var(--ui-button-font-weight, 600);line-height:1;text-decoration:none;cursor:pointer;transition:background-color .12s ease,border-color .12s ease,color .12s ease}:host(.ui-button-primary){background:var(--ui-button-primary-background, var(--b10, #335cd6));color:var(--ui-button-primary-color, #fff)}:host(.ui-button-primary):hover:not(:disabled){background:var(--ui-button-primary-hover-background, var(--b11, #213b89))}:host(.ui-button-secondary){border-color:var(--ui-button-secondary-border-color, var(--b4, #b5c6f9));background:var(--ui-button-secondary-background, var(--b-white, #fff));color:var(--ui-button-secondary-color, var(--b10, #335cd6))}:host(.ui-button-secondary):hover:not(:disabled){background:var(--ui-button-secondary-hover-background, var(--b1, #e7ecff))}:host(.ui-button-ghost){background:transparent;color:var(--ui-button-ghost-color, var(--b10, #335cd6))}:host(.ui-button-ghost):hover:not(:disabled){background:var(--ui-button-ghost-hover-background, var(--b1, #e7ecff))}:host(.ui-button-sm){height:var(--ui-button-height-sm, 32px);padding:var(--ui-button-padding-sm, 0 12px);font-size:var(--ui-button-font-size-sm, 13px)}:host(.ui-button-lg){height:var(--ui-button-height-lg, 48px);padding:var(--ui-button-padding-lg, 0 28px);font-size:var(--ui-button-font-size-lg, 16px)}:host(:focus-visible){outline:2px solid var(--ui-button-focus-color, var(--b10, #1769aa));outline-offset:2px}:host(:disabled),:host([aria-disabled=true]){cursor:not-allowed;opacity:var(--ui-button-disabled-opacity, .55)}:host([aria-disabled=true]){pointer-events:none}@media(prefers-reduced-motion:reduce){:host{transition:none}}\n"]
+		}]
+	}],
+	propDecorators: {
+		variant: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "variant",
+				required: false
+			}]
+		}],
+		size: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "size",
+				required: false
+			}]
+		}]
+	}
+});
+var UiCopyTextButton = class UiCopyTextButton {
+	text = input.required(...ngDevMode ? [{ debugName: "text" }] : /* istanbul ignore next */ []);
+	resetDelay = input(2e3, ...ngDevMode ? [{ debugName: "resetDelay" }] : /* istanbul ignore next */ []);
+	copyLabel = input("Copiar", ...ngDevMode ? [{ debugName: "copyLabel" }] : /* istanbul ignore next */ []);
+	copiedLabel = input("Copiado!", ...ngDevMode ? [{ debugName: "copiedLabel" }] : /* istanbul ignore next */ []);
+	copied = output();
+	copyFailed = output();
+	isCopied = signal(false, ...ngDevMode ? [{ debugName: "isCopied" }] : /* istanbul ignore next */ []);
+	resetTimer;
+	constructor() {
+		inject(DestroyRef).onDestroy(() => clearTimeout(this.resetTimer));
+	}
+	async copy() {
+		const text = this.text();
+		try {
+			await navigator.clipboard.writeText(text);
+		} catch (error) {
+			this.copyFailed.emit(error);
+			return;
+		}
+		this.isCopied.set(true);
+		this.copied.emit(text);
+		clearTimeout(this.resetTimer);
+		this.resetTimer = setTimeout(() => this.isCopied.set(false), this.resetDelay());
+	}
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiCopyTextButton,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.0.0",
+		version: "22.2.1",
+		type: UiCopyTextButton,
+		isStandalone: true,
+		selector: "ui-copy-text-button",
+		inputs: {
+			text: {
+				classPropertyName: "text",
+				publicName: "text",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			resetDelay: {
+				classPropertyName: "resetDelay",
+				publicName: "resetDelay",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			copyLabel: {
+				classPropertyName: "copyLabel",
+				publicName: "copyLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			copiedLabel: {
+				classPropertyName: "copiedLabel",
+				publicName: "copiedLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		outputs: {
+			copied: "copied",
+			copyFailed: "copyFailed"
+		},
+		ngImport: i0,
+		template: "<button\n  class=\"btn-copy\"\n  type=\"button\"\n  [class.copied]=\"isCopied()\"\n  [attr.aria-label]=\"isCopied() ? copiedLabel() : copyLabel()\"\n  (click)=\"copy()\"\n>\n  @if (isCopied()) {\n    <svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n      <path d=\"M2.5 8.5l3.5 3.5 7.5-8\" />\n    </svg>\n  } @else {\n    <svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n      <rect x=\"5\" y=\"5\" width=\"9.25\" height=\"9.25\" rx=\"1.5\" />\n      <path d=\"M11 5V3.25C11 2.42 10.33 1.75 9.5 1.75H3.25c-.83 0-1.5.67-1.5 1.5V9.5c0 .83.67 1.5 1.5 1.5H5\" />\n    </svg>\n  }\n</button>\n<span class=\"visually-hidden\" aria-live=\"polite\">{{ isCopied() ? copiedLabel() : '' }}</span>\n",
+		styles: [":host{display:inline-block}.btn-copy{display:inline-flex;align-items:center;justify-content:center;width:var(--ui-copy-button-size, 28px);height:var(--ui-copy-button-size, 28px);padding:0;border:var(--ui-copy-button-border, 1px solid var(--b3, #c6d4fe));border-radius:var(--ui-copy-button-border-radius, 6px);background:var(--ui-copy-button-background, var(--b-white, #fff));color:var(--ui-copy-button-color, var(--c8, #595959));cursor:pointer}.btn-copy:hover{background:var(--ui-copy-button-hover-background, var(--b1, #e7ecff))}.btn-copy:focus-visible{outline:2px solid var(--ui-copy-button-focus-color, var(--ui-input-focus-color, var(--b10, #1769aa)));outline-offset:2px}.btn-copy.copied{color:var(--ui-copy-button-success-color, #12a454)}.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}\n"],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiCopyTextButton,
+	decorators: [{
+		type: Component,
+		args: [{
+			imports: [],
+			selector: "ui-copy-text-button",
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			template: "<button\n  class=\"btn-copy\"\n  type=\"button\"\n  [class.copied]=\"isCopied()\"\n  [attr.aria-label]=\"isCopied() ? copiedLabel() : copyLabel()\"\n  (click)=\"copy()\"\n>\n  @if (isCopied()) {\n    <svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n      <path d=\"M2.5 8.5l3.5 3.5 7.5-8\" />\n    </svg>\n  } @else {\n    <svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n      <rect x=\"5\" y=\"5\" width=\"9.25\" height=\"9.25\" rx=\"1.5\" />\n      <path d=\"M11 5V3.25C11 2.42 10.33 1.75 9.5 1.75H3.25c-.83 0-1.5.67-1.5 1.5V9.5c0 .83.67 1.5 1.5 1.5H5\" />\n    </svg>\n  }\n</button>\n<span class=\"visually-hidden\" aria-live=\"polite\">{{ isCopied() ? copiedLabel() : '' }}</span>\n",
+			styles: [":host{display:inline-block}.btn-copy{display:inline-flex;align-items:center;justify-content:center;width:var(--ui-copy-button-size, 28px);height:var(--ui-copy-button-size, 28px);padding:0;border:var(--ui-copy-button-border, 1px solid var(--b3, #c6d4fe));border-radius:var(--ui-copy-button-border-radius, 6px);background:var(--ui-copy-button-background, var(--b-white, #fff));color:var(--ui-copy-button-color, var(--c8, #595959));cursor:pointer}.btn-copy:hover{background:var(--ui-copy-button-hover-background, var(--b1, #e7ecff))}.btn-copy:focus-visible{outline:2px solid var(--ui-copy-button-focus-color, var(--ui-input-focus-color, var(--b10, #1769aa)));outline-offset:2px}.btn-copy.copied{color:var(--ui-copy-button-success-color, #12a454)}.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}\n"]
+		}]
+	}],
+	ctorParameters: () => [],
+	propDecorators: {
+		text: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "text",
+				required: true
+			}]
+		}],
+		resetDelay: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "resetDelay",
+				required: false
+			}]
+		}],
+		copyLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "copyLabel",
+				required: false
+			}]
+		}],
+		copiedLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "copiedLabel",
+				required: false
+			}]
+		}],
+		copied: [{
+			type: i0.Output,
+			args: ["copied"]
+		}],
+		copyFailed: [{
+			type: i0.Output,
+			args: ["copyFailed"]
+		}]
+	}
+});
+let nextId$2 = 0;
+var UiMenu = class UiMenu {
+	items = input.required(...ngDevMode ? [{ debugName: "items" }] : /* istanbul ignore next */ []);
+	label = input("Ações", ...ngDevMode ? [{ debugName: "label" }] : /* istanbul ignore next */ []);
+	itemSelect = output();
+	isOpen = signal(false, ...ngDevMode ? [{ debugName: "isOpen" }] : /* istanbul ignore next */ []);
+	position = signal({
+		top: 0,
+		right: 0
+	}, ...ngDevMode ? [{ debugName: "position" }] : /* istanbul ignore next */ []);
+	menuId = `ui-menu-${nextId$2++}`;
+	host = inject(ElementRef);
+	injector = inject(Injector);
+	trigger = viewChild.required("trigger", ...ngDevMode ? [{ debugName: "trigger" }] : /* istanbul ignore next */ []);
+	panel = viewChild("panel", ...ngDevMode ? [{ debugName: "panel" }] : /* istanbul ignore next */ []);
+	itemRefs = viewChildren("menuItem", ...ngDevMode ? [{ debugName: "itemRefs" }] : /* istanbul ignore next */ []);
+	closeOnScroll = () => this.close();
+	constructor() {
+		inject(DestroyRef).onDestroy(() => this.removeScrollListener());
+	}
+	toggle() {
+		if (this.isOpen()) this.close(true);
+		else this.open("first");
+	}
+	open(focus = "first") {
+		if (this.items().length === 0) return;
+		const rect = this.trigger().nativeElement.getBoundingClientRect();
+		this.position.set({
+			top: rect.bottom + 4,
+			right: window.innerWidth - rect.right
+		});
+		this.isOpen.set(true);
+		document.addEventListener("scroll", this.closeOnScroll, true);
+		afterNextRender(() => {
+			this.flipIfNeeded(rect);
+			this.focusItem(focus === "first" ? 0 : this.itemRefs().length - 1);
+		}, { injector: this.injector });
+	}
+	close(returnFocus = false) {
+		if (!this.isOpen()) return;
+		this.isOpen.set(false);
+		this.removeScrollListener();
+		if (returnFocus) this.trigger().nativeElement.focus();
+	}
+	choose(item) {
+		if (item.disabled) return;
+		this.close(true);
+		this.itemSelect.emit(item);
+	}
+	handleTriggerKeydown(event) {
+		if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+			event.preventDefault();
+			this.open(event.key === "ArrowDown" ? "first" : "last");
+		}
+	}
+	handleMenuKeydown(event) {
+		const items = this.itemRefs().map((ref) => ref.nativeElement);
+		const current = items.indexOf(document.activeElement);
+		switch (event.key) {
+			case "ArrowDown":
+				event.preventDefault();
+				this.focusItem((current + 1) % items.length);
+				break;
+			case "ArrowUp":
+				event.preventDefault();
+				this.focusItem((current - 1 + items.length) % items.length);
+				break;
+			case "Home":
+				event.preventDefault();
+				this.focusItem(0);
+				break;
+			case "End":
+				event.preventDefault();
+				this.focusItem(items.length - 1);
+				break;
+			case "Escape":
+				event.preventDefault();
+				this.close(true);
+				break;
+			case "Tab": this.close();
+		}
+	}
+	handleDocumentClick(event) {
+		if (this.isOpen() && !this.host.nativeElement.contains(event.target)) this.close();
+	}
+	focusItem(index) {
+		this.itemRefs()[index]?.nativeElement.focus();
+	}
+	flipIfNeeded(trigger) {
+		const panel = this.panel()?.nativeElement;
+		if (!panel) return;
+		const height = panel.getBoundingClientRect().height;
+		if (trigger.bottom + 4 + height > window.innerHeight && trigger.top - 4 - height > 0) this.position.update((pos) => ({
+			...pos,
+			top: trigger.top - 4 - height
+		}));
+	}
+	removeScrollListener() {
+		document.removeEventListener("scroll", this.closeOnScroll, true);
+	}
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiMenu,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.0.0",
+		version: "22.2.1",
+		type: UiMenu,
+		isStandalone: true,
+		selector: "ui-menu",
+		inputs: {
+			items: {
+				classPropertyName: "items",
+				publicName: "items",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			label: {
+				classPropertyName: "label",
+				publicName: "label",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		outputs: { itemSelect: "itemSelect" },
+		host: { listeners: {
+			"document:click": "handleDocumentClick($event)",
+			"window:resize": "close()"
+		} },
+		viewQueries: [
+			{
+				propertyName: "trigger",
+				first: true,
+				predicate: ["trigger"],
+				descendants: true,
+				isSignal: true
+			},
+			{
+				propertyName: "panel",
+				first: true,
+				predicate: ["panel"],
+				descendants: true,
+				isSignal: true
+			},
+			{
+				propertyName: "itemRefs",
+				predicate: ["menuItem"],
+				descendants: true,
+				isSignal: true
+			}
+		],
+		ngImport: i0,
+		template: "<button\n  #trigger\n  class=\"menu-trigger\"\n  type=\"button\"\n  aria-haspopup=\"menu\"\n  [attr.aria-expanded]=\"isOpen()\"\n  [attr.aria-controls]=\"isOpen() ? menuId : null\"\n  [attr.aria-label]=\"label()\"\n  (click)=\"toggle()\"\n  (keydown)=\"handleTriggerKeydown($event)\"\n>\n  <svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"currentColor\" aria-hidden=\"true\" focusable=\"false\">\n    <circle cx=\"8\" cy=\"3\" r=\"1.5\" />\n    <circle cx=\"8\" cy=\"8\" r=\"1.5\" />\n    <circle cx=\"8\" cy=\"13\" r=\"1.5\" />\n  </svg>\n</button>\n\n@if (isOpen()) {\n  <ul\n    #panel\n    class=\"menu-panel\"\n    role=\"menu\"\n    [id]=\"menuId\"\n    [attr.aria-label]=\"label()\"\n    [style.top.px]=\"position().top\"\n    [style.right.px]=\"position().right\"\n    (keydown)=\"handleMenuKeydown($event)\"\n  >\n    @for (item of items(); track item.id) {\n      <li role=\"none\">\n        <button\n          #menuItem\n          class=\"menu-item\"\n          type=\"button\"\n          role=\"menuitem\"\n          tabindex=\"-1\"\n          [class.danger]=\"item.danger\"\n          [attr.aria-disabled]=\"item.disabled || null\"\n          (click)=\"choose(item)\"\n        >\n          {{ item.label }}\n        </button>\n      </li>\n    }\n  </ul>\n}\n",
+		styles: [":host{display:inline-block}.menu-trigger{display:grid;place-items:center;width:var(--ui-menu-trigger-size, 32px);height:var(--ui-menu-trigger-size, 32px);padding:0;border:var(--ui-menu-trigger-border, 0);border-radius:var(--ui-menu-trigger-border-radius, 8px);background:var(--ui-menu-trigger-background, transparent);color:var(--ui-menu-trigger-color, var(--c8, #595959));cursor:pointer}.menu-trigger:hover,.menu-trigger[aria-expanded=true]{background:var(--ui-menu-trigger-hover-background, var(--b1, #e7ecff))}.menu-trigger:focus-visible{outline:2px solid var(--ui-menu-focus-color, var(--b10, #1769aa));outline-offset:2px}.menu-panel{position:fixed;z-index:var(--ui-menu-z-index, 1000);box-sizing:border-box;min-width:var(--ui-menu-min-width, 160px);margin:0;padding:var(--ui-menu-padding, 4px);list-style:none;border:var(--ui-menu-border, 1px solid var(--b2, #d9e2ff));border-radius:var(--ui-menu-border-radius, 10px);background:var(--ui-menu-background, var(--b-white, #fff));box-shadow:var(--ui-menu-shadow, 0 4px 12px rgba(0, 0, 0, .12))}.menu-item{display:block;width:100%;padding:var(--ui-menu-item-padding, 8px 12px);border:0;border-radius:var(--ui-menu-item-border-radius, 6px);background:transparent;color:var(--ui-menu-item-color, var(--c9, #404040));font-family:inherit;font-size:var(--ui-menu-font-size, 14px);text-align:left;white-space:nowrap;cursor:pointer}.menu-item:hover,.menu-item:focus-visible{background:var(--ui-menu-item-hover-background, var(--b1, #e7ecff));outline:none}.menu-item.danger{color:var(--ui-menu-item-danger-color, #c0392b)}.menu-item[aria-disabled=true]{cursor:not-allowed;opacity:var(--ui-menu-item-disabled-opacity, .45)}\n"],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiMenu,
+	decorators: [{
+		type: Component,
+		args: [{
+			selector: "ui-menu",
+			imports: [],
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			host: {
+				"(document:click)": "handleDocumentClick($event)",
+				"(window:resize)": "close()"
+			},
+			template: "<button\n  #trigger\n  class=\"menu-trigger\"\n  type=\"button\"\n  aria-haspopup=\"menu\"\n  [attr.aria-expanded]=\"isOpen()\"\n  [attr.aria-controls]=\"isOpen() ? menuId : null\"\n  [attr.aria-label]=\"label()\"\n  (click)=\"toggle()\"\n  (keydown)=\"handleTriggerKeydown($event)\"\n>\n  <svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"currentColor\" aria-hidden=\"true\" focusable=\"false\">\n    <circle cx=\"8\" cy=\"3\" r=\"1.5\" />\n    <circle cx=\"8\" cy=\"8\" r=\"1.5\" />\n    <circle cx=\"8\" cy=\"13\" r=\"1.5\" />\n  </svg>\n</button>\n\n@if (isOpen()) {\n  <ul\n    #panel\n    class=\"menu-panel\"\n    role=\"menu\"\n    [id]=\"menuId\"\n    [attr.aria-label]=\"label()\"\n    [style.top.px]=\"position().top\"\n    [style.right.px]=\"position().right\"\n    (keydown)=\"handleMenuKeydown($event)\"\n  >\n    @for (item of items(); track item.id) {\n      <li role=\"none\">\n        <button\n          #menuItem\n          class=\"menu-item\"\n          type=\"button\"\n          role=\"menuitem\"\n          tabindex=\"-1\"\n          [class.danger]=\"item.danger\"\n          [attr.aria-disabled]=\"item.disabled || null\"\n          (click)=\"choose(item)\"\n        >\n          {{ item.label }}\n        </button>\n      </li>\n    }\n  </ul>\n}\n",
+			styles: [":host{display:inline-block}.menu-trigger{display:grid;place-items:center;width:var(--ui-menu-trigger-size, 32px);height:var(--ui-menu-trigger-size, 32px);padding:0;border:var(--ui-menu-trigger-border, 0);border-radius:var(--ui-menu-trigger-border-radius, 8px);background:var(--ui-menu-trigger-background, transparent);color:var(--ui-menu-trigger-color, var(--c8, #595959));cursor:pointer}.menu-trigger:hover,.menu-trigger[aria-expanded=true]{background:var(--ui-menu-trigger-hover-background, var(--b1, #e7ecff))}.menu-trigger:focus-visible{outline:2px solid var(--ui-menu-focus-color, var(--b10, #1769aa));outline-offset:2px}.menu-panel{position:fixed;z-index:var(--ui-menu-z-index, 1000);box-sizing:border-box;min-width:var(--ui-menu-min-width, 160px);margin:0;padding:var(--ui-menu-padding, 4px);list-style:none;border:var(--ui-menu-border, 1px solid var(--b2, #d9e2ff));border-radius:var(--ui-menu-border-radius, 10px);background:var(--ui-menu-background, var(--b-white, #fff));box-shadow:var(--ui-menu-shadow, 0 4px 12px rgba(0, 0, 0, .12))}.menu-item{display:block;width:100%;padding:var(--ui-menu-item-padding, 8px 12px);border:0;border-radius:var(--ui-menu-item-border-radius, 6px);background:transparent;color:var(--ui-menu-item-color, var(--c9, #404040));font-family:inherit;font-size:var(--ui-menu-font-size, 14px);text-align:left;white-space:nowrap;cursor:pointer}.menu-item:hover,.menu-item:focus-visible{background:var(--ui-menu-item-hover-background, var(--b1, #e7ecff));outline:none}.menu-item.danger{color:var(--ui-menu-item-danger-color, #c0392b)}.menu-item[aria-disabled=true]{cursor:not-allowed;opacity:var(--ui-menu-item-disabled-opacity, .45)}\n"]
+		}]
+	}],
+	ctorParameters: () => [],
+	propDecorators: {
+		items: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "items",
+				required: true
+			}]
+		}],
+		label: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "label",
+				required: false
+			}]
+		}],
+		itemSelect: [{
+			type: i0.Output,
+			args: ["itemSelect"]
+		}],
+		trigger: [{
+			type: i0.ViewChild,
+			args: ["trigger", { isSignal: true }]
+		}],
+		panel: [{
+			type: i0.ViewChild,
+			args: ["panel", { isSignal: true }]
+		}],
+		itemRefs: [{
+			type: i0.ViewChildren,
+			args: ["menuItem", { isSignal: true }]
+		}]
+	}
+});
+var UiPagination = class UiPagination {
+	total = input.required({
+		...ngDevMode ? { debugName: "total" } : /* istanbul ignore next */ {},
+		transform: (value) => typeof value === "string" ? parseInt(value, 10) || 0 : value
+	});
+	currentPage = input.required(...ngDevMode ? [{ debugName: "currentPage" }] : /* istanbul ignore next */ []);
+	pageSize = input.required(...ngDevMode ? [{ debugName: "pageSize" }] : /* istanbul ignore next */ []);
+	maxVisible = input(4, ...ngDevMode ? [{ debugName: "maxVisible" }] : /* istanbul ignore next */ []);
+	label = input("Paginação", ...ngDevMode ? [{ debugName: "label" }] : /* istanbul ignore next */ []);
+	previousLabel = input("Página anterior", ...ngDevMode ? [{ debugName: "previousLabel" }] : /* istanbul ignore next */ []);
+	nextLabel = input("Próxima página", ...ngDevMode ? [{ debugName: "nextLabel" }] : /* istanbul ignore next */ []);
+	pageLabel = input("Página", ...ngDevMode ? [{ debugName: "pageLabel" }] : /* istanbul ignore next */ []);
+	pageChange = output();
+	displayPage = computed(() => this.currentPage() + 1, ...ngDevMode ? [{ debugName: "displayPage" }] : /* istanbul ignore next */ []);
+	totalPages = computed(() => {
+		const size = this.pageSize();
+		if (size <= 0) return 1;
+		return Math.max(Math.ceil(this.total() / size), 1);
+	}, ...ngDevMode ? [{ debugName: "totalPages" }] : /* istanbul ignore next */ []);
+	pages = computed(() => {
+		const total = this.totalPages();
+		const current = this.displayPage();
+		const maxVisible = Math.max(this.maxVisible(), 1);
+		if (total <= maxVisible) return Array.from({ length: total }, (_, i) => i + 1);
+		let start = Math.max(current - Math.floor(maxVisible / 2), 1);
+		let end = start + maxVisible - 1;
+		if (end > total) {
+			end = total;
+			start = Math.max(end - maxVisible + 1, 1);
+		}
+		return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+	}, ...ngDevMode ? [{ debugName: "pages" }] : /* istanbul ignore next */ []);
+	goTo(page) {
+		if (page < 1 || page > this.totalPages() || page === this.displayPage()) return;
+		this.pageChange.emit(page - 1);
+	}
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiPagination,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.0.0",
+		version: "22.2.1",
+		type: UiPagination,
+		isStandalone: true,
+		selector: "ui-pagination",
+		inputs: {
+			total: {
+				classPropertyName: "total",
+				publicName: "total",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			currentPage: {
+				classPropertyName: "currentPage",
+				publicName: "currentPage",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			pageSize: {
+				classPropertyName: "pageSize",
+				publicName: "pageSize",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			maxVisible: {
+				classPropertyName: "maxVisible",
+				publicName: "maxVisible",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			label: {
+				classPropertyName: "label",
+				publicName: "label",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			previousLabel: {
+				classPropertyName: "previousLabel",
+				publicName: "previousLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			nextLabel: {
+				classPropertyName: "nextLabel",
+				publicName: "nextLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			pageLabel: {
+				classPropertyName: "pageLabel",
+				publicName: "pageLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		outputs: { pageChange: "pageChange" },
+		ngImport: i0,
+		template: "<nav class=\"pagination\" [attr.aria-label]=\"label()\">\n  <ul class=\"pagination-list\">\n    @if (totalPages() > 1) {\n      <li>\n        <button\n          type=\"button\"\n          class=\"pagination-button\"\n          [attr.aria-label]=\"previousLabel()\"\n          [disabled]=\"displayPage() === 1\"\n          (click)=\"goTo(displayPage() - 1)\"\n        >\n          <svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n            <path d=\"M10 3L5 8l5 5\" />\n          </svg>\n        </button>\n      </li>\n    }\n    @for (page of pages(); track page) {\n      <li>\n        <button\n          type=\"button\"\n          class=\"pagination-button\"\n          [class.active]=\"page === displayPage()\"\n          [attr.aria-current]=\"page === displayPage() ? 'page' : null\"\n          [attr.aria-label]=\"pageLabel() + ' ' + page\"\n          (click)=\"goTo(page)\"\n        >\n          {{ page }}\n        </button>\n      </li>\n    }\n    @if (totalPages() > 1) {\n      <li>\n        <button\n          type=\"button\"\n          class=\"pagination-button\"\n          [attr.aria-label]=\"nextLabel()\"\n          [disabled]=\"displayPage() === totalPages()\"\n          (click)=\"goTo(displayPage() + 1)\"\n        >\n          <svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n            <path d=\"M6 3l5 5-5 5\" />\n          </svg>\n        </button>\n      </li>\n    }\n  </ul>\n</nav>\n",
+		styles: [":host{display:block}.pagination-list{display:flex;flex-wrap:wrap;align-items:center;justify-content:var(--ui-pagination-justify, center);gap:var(--ui-pagination-gap, 6px);margin:0;padding:0;list-style:none}.pagination-button{display:grid;place-items:center;box-sizing:border-box;min-width:var(--ui-pagination-button-size, 32px);height:var(--ui-pagination-button-size, 32px);padding:0 8px;border:var(--ui-pagination-button-border, 1px solid var(--b1, #e7ecff));border-radius:var(--ui-pagination-button-border-radius, 8px);background-color:var(--ui-pagination-button-background, var(--b0, #f0f3ff));color:var(--ui-pagination-button-color, var(--c8, #595959));font-family:inherit;font-size:var(--ui-pagination-font-size, 14px);cursor:pointer;transition:background-color .12s ease,color .12s ease}.pagination-button:hover:not(:disabled):not(.active){background-color:var(--ui-pagination-button-hover-background, var(--b1, #e7ecff))}.pagination-button.active{border-color:var(--ui-pagination-active-background, var(--b10, #335cd6));background-color:var(--ui-pagination-active-background, var(--b10, #335cd6));color:var(--ui-pagination-active-color, #fff);font-weight:600}.pagination-button:focus-visible{outline:2px solid var(--ui-pagination-focus-color, var(--b10, #1769aa));outline-offset:2px}.pagination-button:disabled{cursor:not-allowed;opacity:var(--ui-pagination-disabled-opacity, .5)}@media(prefers-reduced-motion:reduce){.pagination-button{transition:none}}\n"],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiPagination,
+	decorators: [{
+		type: Component,
+		args: [{
+			imports: [],
+			selector: "ui-pagination",
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			template: "<nav class=\"pagination\" [attr.aria-label]=\"label()\">\n  <ul class=\"pagination-list\">\n    @if (totalPages() > 1) {\n      <li>\n        <button\n          type=\"button\"\n          class=\"pagination-button\"\n          [attr.aria-label]=\"previousLabel()\"\n          [disabled]=\"displayPage() === 1\"\n          (click)=\"goTo(displayPage() - 1)\"\n        >\n          <svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n            <path d=\"M10 3L5 8l5 5\" />\n          </svg>\n        </button>\n      </li>\n    }\n    @for (page of pages(); track page) {\n      <li>\n        <button\n          type=\"button\"\n          class=\"pagination-button\"\n          [class.active]=\"page === displayPage()\"\n          [attr.aria-current]=\"page === displayPage() ? 'page' : null\"\n          [attr.aria-label]=\"pageLabel() + ' ' + page\"\n          (click)=\"goTo(page)\"\n        >\n          {{ page }}\n        </button>\n      </li>\n    }\n    @if (totalPages() > 1) {\n      <li>\n        <button\n          type=\"button\"\n          class=\"pagination-button\"\n          [attr.aria-label]=\"nextLabel()\"\n          [disabled]=\"displayPage() === totalPages()\"\n          (click)=\"goTo(displayPage() + 1)\"\n        >\n          <svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n            <path d=\"M6 3l5 5-5 5\" />\n          </svg>\n        </button>\n      </li>\n    }\n  </ul>\n</nav>\n",
+			styles: [":host{display:block}.pagination-list{display:flex;flex-wrap:wrap;align-items:center;justify-content:var(--ui-pagination-justify, center);gap:var(--ui-pagination-gap, 6px);margin:0;padding:0;list-style:none}.pagination-button{display:grid;place-items:center;box-sizing:border-box;min-width:var(--ui-pagination-button-size, 32px);height:var(--ui-pagination-button-size, 32px);padding:0 8px;border:var(--ui-pagination-button-border, 1px solid var(--b1, #e7ecff));border-radius:var(--ui-pagination-button-border-radius, 8px);background-color:var(--ui-pagination-button-background, var(--b0, #f0f3ff));color:var(--ui-pagination-button-color, var(--c8, #595959));font-family:inherit;font-size:var(--ui-pagination-font-size, 14px);cursor:pointer;transition:background-color .12s ease,color .12s ease}.pagination-button:hover:not(:disabled):not(.active){background-color:var(--ui-pagination-button-hover-background, var(--b1, #e7ecff))}.pagination-button.active{border-color:var(--ui-pagination-active-background, var(--b10, #335cd6));background-color:var(--ui-pagination-active-background, var(--b10, #335cd6));color:var(--ui-pagination-active-color, #fff);font-weight:600}.pagination-button:focus-visible{outline:2px solid var(--ui-pagination-focus-color, var(--b10, #1769aa));outline-offset:2px}.pagination-button:disabled{cursor:not-allowed;opacity:var(--ui-pagination-disabled-opacity, .5)}@media(prefers-reduced-motion:reduce){.pagination-button{transition:none}}\n"]
+		}]
+	}],
+	propDecorators: {
+		total: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "total",
+				required: true
+			}]
+		}],
+		currentPage: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "currentPage",
+				required: true
+			}]
+		}],
+		pageSize: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "pageSize",
+				required: true
+			}]
+		}],
+		maxVisible: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "maxVisible",
+				required: false
+			}]
+		}],
+		label: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "label",
+				required: false
+			}]
+		}],
+		previousLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "previousLabel",
+				required: false
+			}]
+		}],
+		nextLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "nextLabel",
+				required: false
+			}]
+		}],
+		pageLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "pageLabel",
+				required: false
+			}]
+		}],
+		pageChange: [{
+			type: i0.Output,
+			args: ["pageChange"]
+		}]
+	}
+});
+const THEME_KEY = "theme";
+var UiThemeToggle = class UiThemeToggle {
+	isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+	label = input("Tema escuro", ...ngDevMode ? [{ debugName: "label" }] : /* istanbul ignore next */ []);
+	theme = signal(this.getInitialTheme(), ...ngDevMode ? [{ debugName: "theme" }] : /* istanbul ignore next */ []);
+	isDark = computed(() => this.theme() === "dark", ...ngDevMode ? [{ debugName: "isDark" }] : /* istanbul ignore next */ []);
+	constructor() {
+		effect(() => {
+			if (!this.isBrowser) return;
+			const currentTheme = this.theme();
+			document.documentElement.setAttribute("data-theme", currentTheme);
+		});
+		this.listenToSystemThemeChanges();
+	}
+	toggle() {
+		this.theme.update((current) => current === "light" ? "dark" : "light");
+		this.writeStorage(this.theme());
+	}
+	getInitialTheme() {
+		if (!this.isBrowser) return "light";
+		return this.readStorage() ?? this.getSystemPreference();
+	}
+	getSystemPreference() {
+		return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+	}
+	listenToSystemThemeChanges() {
+		if (!this.isBrowser) return;
+		const media = window.matchMedia("(prefers-color-scheme: dark)");
+		const listener = (event) => {
+			if (!this.readStorage()) this.theme.set(event.matches ? "dark" : "light");
+		};
+		media.addEventListener("change", listener);
+		inject(DestroyRef).onDestroy(() => media.removeEventListener("change", listener));
+	}
+	readStorage() {
+		try {
+			const value = localStorage.getItem(THEME_KEY);
+			return value === "light" || value === "dark" ? value : null;
+		} catch {
+			return null;
+		}
+	}
+	writeStorage(theme) {
+		try {
+			localStorage.setItem(THEME_KEY, theme);
+		} catch {}
+	}
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiThemeToggle,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.0.0",
+		version: "22.2.1",
+		type: UiThemeToggle,
+		isStandalone: true,
+		selector: "ui-theme-toggle",
+		inputs: { label: {
+			classPropertyName: "label",
+			publicName: "label",
+			isSignal: true,
+			isRequired: false,
+			transformFunction: null
+		} },
+		ngImport: i0,
+		template: "<button\n  type=\"button\"\n  class=\"toggle\"\n  role=\"switch\"\n  [class.dark]=\"isDark()\"\n  [attr.aria-checked]=\"isDark()\"\n  [attr.aria-label]=\"label()\"\n  (click)=\"toggle()\"\n>\n  <span class=\"thumb\">\n    @if (isDark()) {\n      <svg width=\"14\" height=\"14\" viewBox=\"0 0 16 16\" fill=\"currentColor\" aria-hidden=\"true\" focusable=\"false\">\n        <path d=\"M6.2 1.1a.6.6 0 0 1 .1.7A5.6 5.6 0 0 0 13.6 9.7a.6.6 0 0 1 .8.7A7 7 0 1 1 5.6 1a.6.6 0 0 1 .6.1Z\" />\n      </svg>\n    } @else {\n      <svg width=\"14\" height=\"14\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" aria-hidden=\"true\" focusable=\"false\">\n        <circle cx=\"8\" cy=\"8\" r=\"3\" />\n        <path d=\"M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.89 11.89l1.06 1.06M3.05 12.95l1.06-1.06M11.89 4.11l1.06-1.06\" />\n      </svg>\n    }\n  </span>\n</button>\n",
+		styles: [":host{display:inline-block}.toggle{--_thumb-size: var(--ui-theme-toggle-thumb-size, 26px);--_padding: var(--ui-theme-toggle-padding, 4px);position:relative;display:block;box-sizing:border-box;width:var(--ui-theme-toggle-width, 60px);height:calc(var(--_thumb-size) + var(--_padding) * 2);padding:var(--_padding);border:0;border-radius:999px;background-color:var(--ui-theme-toggle-background, var(--b2, #d9e2ff));cursor:pointer}.toggle:focus-visible{outline:2px solid var(--ui-theme-toggle-focus-color, var(--b10, #1769aa));outline-offset:2px}.thumb{display:grid;place-items:center;width:var(--_thumb-size);height:var(--_thumb-size);border-radius:50%;background-color:var(--ui-theme-toggle-thumb-background, var(--b-white, #f6f9ff));color:var(--ui-theme-toggle-icon-color, var(--c8, #595959));transition:transform var(--ui-theme-toggle-transition-duration, .4s)}.dark .thumb{transform:translate(calc(var(--ui-theme-toggle-width, 60px) - var(--_thumb-size) - var(--_padding) * 2))}@media(prefers-reduced-motion:reduce){.thumb{transition:none}}\n"],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiThemeToggle,
+	decorators: [{
+		type: Component,
+		args: [{
+			imports: [],
+			selector: "ui-theme-toggle",
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			template: "<button\n  type=\"button\"\n  class=\"toggle\"\n  role=\"switch\"\n  [class.dark]=\"isDark()\"\n  [attr.aria-checked]=\"isDark()\"\n  [attr.aria-label]=\"label()\"\n  (click)=\"toggle()\"\n>\n  <span class=\"thumb\">\n    @if (isDark()) {\n      <svg width=\"14\" height=\"14\" viewBox=\"0 0 16 16\" fill=\"currentColor\" aria-hidden=\"true\" focusable=\"false\">\n        <path d=\"M6.2 1.1a.6.6 0 0 1 .1.7A5.6 5.6 0 0 0 13.6 9.7a.6.6 0 0 1 .8.7A7 7 0 1 1 5.6 1a.6.6 0 0 1 .6.1Z\" />\n      </svg>\n    } @else {\n      <svg width=\"14\" height=\"14\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" aria-hidden=\"true\" focusable=\"false\">\n        <circle cx=\"8\" cy=\"8\" r=\"3\" />\n        <path d=\"M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.89 11.89l1.06 1.06M3.05 12.95l1.06-1.06M11.89 4.11l1.06-1.06\" />\n      </svg>\n    }\n  </span>\n</button>\n",
+			styles: [":host{display:inline-block}.toggle{--_thumb-size: var(--ui-theme-toggle-thumb-size, 26px);--_padding: var(--ui-theme-toggle-padding, 4px);position:relative;display:block;box-sizing:border-box;width:var(--ui-theme-toggle-width, 60px);height:calc(var(--_thumb-size) + var(--_padding) * 2);padding:var(--_padding);border:0;border-radius:999px;background-color:var(--ui-theme-toggle-background, var(--b2, #d9e2ff));cursor:pointer}.toggle:focus-visible{outline:2px solid var(--ui-theme-toggle-focus-color, var(--b10, #1769aa));outline-offset:2px}.thumb{display:grid;place-items:center;width:var(--_thumb-size);height:var(--_thumb-size);border-radius:50%;background-color:var(--ui-theme-toggle-thumb-background, var(--b-white, #f6f9ff));color:var(--ui-theme-toggle-icon-color, var(--c8, #595959));transition:transform var(--ui-theme-toggle-transition-duration, .4s)}.dark .thumb{transform:translate(calc(var(--ui-theme-toggle-width, 60px) - var(--_thumb-size) - var(--_padding) * 2))}@media(prefers-reduced-motion:reduce){.thumb{transition:none}}\n"]
+		}]
+	}],
+	ctorParameters: () => [],
+	propDecorators: { label: [{
+		type: i0.Input,
+		args: [{
+			isSignal: true,
+			alias: "label",
+			required: false
+		}]
+	}] }
+});
+var UiModal = class UiModal {
+	label = input("", ...ngDevMode ? [{ debugName: "label" }] : /* istanbul ignore next */ []);
+	labelledBy = input(null, ...ngDevMode ? [{ debugName: "labelledBy" }] : /* istanbul ignore next */ []);
+	closeLabel = input("Fechar", ...ngDevMode ? [{ debugName: "closeLabel" }] : /* istanbul ignore next */ []);
+	closeOnBackdrop = input(true, ...ngDevMode ? [{ debugName: "closeOnBackdrop" }] : /* istanbul ignore next */ []);
+	close = output();
+	dialog = viewChild.required("dialog", ...ngDevMode ? [{ debugName: "dialog" }] : /* istanbul ignore next */ []);
+	constructor() {
+		const document = inject(DOCUMENT);
+		let previousFocus = null;
+		afterNextRender(() => {
+			previousFocus = document.activeElement;
+			this.dialog().nativeElement.focus();
+		});
+		inject(DestroyRef).onDestroy(() => previousFocus?.focus?.());
+	}
+	handleBackdropClick() {
+		if (this.closeOnBackdrop()) this.close.emit();
+	}
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiModal,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.2.0",
+		version: "22.2.1",
+		type: UiModal,
+		isStandalone: true,
+		selector: "ui-modal",
+		inputs: {
+			label: {
+				classPropertyName: "label",
+				publicName: "label",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			labelledBy: {
+				classPropertyName: "labelledBy",
+				publicName: "labelledBy",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			closeLabel: {
+				classPropertyName: "closeLabel",
+				publicName: "closeLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			closeOnBackdrop: {
+				classPropertyName: "closeOnBackdrop",
+				publicName: "closeOnBackdrop",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		outputs: { close: "close" },
+		host: { listeners: { "document:keydown.escape": "close.emit()" } },
+		viewQueries: [{
+			propertyName: "dialog",
+			first: true,
+			predicate: ["dialog"],
+			descendants: true,
+			isSignal: true
+		}],
+		ngImport: i0,
+		template: "<div class=\"backdrop\" (click)=\"handleBackdropClick()\">\n  <div\n    #dialog\n    class=\"modal\"\n    role=\"dialog\"\n    aria-modal=\"true\"\n    tabindex=\"-1\"\n    [attr.aria-label]=\"label() || null\"\n    [attr.aria-labelledby]=\"labelledBy()\"\n    (click)=\"$event.stopPropagation()\"\n  >\n    <div class=\"modal-header\">\n      <button type=\"button\" class=\"modal-close\" [attr.aria-label]=\"closeLabel()\" (click)=\"close.emit()\">\n        <svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\" focusable=\"false\">\n          <path d=\"M3 3l10 10M13 3L3 13\" />\n        </svg>\n      </button>\n    </div>\n    <ng-content />\n  </div>\n</div>\n",
+		styles: [".backdrop{position:fixed;inset:0;z-index:var(--ui-modal-z-index, 999);display:grid;place-items:center;padding:16px;background-color:var(--ui-modal-backdrop, rgba(11, 11, 11, .56))}.modal{box-sizing:border-box;display:grid;width:var(--ui-modal-width, auto);max-width:min(var(--ui-modal-max-width, 650px),100%);max-height:min(var(--ui-modal-max-height, 680px),100%);overflow:auto;padding:var(--ui-modal-padding, 30px);border:var(--ui-modal-border, 0);border-radius:var(--ui-modal-border-radius, 20px);background-color:var(--ui-modal-background, var(--b2, #d9e2ff));color:var(--ui-modal-color, var(--c9, #404040));box-shadow:var(--ui-modal-shadow, none)}.modal:focus{outline:none}.modal-header{display:flex;justify-content:flex-end}.modal-close{display:grid;place-items:center;width:var(--ui-modal-close-size, 30px);height:var(--ui-modal-close-size, 30px);padding:0;border:var(--ui-modal-close-border, 1px solid var(--b1, #e7ecff));border-radius:50%;background-color:var(--ui-modal-close-background, var(--b0, #f0f3ff));color:var(--ui-modal-close-color, var(--c8, #595959));cursor:pointer}.modal-close:hover{background-color:var(--ui-modal-close-hover-background, var(--b1, #e7ecff))}.modal-close:focus-visible{outline:2px solid var(--ui-modal-focus-color, var(--b10, #1769aa));outline-offset:2px}\n"],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiModal,
+	decorators: [{
+		type: Component,
+		args: [{
+			imports: [],
+			selector: "ui-modal",
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			host: { "(document:keydown.escape)": "close.emit()" },
+			template: "<div class=\"backdrop\" (click)=\"handleBackdropClick()\">\n  <div\n    #dialog\n    class=\"modal\"\n    role=\"dialog\"\n    aria-modal=\"true\"\n    tabindex=\"-1\"\n    [attr.aria-label]=\"label() || null\"\n    [attr.aria-labelledby]=\"labelledBy()\"\n    (click)=\"$event.stopPropagation()\"\n  >\n    <div class=\"modal-header\">\n      <button type=\"button\" class=\"modal-close\" [attr.aria-label]=\"closeLabel()\" (click)=\"close.emit()\">\n        <svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\" focusable=\"false\">\n          <path d=\"M3 3l10 10M13 3L3 13\" />\n        </svg>\n      </button>\n    </div>\n    <ng-content />\n  </div>\n</div>\n",
+			styles: [".backdrop{position:fixed;inset:0;z-index:var(--ui-modal-z-index, 999);display:grid;place-items:center;padding:16px;background-color:var(--ui-modal-backdrop, rgba(11, 11, 11, .56))}.modal{box-sizing:border-box;display:grid;width:var(--ui-modal-width, auto);max-width:min(var(--ui-modal-max-width, 650px),100%);max-height:min(var(--ui-modal-max-height, 680px),100%);overflow:auto;padding:var(--ui-modal-padding, 30px);border:var(--ui-modal-border, 0);border-radius:var(--ui-modal-border-radius, 20px);background-color:var(--ui-modal-background, var(--b2, #d9e2ff));color:var(--ui-modal-color, var(--c9, #404040));box-shadow:var(--ui-modal-shadow, none)}.modal:focus{outline:none}.modal-header{display:flex;justify-content:flex-end}.modal-close{display:grid;place-items:center;width:var(--ui-modal-close-size, 30px);height:var(--ui-modal-close-size, 30px);padding:0;border:var(--ui-modal-close-border, 1px solid var(--b1, #e7ecff));border-radius:50%;background-color:var(--ui-modal-close-background, var(--b0, #f0f3ff));color:var(--ui-modal-close-color, var(--c8, #595959));cursor:pointer}.modal-close:hover{background-color:var(--ui-modal-close-hover-background, var(--b1, #e7ecff))}.modal-close:focus-visible{outline:2px solid var(--ui-modal-focus-color, var(--b10, #1769aa));outline-offset:2px}\n"]
+		}]
+	}],
+	ctorParameters: () => [],
+	propDecorators: {
+		label: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "label",
+				required: false
+			}]
+		}],
+		labelledBy: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "labelledBy",
+				required: false
+			}]
+		}],
+		closeLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "closeLabel",
+				required: false
+			}]
+		}],
+		closeOnBackdrop: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "closeOnBackdrop",
+				required: false
+			}]
+		}],
+		close: [{
+			type: i0.Output,
+			args: ["close"]
+		}],
+		dialog: [{
+			type: i0.ViewChild,
+			args: ["dialog", { isSignal: true }]
+		}]
+	}
+});
+const ICONS = {
+	success: "✓",
+	error: "✕",
+	warning: "⚠",
+	info: "ℹ"
+};
+var UiPopup = class UiPopup {
+	message = input.required(...ngDevMode ? [{ debugName: "message" }] : /* istanbul ignore next */ []);
+	type = input("info", ...ngDevMode ? [{ debugName: "type" }] : /* istanbul ignore next */ []);
+	closeLabel = input("Fechar", ...ngDevMode ? [{ debugName: "closeLabel" }] : /* istanbul ignore next */ []);
+	icon = computed(() => ICONS[this.type()], ...ngDevMode ? [{ debugName: "icon" }] : /* istanbul ignore next */ []);
+	closed = output();
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiPopup,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.1.0",
+		version: "22.2.1",
+		type: UiPopup,
+		isStandalone: true,
+		selector: "ui-popup",
+		inputs: {
+			message: {
+				classPropertyName: "message",
+				publicName: "message",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			type: {
+				classPropertyName: "type",
+				publicName: "type",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			closeLabel: {
+				classPropertyName: "closeLabel",
+				publicName: "closeLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		outputs: { closed: "closed" },
+		host: {
+			properties: {
+				"class.ui-popup-success": "type() === 'success'",
+				"class.ui-popup-error": "type() === 'error'",
+				"class.ui-popup-warning": "type() === 'warning'",
+				"class.ui-popup-info": "type() === 'info'",
+				"attr.role": "type() === 'error' ? 'alert' : 'status'"
+			},
+			classAttribute: "ui-popup"
+		},
+		ngImport: i0,
+		template: "<div class=\"popup-content\">\n  <span class=\"popup-icon\" aria-hidden=\"true\">{{ icon() }}</span>\n  <span class=\"popup-message\">{{ message() }}</span>\n  <button type=\"button\" class=\"popup-close\" [attr.aria-label]=\"closeLabel()\" (click)=\"closed.emit()\">\n    <svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\" focusable=\"false\">\n      <path d=\"M3 3l10 10M13 3L3 13\" />\n    </svg>\n  </button>\n</div>\n",
+		styles: [":host{position:fixed;top:var(--ui-popup-top, 20px);right:var(--ui-popup-right, 20px);z-index:var(--ui-popup-z-index, 9999);display:block;box-sizing:border-box;min-width:min(var(--ui-popup-min-width, 300px),100vw - 40px);max-width:min(var(--ui-popup-max-width, 500px),100vw - 40px);padding:var(--ui-popup-padding, 15px 20px);border-left:var(--ui-popup-border-width, 4px) solid var(--_popup-border);border-radius:var(--ui-popup-border-radius, 8px);background:var(--_popup-background);color:var(--_popup-color);box-shadow:var(--ui-popup-shadow, 0 4px 12px rgba(0, 0, 0, .15));font-size:var(--ui-popup-font-size, 14px);animation:ui-popup-enter var(--ui-popup-animation-duration, .3s) ease-out}:host(.ui-popup-success){--_popup-background: var(--ui-popup-success-background, #d4edda);--_popup-color: var(--ui-popup-success-color, #155724);--_popup-border: var(--ui-popup-success-border-color, #28a745)}:host(.ui-popup-error){--_popup-background: var(--ui-popup-error-background, #f8d7da);--_popup-color: var(--ui-popup-error-color, #721c24);--_popup-border: var(--ui-popup-error-border-color, #dc3545)}:host(.ui-popup-warning){--_popup-background: var(--ui-popup-warning-background, #fff3cd);--_popup-color: var(--ui-popup-warning-color, #856404);--_popup-border: var(--ui-popup-warning-border-color, #ffc107)}:host(.ui-popup-info){--_popup-background: var(--ui-popup-info-background, #d1ecf1);--_popup-color: var(--ui-popup-info-color, #0c5460);--_popup-border: var(--ui-popup-info-border-color, #17a2b8)}:host(.ui-popup-leave){animation:ui-popup-leave var(--ui-popup-animation-duration, .3s) ease-in forwards}.popup-content{display:flex;align-items:center;gap:12px}.popup-icon{flex-shrink:0;font-size:var(--ui-popup-icon-size, 20px)}.popup-message{flex:1;font-weight:var(--ui-popup-font-weight, 500);line-height:1.4}.popup-close{display:grid;flex-shrink:0;place-items:center;padding:4px;border:none;border-radius:4px;background:transparent;color:inherit;cursor:pointer;opacity:.7;transition:opacity .2s}.popup-close:hover{opacity:1}.popup-close:focus-visible{outline:2px solid currentColor;outline-offset:1px;opacity:1}@keyframes ui-popup-enter{0%{opacity:0;transform:translate(16px)}}@keyframes ui-popup-leave{to{opacity:0;transform:translate(16px)}}@media(prefers-reduced-motion:reduce){:host,:host(.ui-popup-leave){animation-duration:1ms}}\n"],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiPopup,
+	decorators: [{
+		type: Component,
+		args: [{
+			imports: [],
+			selector: "ui-popup",
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			host: {
+				class: "ui-popup",
+				"[class.ui-popup-success]": "type() === 'success'",
+				"[class.ui-popup-error]": "type() === 'error'",
+				"[class.ui-popup-warning]": "type() === 'warning'",
+				"[class.ui-popup-info]": "type() === 'info'",
+				"[attr.role]": "type() === 'error' ? 'alert' : 'status'"
+			},
+			template: "<div class=\"popup-content\">\n  <span class=\"popup-icon\" aria-hidden=\"true\">{{ icon() }}</span>\n  <span class=\"popup-message\">{{ message() }}</span>\n  <button type=\"button\" class=\"popup-close\" [attr.aria-label]=\"closeLabel()\" (click)=\"closed.emit()\">\n    <svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\" focusable=\"false\">\n      <path d=\"M3 3l10 10M13 3L3 13\" />\n    </svg>\n  </button>\n</div>\n",
+			styles: [":host{position:fixed;top:var(--ui-popup-top, 20px);right:var(--ui-popup-right, 20px);z-index:var(--ui-popup-z-index, 9999);display:block;box-sizing:border-box;min-width:min(var(--ui-popup-min-width, 300px),100vw - 40px);max-width:min(var(--ui-popup-max-width, 500px),100vw - 40px);padding:var(--ui-popup-padding, 15px 20px);border-left:var(--ui-popup-border-width, 4px) solid var(--_popup-border);border-radius:var(--ui-popup-border-radius, 8px);background:var(--_popup-background);color:var(--_popup-color);box-shadow:var(--ui-popup-shadow, 0 4px 12px rgba(0, 0, 0, .15));font-size:var(--ui-popup-font-size, 14px);animation:ui-popup-enter var(--ui-popup-animation-duration, .3s) ease-out}:host(.ui-popup-success){--_popup-background: var(--ui-popup-success-background, #d4edda);--_popup-color: var(--ui-popup-success-color, #155724);--_popup-border: var(--ui-popup-success-border-color, #28a745)}:host(.ui-popup-error){--_popup-background: var(--ui-popup-error-background, #f8d7da);--_popup-color: var(--ui-popup-error-color, #721c24);--_popup-border: var(--ui-popup-error-border-color, #dc3545)}:host(.ui-popup-warning){--_popup-background: var(--ui-popup-warning-background, #fff3cd);--_popup-color: var(--ui-popup-warning-color, #856404);--_popup-border: var(--ui-popup-warning-border-color, #ffc107)}:host(.ui-popup-info){--_popup-background: var(--ui-popup-info-background, #d1ecf1);--_popup-color: var(--ui-popup-info-color, #0c5460);--_popup-border: var(--ui-popup-info-border-color, #17a2b8)}:host(.ui-popup-leave){animation:ui-popup-leave var(--ui-popup-animation-duration, .3s) ease-in forwards}.popup-content{display:flex;align-items:center;gap:12px}.popup-icon{flex-shrink:0;font-size:var(--ui-popup-icon-size, 20px)}.popup-message{flex:1;font-weight:var(--ui-popup-font-weight, 500);line-height:1.4}.popup-close{display:grid;flex-shrink:0;place-items:center;padding:4px;border:none;border-radius:4px;background:transparent;color:inherit;cursor:pointer;opacity:.7;transition:opacity .2s}.popup-close:hover{opacity:1}.popup-close:focus-visible{outline:2px solid currentColor;outline-offset:1px;opacity:1}@keyframes ui-popup-enter{0%{opacity:0;transform:translate(16px)}}@keyframes ui-popup-leave{to{opacity:0;transform:translate(16px)}}@media(prefers-reduced-motion:reduce){:host,:host(.ui-popup-leave){animation-duration:1ms}}\n"]
+		}]
+	}],
+	propDecorators: {
+		message: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "message",
+				required: true
+			}]
+		}],
+		type: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "type",
+				required: false
+			}]
+		}],
+		closeLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "closeLabel",
+				required: false
+			}]
+		}],
+		closed: [{
+			type: i0.Output,
+			args: ["closed"]
+		}]
+	}
+});
+var UiSkeleton = class UiSkeleton {
+	variant = input("input", ...ngDevMode ? [{ debugName: "variant" }] : /* istanbul ignore next */ []);
+	quantity = input(1, ...ngDevMode ? [{ debugName: "quantity" }] : /* istanbul ignore next */ []);
+	label = input("Carregando...", ...ngDevMode ? [{ debugName: "label" }] : /* istanbul ignore next */ []);
+	blocks = computed(() => Array.from({ length: Math.max(this.quantity(), 0) }, (_, index) => index), ...ngDevMode ? [{ debugName: "blocks" }] : /* istanbul ignore next */ []);
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiSkeleton,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.0.0",
+		version: "22.2.1",
+		type: UiSkeleton,
+		isStandalone: true,
+		selector: "ui-skeleton",
+		inputs: {
+			variant: {
+				classPropertyName: "variant",
+				publicName: "variant",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			quantity: {
+				classPropertyName: "quantity",
+				publicName: "quantity",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			label: {
+				classPropertyName: "label",
+				publicName: "label",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		host: {
+			attributes: {
+				"role": "status",
+				"aria-live": "polite"
+			},
+			properties: { "class": "'ui-skeleton-' + variant()" },
+			classAttribute: "ui-skeleton"
+		},
+		ngImport: i0,
+		template: "<span class=\"visually-hidden\">{{ label() }}</span>\n@for (block of blocks(); track block) {\n  <span class=\"skeleton\" aria-hidden=\"true\"></span>\n}\n",
+		styles: [":host{display:grid;grid-template-columns:var(--ui-skeleton-columns, var(--_skeleton-columns, 1fr));gap:var(--ui-skeleton-gap, var(--_skeleton-gap, 12px));width:100%}:host(.ui-skeleton-menu){--_skeleton-height: 36px;--_skeleton-radius: 8px;--_skeleton-gap: 8px}:host(.ui-skeleton-table){--_skeleton-height: 48px;--_skeleton-radius: 4px;--_skeleton-gap: 2px}:host(.ui-skeleton-form){--_skeleton-height: 40px;--_skeleton-radius: 10px;--_skeleton-gap: 20px}:host(.ui-skeleton-input){--_skeleton-height: 40px;--_skeleton-radius: 10px}:host(.ui-skeleton-banner){--_skeleton-height: 240px;--_skeleton-radius: 20px}:host(.ui-skeleton-card){--_skeleton-height: 160px;--_skeleton-radius: 15px;--_skeleton-gap: 16px;--_skeleton-columns: repeat(auto-fill, minmax(220px, 1fr))}.skeleton{display:block;width:var(--ui-skeleton-width, 100%);height:var(--ui-skeleton-height, var(--_skeleton-height, 40px));border-radius:var(--ui-skeleton-border-radius, var(--_skeleton-radius, 10px));background:linear-gradient(90deg,var(--ui-skeleton-color, var(--b1, #e7ecff)) 25%,var(--ui-skeleton-highlight-color, var(--b0, #f0f3ff)) 50%,var(--ui-skeleton-color, var(--b1, #e7ecff)) 75%);background-size:200% 100%;animation:ui-skeleton-shimmer var(--ui-skeleton-animation-duration, 1.4s) ease-in-out infinite}.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}@keyframes ui-skeleton-shimmer{0%{background-position:200% 0}to{background-position:-200% 0}}@media(prefers-reduced-motion:reduce){.skeleton{animation:none}}\n"],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiSkeleton,
+	decorators: [{
+		type: Component,
+		args: [{
+			imports: [],
+			selector: "ui-skeleton",
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			host: {
+				class: "ui-skeleton",
+				role: "status",
+				"aria-live": "polite",
+				"[class]": "'ui-skeleton-' + variant()"
+			},
+			template: "<span class=\"visually-hidden\">{{ label() }}</span>\n@for (block of blocks(); track block) {\n  <span class=\"skeleton\" aria-hidden=\"true\"></span>\n}\n",
+			styles: [":host{display:grid;grid-template-columns:var(--ui-skeleton-columns, var(--_skeleton-columns, 1fr));gap:var(--ui-skeleton-gap, var(--_skeleton-gap, 12px));width:100%}:host(.ui-skeleton-menu){--_skeleton-height: 36px;--_skeleton-radius: 8px;--_skeleton-gap: 8px}:host(.ui-skeleton-table){--_skeleton-height: 48px;--_skeleton-radius: 4px;--_skeleton-gap: 2px}:host(.ui-skeleton-form){--_skeleton-height: 40px;--_skeleton-radius: 10px;--_skeleton-gap: 20px}:host(.ui-skeleton-input){--_skeleton-height: 40px;--_skeleton-radius: 10px}:host(.ui-skeleton-banner){--_skeleton-height: 240px;--_skeleton-radius: 20px}:host(.ui-skeleton-card){--_skeleton-height: 160px;--_skeleton-radius: 15px;--_skeleton-gap: 16px;--_skeleton-columns: repeat(auto-fill, minmax(220px, 1fr))}.skeleton{display:block;width:var(--ui-skeleton-width, 100%);height:var(--ui-skeleton-height, var(--_skeleton-height, 40px));border-radius:var(--ui-skeleton-border-radius, var(--_skeleton-radius, 10px));background:linear-gradient(90deg,var(--ui-skeleton-color, var(--b1, #e7ecff)) 25%,var(--ui-skeleton-highlight-color, var(--b0, #f0f3ff)) 50%,var(--ui-skeleton-color, var(--b1, #e7ecff)) 75%);background-size:200% 100%;animation:ui-skeleton-shimmer var(--ui-skeleton-animation-duration, 1.4s) ease-in-out infinite}.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}@keyframes ui-skeleton-shimmer{0%{background-position:200% 0}to{background-position:-200% 0}}@media(prefers-reduced-motion:reduce){.skeleton{animation:none}}\n"]
+		}]
+	}],
+	propDecorators: {
+		variant: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "variant",
+				required: false
+			}]
+		}],
+		quantity: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "quantity",
+				required: false
+			}]
+		}],
+		label: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "label",
+				required: false
+			}]
+		}]
+	}
+});
+var UiBanner = class UiBanner {
+	heading = input.required(...ngDevMode ? [{ debugName: "heading" }] : /* istanbul ignore next */ []);
+	subtitle = input("", ...ngDevMode ? [{ debugName: "subtitle" }] : /* istanbul ignore next */ []);
+	description = input("", ...ngDevMode ? [{ debugName: "description" }] : /* istanbul ignore next */ []);
+	buttonText = input("", ...ngDevMode ? [{ debugName: "buttonText" }] : /* istanbul ignore next */ []);
+	img = input("", ...ngDevMode ? [{ debugName: "img" }] : /* istanbul ignore next */ []);
+	imgAlt = input("", ...ngDevMode ? [{ debugName: "imgAlt" }] : /* istanbul ignore next */ []);
+	imgWidth = input(160, ...ngDevMode ? [{ debugName: "imgWidth" }] : /* istanbul ignore next */ []);
+	imgHeight = input(209, ...ngDevMode ? [{ debugName: "imgHeight" }] : /* istanbul ignore next */ []);
+	imgPriority = input(false, ...ngDevMode ? [{ debugName: "imgPriority" }] : /* istanbul ignore next */ []);
+	buttonClick = output();
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiBanner,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.0.0",
+		version: "22.2.1",
+		type: UiBanner,
+		isStandalone: true,
+		selector: "ui-banner",
+		inputs: {
+			heading: {
+				classPropertyName: "heading",
+				publicName: "heading",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			subtitle: {
+				classPropertyName: "subtitle",
+				publicName: "subtitle",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			description: {
+				classPropertyName: "description",
+				publicName: "description",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			buttonText: {
+				classPropertyName: "buttonText",
+				publicName: "buttonText",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			img: {
+				classPropertyName: "img",
+				publicName: "img",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			imgAlt: {
+				classPropertyName: "imgAlt",
+				publicName: "imgAlt",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			imgWidth: {
+				classPropertyName: "imgWidth",
+				publicName: "imgWidth",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			imgHeight: {
+				classPropertyName: "imgHeight",
+				publicName: "imgHeight",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			imgPriority: {
+				classPropertyName: "imgPriority",
+				publicName: "imgPriority",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		outputs: { buttonClick: "buttonClick" },
+		ngImport: i0,
+		template: "<section class=\"banner\" [class.banner-with-image]=\"img()\">\n  @if (img()) {\n    <div class=\"banner-media\">\n      <img\n        [ngSrc]=\"img()\"\n        [alt]=\"imgAlt()\"\n        [width]=\"imgWidth()\"\n        [height]=\"imgHeight()\"\n        [priority]=\"imgPriority()\"\n      />\n    </div>\n  }\n  <div class=\"banner-content\">\n    <div class=\"banner-heading\">\n      <h2>{{ heading() }}</h2>\n      @if (subtitle()) {\n        <span class=\"banner-subtitle\">{{ subtitle() }}</span>\n      }\n    </div>\n    @if (description()) {\n      <p class=\"banner-description\">{{ description() }}</p>\n    }\n    <ng-content />\n    @if (buttonText()) {\n      <button ui-button type=\"button\" (click)=\"buttonClick.emit()\">\n        {{ buttonText() }}\n      </button>\n    }\n  </div>\n</section>\n",
+		styles: [":host{display:block}.banner{box-sizing:border-box;display:grid;grid-template-columns:1fr;gap:var(--ui-banner-gap, 10px);justify-items:center;width:100%;padding:var(--ui-banner-padding, 2rem);border:var(--ui-banner-border, 1px solid var(--b0, #f0f3ff));border-radius:var(--ui-banner-border-radius, 20px);background-color:var(--ui-banner-background, var(--b-white, #f6f9ff))}.banner-with-image{grid-template-columns:.3fr 1fr}@media(max-width:980px){.banner-with-image{grid-template-columns:1fr}.banner-with-image .banner-media{display:none}}.banner-content{display:grid;justify-items:center}.banner-heading{display:grid;justify-items:center;margin:20px 0 32px;text-align:center}.banner-heading h2,.banner-heading .banner-subtitle{margin:0;font-size:var(--ui-banner-heading-font-size, clamp(24px, 3vw + 8px, 36px));font-weight:var(--ui-banner-heading-font-weight, 700);line-height:1.35}.banner-heading h2{color:var(--ui-banner-heading-color, var(--c8, #595959))}.banner-subtitle{background:var(--ui-banner-subtitle-gradient, linear-gradient(90deg, #335cd6, #61a9eb));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}.banner-description{margin:0 0 20px;color:var(--ui-banner-description-color, var(--c7, #707070));font-size:var(--ui-banner-description-font-size, 14px);font-weight:var(--ui-banner-description-font-weight, 500);line-height:1.5rem;text-align:center}\n"],
+		dependencies: [{
+			kind: "component",
+			type: UiButton,
+			selector: "button[ui-button], a[ui-button]",
+			inputs: ["variant", "size"]
+		}, {
+			kind: "directive",
+			type: NgOptimizedImage,
+			selector: "img[ngSrc]",
+			inputs: [
+				"ngSrc",
+				"ngSrcset",
+				"sizes",
+				"width",
+				"height",
+				"decoding",
+				"loading",
+				"priority",
+				"loaderParams",
+				"disableOptimizedSrcset",
+				"fill",
+				"placeholder",
+				"placeholderConfig",
+				"src",
+				"srcset"
+			]
+		}],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiBanner,
+	decorators: [{
+		type: Component,
+		args: [{
+			imports: [UiButton, NgOptimizedImage],
+			selector: "ui-banner",
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			template: "<section class=\"banner\" [class.banner-with-image]=\"img()\">\n  @if (img()) {\n    <div class=\"banner-media\">\n      <img\n        [ngSrc]=\"img()\"\n        [alt]=\"imgAlt()\"\n        [width]=\"imgWidth()\"\n        [height]=\"imgHeight()\"\n        [priority]=\"imgPriority()\"\n      />\n    </div>\n  }\n  <div class=\"banner-content\">\n    <div class=\"banner-heading\">\n      <h2>{{ heading() }}</h2>\n      @if (subtitle()) {\n        <span class=\"banner-subtitle\">{{ subtitle() }}</span>\n      }\n    </div>\n    @if (description()) {\n      <p class=\"banner-description\">{{ description() }}</p>\n    }\n    <ng-content />\n    @if (buttonText()) {\n      <button ui-button type=\"button\" (click)=\"buttonClick.emit()\">\n        {{ buttonText() }}\n      </button>\n    }\n  </div>\n</section>\n",
+			styles: [":host{display:block}.banner{box-sizing:border-box;display:grid;grid-template-columns:1fr;gap:var(--ui-banner-gap, 10px);justify-items:center;width:100%;padding:var(--ui-banner-padding, 2rem);border:var(--ui-banner-border, 1px solid var(--b0, #f0f3ff));border-radius:var(--ui-banner-border-radius, 20px);background-color:var(--ui-banner-background, var(--b-white, #f6f9ff))}.banner-with-image{grid-template-columns:.3fr 1fr}@media(max-width:980px){.banner-with-image{grid-template-columns:1fr}.banner-with-image .banner-media{display:none}}.banner-content{display:grid;justify-items:center}.banner-heading{display:grid;justify-items:center;margin:20px 0 32px;text-align:center}.banner-heading h2,.banner-heading .banner-subtitle{margin:0;font-size:var(--ui-banner-heading-font-size, clamp(24px, 3vw + 8px, 36px));font-weight:var(--ui-banner-heading-font-weight, 700);line-height:1.35}.banner-heading h2{color:var(--ui-banner-heading-color, var(--c8, #595959))}.banner-subtitle{background:var(--ui-banner-subtitle-gradient, linear-gradient(90deg, #335cd6, #61a9eb));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}.banner-description{margin:0 0 20px;color:var(--ui-banner-description-color, var(--c7, #707070));font-size:var(--ui-banner-description-font-size, 14px);font-weight:var(--ui-banner-description-font-weight, 500);line-height:1.5rem;text-align:center}\n"]
+		}]
+	}],
+	propDecorators: {
+		heading: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "heading",
+				required: true
+			}]
+		}],
+		subtitle: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "subtitle",
+				required: false
+			}]
+		}],
+		description: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "description",
+				required: false
+			}]
+		}],
+		buttonText: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "buttonText",
+				required: false
+			}]
+		}],
+		img: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "img",
+				required: false
+			}]
+		}],
+		imgAlt: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "imgAlt",
+				required: false
+			}]
+		}],
+		imgWidth: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "imgWidth",
+				required: false
+			}]
+		}],
+		imgHeight: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "imgHeight",
+				required: false
+			}]
+		}],
+		imgPriority: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "imgPriority",
+				required: false
+			}]
+		}],
+		buttonClick: [{
+			type: i0.Output,
+			args: ["buttonClick"]
+		}]
+	}
+});
+var UiColumnGraph = class UiColumnGraph {
+	data = input.required(...ngDevMode ? [{ debugName: "data" }] : /* istanbul ignore next */ []);
+	title = input.required(...ngDevMode ? [{ debugName: "title" }] : /* istanbul ignore next */ []);
+	maxValue = input(null, ...ngDevMode ? [{ debugName: "maxValue" }] : /* istanbul ignore next */ []);
+	highlight = input(null, ...ngDevMode ? [{ debugName: "highlight" }] : /* istanbul ignore next */ []);
+	effectiveMax = computed(() => this.maxValue() ?? Math.max(0, ...this.data().y_axios.map((bar) => bar.value)), ...ngDevMode ? [{ debugName: "effectiveMax" }] : /* istanbul ignore next */ []);
+	getBarHeight(value) {
+		const max = this.effectiveMax();
+		if (max <= 0) return 0;
+		return Math.min(Math.max(value / max * 100, 0), 100);
+	}
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiColumnGraph,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.0.0",
+		version: "22.2.1",
+		type: UiColumnGraph,
+		isStandalone: true,
+		selector: "ui-column-graph",
+		inputs: {
+			data: {
+				classPropertyName: "data",
+				publicName: "data",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			title: {
+				classPropertyName: "title",
+				publicName: "title",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			maxValue: {
+				classPropertyName: "maxValue",
+				publicName: "maxValue",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			highlight: {
+				classPropertyName: "highlight",
+				publicName: "highlight",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		host: { properties: { "attr.title": "null" } },
+		ngImport: i0,
+		template: "<div class=\"chart-card\">\n  <h3 class=\"chart-title\">{{ title() }}</h3>\n  <div class=\"chart-container\">\n    <div class=\"axis-y\" aria-hidden=\"true\">\n      @for (item of data().x_axios; track $index) {\n        <span class=\"axis-y-label\">\n          {{ item.label }}\n        </span>\n      }\n    </div>\n    <div class=\"chart-content\">\n      <div class=\"bars-container\" role=\"list\" [attr.aria-label]=\"title()\">\n        @for (bar of data().y_axios; track bar.label) {\n          <div class=\"bar-wrapper\" role=\"listitem\" [attr.aria-label]=\"bar.label + ': ' + bar.value\">\n            <div\n              class=\"bar-column\"\n              [style.height.%]=\"getBarHeight(bar.value)\"\n              [class.highlighted]=\"bar.label === highlight()\"\n              [title]=\"bar.label + ': ' + bar.value\"\n            >\n              <span class=\"bar-value\">{{ bar.value }}</span>\n            </div>\n          </div>\n        }\n      </div>\n      <div class=\"axis-x\" aria-hidden=\"true\">\n        @for (bar of data().y_axios; track bar.label) {\n          <div class=\"axis-x-label\" [class.highlighted-text]=\"bar.label === highlight()\">\n            {{ bar.label }}\n          </div>\n        }\n      </div>\n    </div>\n  </div>\n</div>\n",
+		styles: [":host{display:block}.chart-card{padding:var(--ui-column-graph-padding, 20px);border:var(--ui-column-graph-border, 1px solid var(--b1, #e7ecff));border-radius:var(--ui-column-graph-border-radius, 15px);background:var(--ui-column-graph-background, var(--white, #fff))}.chart-title{margin:0 0 38px;color:var(--ui-column-graph-title-color, var(--c7, #707070));font-size:var(--ui-column-graph-title-font-size, 24px);text-align:center}.chart-container{display:flex;height:var(--ui-column-graph-height, 347px)}.axis-y{display:flex;flex-direction:column;justify-content:space-between;margin-right:20px;padding-bottom:35px;color:var(--ui-column-graph-axis-color, var(--c6, #9c9c9c));font-size:var(--ui-column-graph-axis-font-size, 12px);text-align:right}.chart-content{display:flex;flex-direction:column;flex-grow:1}.bars-container{display:flex;flex-grow:1;align-items:flex-end;justify-content:space-around;width:100%;padding-bottom:8px;border-bottom:1px solid var(--ui-column-graph-baseline-color, var(--c2, #ededed))}.bar-wrapper{position:relative;display:flex;flex:1;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%}.bar-column{position:relative;width:var(--ui-column-graph-bar-width, 25px);border-radius:var(--ui-column-graph-bar-radius, 5px);background-color:var(--ui-column-graph-bar-color, var(--b3, #c6d4fe));transition:height .4s cubic-bezier(.25,.8,.25,1)}.bar-column:hover{background-color:var(--ui-column-graph-bar-hover-color, var(--b4, #b5c6f9));cursor:pointer}.bar-column.highlighted{background-color:var(--ui-column-graph-highlight-color, var(--b6, #8ba7f9))}.bar-value{position:absolute;bottom:calc(100% + 6px);left:50%;color:var(--ui-column-graph-value-color, var(--c7, #707070));font-size:11px;white-space:nowrap;opacity:0;transform:translate(-50%) translateY(4px);transition:opacity .2s,transform .2s}.bar-wrapper:hover .bar-value{opacity:1;transform:translate(-50%) translateY(0)}.axis-x{display:flex;justify-content:space-around;width:100%;margin-top:10px}.axis-x-label{width:var(--ui-column-graph-bar-width, 25px);color:var(--ui-column-graph-axis-color, var(--c6, #9c9c9c));font-size:var(--ui-column-graph-axis-font-size, 12px);text-align:center}.highlighted-text{color:var(--ui-column-graph-highlight-color, var(--b6, #8ba7f9));font-weight:700}@media(prefers-reduced-motion:reduce){.bar-column,.bar-value{transition:none}}\n"],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiColumnGraph,
+	decorators: [{
+		type: Component,
+		args: [{
+			imports: [],
+			selector: "ui-column-graph",
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			host: { "[attr.title]": "null" },
+			template: "<div class=\"chart-card\">\n  <h3 class=\"chart-title\">{{ title() }}</h3>\n  <div class=\"chart-container\">\n    <div class=\"axis-y\" aria-hidden=\"true\">\n      @for (item of data().x_axios; track $index) {\n        <span class=\"axis-y-label\">\n          {{ item.label }}\n        </span>\n      }\n    </div>\n    <div class=\"chart-content\">\n      <div class=\"bars-container\" role=\"list\" [attr.aria-label]=\"title()\">\n        @for (bar of data().y_axios; track bar.label) {\n          <div class=\"bar-wrapper\" role=\"listitem\" [attr.aria-label]=\"bar.label + ': ' + bar.value\">\n            <div\n              class=\"bar-column\"\n              [style.height.%]=\"getBarHeight(bar.value)\"\n              [class.highlighted]=\"bar.label === highlight()\"\n              [title]=\"bar.label + ': ' + bar.value\"\n            >\n              <span class=\"bar-value\">{{ bar.value }}</span>\n            </div>\n          </div>\n        }\n      </div>\n      <div class=\"axis-x\" aria-hidden=\"true\">\n        @for (bar of data().y_axios; track bar.label) {\n          <div class=\"axis-x-label\" [class.highlighted-text]=\"bar.label === highlight()\">\n            {{ bar.label }}\n          </div>\n        }\n      </div>\n    </div>\n  </div>\n</div>\n",
+			styles: [":host{display:block}.chart-card{padding:var(--ui-column-graph-padding, 20px);border:var(--ui-column-graph-border, 1px solid var(--b1, #e7ecff));border-radius:var(--ui-column-graph-border-radius, 15px);background:var(--ui-column-graph-background, var(--white, #fff))}.chart-title{margin:0 0 38px;color:var(--ui-column-graph-title-color, var(--c7, #707070));font-size:var(--ui-column-graph-title-font-size, 24px);text-align:center}.chart-container{display:flex;height:var(--ui-column-graph-height, 347px)}.axis-y{display:flex;flex-direction:column;justify-content:space-between;margin-right:20px;padding-bottom:35px;color:var(--ui-column-graph-axis-color, var(--c6, #9c9c9c));font-size:var(--ui-column-graph-axis-font-size, 12px);text-align:right}.chart-content{display:flex;flex-direction:column;flex-grow:1}.bars-container{display:flex;flex-grow:1;align-items:flex-end;justify-content:space-around;width:100%;padding-bottom:8px;border-bottom:1px solid var(--ui-column-graph-baseline-color, var(--c2, #ededed))}.bar-wrapper{position:relative;display:flex;flex:1;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%}.bar-column{position:relative;width:var(--ui-column-graph-bar-width, 25px);border-radius:var(--ui-column-graph-bar-radius, 5px);background-color:var(--ui-column-graph-bar-color, var(--b3, #c6d4fe));transition:height .4s cubic-bezier(.25,.8,.25,1)}.bar-column:hover{background-color:var(--ui-column-graph-bar-hover-color, var(--b4, #b5c6f9));cursor:pointer}.bar-column.highlighted{background-color:var(--ui-column-graph-highlight-color, var(--b6, #8ba7f9))}.bar-value{position:absolute;bottom:calc(100% + 6px);left:50%;color:var(--ui-column-graph-value-color, var(--c7, #707070));font-size:11px;white-space:nowrap;opacity:0;transform:translate(-50%) translateY(4px);transition:opacity .2s,transform .2s}.bar-wrapper:hover .bar-value{opacity:1;transform:translate(-50%) translateY(0)}.axis-x{display:flex;justify-content:space-around;width:100%;margin-top:10px}.axis-x-label{width:var(--ui-column-graph-bar-width, 25px);color:var(--ui-column-graph-axis-color, var(--c6, #9c9c9c));font-size:var(--ui-column-graph-axis-font-size, 12px);text-align:center}.highlighted-text{color:var(--ui-column-graph-highlight-color, var(--b6, #8ba7f9));font-weight:700}@media(prefers-reduced-motion:reduce){.bar-column,.bar-value{transition:none}}\n"]
+		}]
+	}],
+	propDecorators: {
+		data: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "data",
+				required: true
+			}]
+		}],
+		title: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "title",
+				required: true
+			}]
+		}],
+		maxValue: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "maxValue",
+				required: false
+			}]
+		}],
+		highlight: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "highlight",
+				required: false
+			}]
+		}]
+	}
+});
+var UiPieChart = class UiPieChart {
+	title = input.required(...ngDevMode ? [{ debugName: "title" }] : /* istanbul ignore next */ []);
+	data = input.required(...ngDevMode ? [{ debugName: "data" }] : /* istanbul ignore next */ []);
+	percentage = computed(() => {
+		const [part, total] = this.data();
+		if (!part || !total || total.graphValue <= 0) return 0;
+		const value = part.graphValue / total.graphValue * 100;
+		return Math.round(Math.min(Math.max(value, 0), 100) * 10) / 10;
+	}, ...ngDevMode ? [{ debugName: "percentage" }] : /* istanbul ignore next */ []);
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiPieChart,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.0.0",
+		version: "22.2.1",
+		type: UiPieChart,
+		isStandalone: true,
+		selector: "ui-pie-chart",
+		inputs: {
+			title: {
+				classPropertyName: "title",
+				publicName: "title",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			data: {
+				classPropertyName: "data",
+				publicName: "data",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			}
+		},
+		host: { properties: { "attr.title": "null" } },
+		ngImport: i0,
+		template: "<div class=\"pie-chart-card\">\n  <h3 class=\"chart-title\">{{ title() }}</h3>\n  <div class=\"chart-content\">\n    <div class=\"chart-container\">\n      <div\n        class=\"donut\"\n        role=\"img\"\n        [attr.aria-label]=\"title() + ': ' + percentage() + '%'\"\n        [style.--_percentage.%]=\"percentage()\"\n        [style.--_fill]=\"data()[0]?.color\"\n        [style.--_track]=\"data()[1]?.color\"\n      ></div>\n    </div>\n    <div class=\"legend-container\">\n      @for (item of data(); track item.label; let i = $index) {\n        <div class=\"legend-card\">\n          <span\n            class=\"card-indicator\"\n            [class.card-indicator-track]=\"i > 0\"\n            [style.background-color]=\"item.color\"\n          ></span>\n          <div class=\"card-content\">\n            <strong class=\"card-value\">{{ item.value }}</strong>\n            <span class=\"card-label\">{{ item.label }}</span>\n          </div>\n        </div>\n      }\n    </div>\n  </div>\n</div>\n",
+		styles: [":host{display:block}.pie-chart-card{display:flex;flex-direction:column;align-items:center;padding:var(--ui-pie-chart-padding, 10px);border:var(--ui-pie-chart-border, 1px solid var(--b1, #e7ecff));border-radius:var(--ui-pie-chart-border-radius, 15px);background:var(--ui-pie-chart-background, var(--white, #fff))}.chart-title{margin:0 0 12px;color:var(--ui-pie-chart-title-color, var(--c7, #707070));font-size:var(--ui-pie-chart-title-font-size, 18px);text-align:center}.chart-content{display:grid;grid-template-columns:auto 1fr;width:100%}.chart-container{display:flex;align-items:center;justify-content:center;width:var(--ui-pie-chart-size, 80px);height:var(--ui-pie-chart-size, 80px);margin-bottom:10px}.donut{--_fill-color: var(--_fill, var(--ui-pie-chart-fill-color, var(--b6, #8ba7f9)));--_track-color: var(--_track, var(--ui-pie-chart-track-color, var(--b3, #c6d4fe)));width:100%;height:100%;border-radius:50%;background:conic-gradient(var(--_fill-color) 0% var(--_percentage),var(--_track-color) var(--_percentage) 100%);-webkit-mask:radial-gradient(circle,transparent 62%,black 63%);mask:radial-gradient(circle,transparent 62%,black 63%)}.legend-container{display:grid;gap:12px;width:100%}.legend-card{position:relative;display:flex;align-items:center;height:28px;margin-left:20px;overflow:hidden;border:var(--ui-pie-chart-legend-border, 1px solid var(--b1, #e7ecff));border-radius:12px;background:var(--ui-pie-chart-legend-background, var(--white, #fff));box-shadow:0 2px 6px #00000005}.card-indicator{display:block;width:12px;height:100%;background-color:var(--ui-pie-chart-fill-color, var(--b6, #8ba7f9))}.card-indicator.card-indicator-track{background-color:var(--ui-pie-chart-track-color, var(--b3, #c6d4fe))}.card-content{display:flex;align-items:center;gap:16px;padding-left:16px}.card-value{color:var(--ui-pie-chart-value-color, var(--c7, #707070));font-size:18px;font-weight:600}.card-label{color:var(--ui-pie-chart-label-color, var(--c7, #707070));font-size:12px;font-weight:500}\n"],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiPieChart,
+	decorators: [{
+		type: Component,
+		args: [{
+			imports: [],
+			selector: "ui-pie-chart",
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			host: { "[attr.title]": "null" },
+			template: "<div class=\"pie-chart-card\">\n  <h3 class=\"chart-title\">{{ title() }}</h3>\n  <div class=\"chart-content\">\n    <div class=\"chart-container\">\n      <div\n        class=\"donut\"\n        role=\"img\"\n        [attr.aria-label]=\"title() + ': ' + percentage() + '%'\"\n        [style.--_percentage.%]=\"percentage()\"\n        [style.--_fill]=\"data()[0]?.color\"\n        [style.--_track]=\"data()[1]?.color\"\n      ></div>\n    </div>\n    <div class=\"legend-container\">\n      @for (item of data(); track item.label; let i = $index) {\n        <div class=\"legend-card\">\n          <span\n            class=\"card-indicator\"\n            [class.card-indicator-track]=\"i > 0\"\n            [style.background-color]=\"item.color\"\n          ></span>\n          <div class=\"card-content\">\n            <strong class=\"card-value\">{{ item.value }}</strong>\n            <span class=\"card-label\">{{ item.label }}</span>\n          </div>\n        </div>\n      }\n    </div>\n  </div>\n</div>\n",
+			styles: [":host{display:block}.pie-chart-card{display:flex;flex-direction:column;align-items:center;padding:var(--ui-pie-chart-padding, 10px);border:var(--ui-pie-chart-border, 1px solid var(--b1, #e7ecff));border-radius:var(--ui-pie-chart-border-radius, 15px);background:var(--ui-pie-chart-background, var(--white, #fff))}.chart-title{margin:0 0 12px;color:var(--ui-pie-chart-title-color, var(--c7, #707070));font-size:var(--ui-pie-chart-title-font-size, 18px);text-align:center}.chart-content{display:grid;grid-template-columns:auto 1fr;width:100%}.chart-container{display:flex;align-items:center;justify-content:center;width:var(--ui-pie-chart-size, 80px);height:var(--ui-pie-chart-size, 80px);margin-bottom:10px}.donut{--_fill-color: var(--_fill, var(--ui-pie-chart-fill-color, var(--b6, #8ba7f9)));--_track-color: var(--_track, var(--ui-pie-chart-track-color, var(--b3, #c6d4fe)));width:100%;height:100%;border-radius:50%;background:conic-gradient(var(--_fill-color) 0% var(--_percentage),var(--_track-color) var(--_percentage) 100%);-webkit-mask:radial-gradient(circle,transparent 62%,black 63%);mask:radial-gradient(circle,transparent 62%,black 63%)}.legend-container{display:grid;gap:12px;width:100%}.legend-card{position:relative;display:flex;align-items:center;height:28px;margin-left:20px;overflow:hidden;border:var(--ui-pie-chart-legend-border, 1px solid var(--b1, #e7ecff));border-radius:12px;background:var(--ui-pie-chart-legend-background, var(--white, #fff));box-shadow:0 2px 6px #00000005}.card-indicator{display:block;width:12px;height:100%;background-color:var(--ui-pie-chart-fill-color, var(--b6, #8ba7f9))}.card-indicator.card-indicator-track{background-color:var(--ui-pie-chart-track-color, var(--b3, #c6d4fe))}.card-content{display:flex;align-items:center;gap:16px;padding-left:16px}.card-value{color:var(--ui-pie-chart-value-color, var(--c7, #707070));font-size:18px;font-weight:600}.card-label{color:var(--ui-pie-chart-label-color, var(--c7, #707070));font-size:12px;font-weight:500}\n"]
+		}]
+	}],
+	propDecorators: {
+		title: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "title",
+				required: true
+			}]
+		}],
+		data: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "data",
+				required: true
+			}]
+		}]
+	}
+});
+var UiTableCell = class UiTableCell {
+	column = input.required({
+		...ngDevMode ? { debugName: "column" } : /* istanbul ignore next */ {},
+		alias: "uiTableCell"
+	});
+	template = inject(TemplateRef);
+	static ngTemplateContextGuard(_dir, ctx) {
+		return true;
+	}
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiTableCell,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Directive
+	});
+	static ɵdir = i0.ɵɵngDeclareDirective({
+		minVersion: "17.1.0",
+		version: "22.2.1",
+		type: UiTableCell,
+		isStandalone: true,
+		selector: "ng-template[uiTableCell]",
+		inputs: { column: {
+			classPropertyName: "column",
+			publicName: "uiTableCell",
+			isSignal: true,
+			isRequired: true,
+			transformFunction: null
+		} },
+		ngImport: i0
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiTableCell,
+	decorators: [{
+		type: Directive,
+		args: [{ selector: "ng-template[uiTableCell]" }]
+	}],
+	propDecorators: { column: [{
+		type: i0.Input,
+		args: [{
+			isSignal: true,
+			alias: "uiTableCell",
+			required: true
+		}]
+	}] }
+});
+var UiTableDetail = class UiTableDetail {
+	template = inject(TemplateRef);
+	static ngTemplateContextGuard(_dir, ctx) {
+		return true;
+	}
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiTableDetail,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Directive
+	});
+	static ɵdir = i0.ɵɵngDeclareDirective({
+		minVersion: "14.0.0",
+		version: "22.2.1",
+		type: UiTableDetail,
+		isStandalone: true,
+		selector: "ng-template[uiTableDetail]",
+		ngImport: i0
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiTableDetail,
+	decorators: [{
+		type: Directive,
+		args: [{ selector: "ng-template[uiTableDetail]" }]
+	}]
+});
+let nextId$1 = 0;
+var UiTable = class UiTable {
+	columns = input.required(...ngDevMode ? [{ debugName: "columns" }] : /* istanbul ignore next */ []);
+	rows = input.required(...ngDevMode ? [{ debugName: "rows" }] : /* istanbul ignore next */ []);
+	rowKey = input((row) => row, ...ngDevMode ? [{ debugName: "rowKey" }] : /* istanbul ignore next */ []);
+	actions = input([], ...ngDevMode ? [{ debugName: "actions" }] : /* istanbul ignore next */ []);
+	label = input("", ...ngDevMode ? [{ debugName: "label" }] : /* istanbul ignore next */ []);
+	loading = input(false, ...ngDevMode ? [{ debugName: "loading" }] : /* istanbul ignore next */ []);
+	loadingRows = input(5, ...ngDevMode ? [{ debugName: "loadingRows" }] : /* istanbul ignore next */ []);
+	loadingText = input("Carregando...", ...ngDevMode ? [{ debugName: "loadingText" }] : /* istanbul ignore next */ []);
+	emptyText = input("Nenhum registro encontrado.", ...ngDevMode ? [{ debugName: "emptyText" }] : /* istanbul ignore next */ []);
+	actionsLabel = input("Ações", ...ngDevMode ? [{ debugName: "actionsLabel" }] : /* istanbul ignore next */ []);
+	detailsLabel = input("Detalhes", ...ngDevMode ? [{ debugName: "detailsLabel" }] : /* istanbul ignore next */ []);
+	showDetailsLabel = input("Mostrar detalhes", ...ngDevMode ? [{ debugName: "showDetailsLabel" }] : /* istanbul ignore next */ []);
+	hideDetailsLabel = input("Ocultar detalhes", ...ngDevMode ? [{ debugName: "hideDetailsLabel" }] : /* istanbul ignore next */ []);
+	action = output();
+	rowToggle = output();
+	detail = contentChild(UiTableDetail, ...ngDevMode ? [{ debugName: "detail" }] : /* istanbul ignore next */ []);
+	cellTemplates = contentChildren(UiTableCell, ...ngDevMode ? [{ debugName: "cellTemplates" }] : /* istanbul ignore next */ []);
+	expandedKeys = signal(/* @__PURE__ */ new Set(), ...ngDevMode ? [{ debugName: "expandedKeys" }] : /* istanbul ignore next */ []);
+	tableId = `ui-table-${nextId$1++}`;
+	cellTemplateMap = computed(() => new Map(this.cellTemplates().map((cell) => [cell.column(), cell.template])), ...ngDevMode ? [{ debugName: "cellTemplateMap" }] : /* istanbul ignore next */ []);
+	colspan = computed(() => this.columns().length + (this.detail() ? 1 : 0) + (this.actions().length ? 1 : 0), ...ngDevMode ? [{ debugName: "colspan" }] : /* istanbul ignore next */ []);
+	menuItems = computed(() => {
+		const actions = this.actions();
+		return new Map(this.rows().map((row) => [row, actions.filter((a) => !a.hidden?.(row)).map((a) => ({
+			id: a.id,
+			label: a.label,
+			danger: a.danger,
+			disabled: a.disabled?.(row) ?? false
+		}))]));
+	}, ...ngDevMode ? [{ debugName: "menuItems" }] : /* istanbul ignore next */ []);
+	cellValue(row, column) {
+		return column.value ? column.value(row) : row[column.key];
+	}
+	rowName(row) {
+		const first = this.columns()[0];
+		return first ? String(this.cellValue(row, first) ?? "") : "";
+	}
+	isExpanded(row) {
+		return this.expandedKeys().has(this.rowKey()(row));
+	}
+	toggleRow(row) {
+		const key = this.rowKey()(row);
+		const next = new Set(this.expandedKeys());
+		const expanded = !next.has(key);
+		if (expanded) next.add(key);
+		else next.delete(key);
+		this.expandedKeys.set(next);
+		this.rowToggle.emit({
+			row,
+			expanded
+		});
+	}
+	detailId(index) {
+		return `${this.tableId}-detail-${index}`;
+	}
+	emitAction(item, row) {
+		this.action.emit({
+			action: item.id,
+			row
+		});
+	}
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiTable,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.0.0",
+		version: "22.2.1",
+		type: UiTable,
+		isStandalone: true,
+		selector: "ui-table",
+		inputs: {
+			columns: {
+				classPropertyName: "columns",
+				publicName: "columns",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			rows: {
+				classPropertyName: "rows",
+				publicName: "rows",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			rowKey: {
+				classPropertyName: "rowKey",
+				publicName: "rowKey",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			actions: {
+				classPropertyName: "actions",
+				publicName: "actions",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			label: {
+				classPropertyName: "label",
+				publicName: "label",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			loading: {
+				classPropertyName: "loading",
+				publicName: "loading",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			loadingRows: {
+				classPropertyName: "loadingRows",
+				publicName: "loadingRows",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			loadingText: {
+				classPropertyName: "loadingText",
+				publicName: "loadingText",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			emptyText: {
+				classPropertyName: "emptyText",
+				publicName: "emptyText",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			actionsLabel: {
+				classPropertyName: "actionsLabel",
+				publicName: "actionsLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			detailsLabel: {
+				classPropertyName: "detailsLabel",
+				publicName: "detailsLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			showDetailsLabel: {
+				classPropertyName: "showDetailsLabel",
+				publicName: "showDetailsLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			hideDetailsLabel: {
+				classPropertyName: "hideDetailsLabel",
+				publicName: "hideDetailsLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		outputs: {
+			action: "action",
+			rowToggle: "rowToggle"
+		},
+		queries: [{
+			propertyName: "detail",
+			first: true,
+			predicate: UiTableDetail,
+			descendants: true,
+			isSignal: true
+		}, {
+			propertyName: "cellTemplates",
+			predicate: UiTableCell,
+			isSignal: true
+		}],
+		ngImport: i0,
+		template: "@if (loading()) {\n  <ui-skeleton variant=\"table\" [quantity]=\"loadingRows()\" [label]=\"loadingText()\" />\n} @else if (rows().length === 0) {\n  <p class=\"table-empty\" role=\"status\">{{ emptyText() }}</p>\n} @else {\n  <div class=\"table-wrapper\">\n    <table class=\"table\" [attr.aria-label]=\"label() || null\">\n      <thead>\n        <tr>\n          @if (detail()) {\n            <th scope=\"col\" class=\"col-toggle\"><span class=\"visually-hidden\">{{ detailsLabel() }}</span></th>\n          }\n          @for (column of columns(); track column.key) {\n            <th scope=\"col\" [style.text-align]=\"column.align\" [style.width]=\"column.width\">\n              {{ column.header }}\n            </th>\n          }\n          @if (actions().length) {\n            <th scope=\"col\" class=\"col-actions\">\n              <span class=\"visually-hidden\">{{ actionsLabel() }}</span>\n            </th>\n          }\n        </tr>\n      </thead>\n\n      <tbody>\n        @for (row of rows(); track rowKey()(row); let i = $index) {\n          <tr [class.expanded]=\"isExpanded(row)\">\n            @if (detail()) {\n              <td class=\"col-toggle\">\n                <button\n                  class=\"toggle\"\n                  type=\"button\"\n                  [attr.aria-expanded]=\"isExpanded(row)\"\n                  [attr.aria-controls]=\"isExpanded(row) ? detailId(i) : null\"\n                  [attr.aria-label]=\"(isExpanded(row) ? hideDetailsLabel() : showDetailsLabel()) + ': ' + rowName(row)\"\n                  (click)=\"toggleRow(row)\"\n                >\n                  <svg width=\"14\" height=\"14\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n                    <path d=\"M6 3l5 5-5 5\" />\n                  </svg>\n                </button>\n              </td>\n            }\n\n            @for (column of columns(); track column.key) {\n              <td [style.text-align]=\"column.align\">\n                @if (cellTemplateMap().get(column.key); as template) {\n                  <ng-container\n                    [ngTemplateOutlet]=\"template\"\n                    [ngTemplateOutletContext]=\"{ $implicit: row, value: cellValue(row, column) }\"\n                  />\n                } @else {\n                  {{ cellValue(row, column) }}\n                }\n              </td>\n            }\n\n            @if (actions().length) {\n              <td class=\"col-actions\">\n                <ui-menu\n                  [items]=\"menuItems().get(row) ?? []\"\n                  [label]=\"actionsLabel() + ': ' + rowName(row)\"\n                  (itemSelect)=\"emitAction($event, row)\"\n                />\n              </td>\n            }\n          </tr>\n\n          @if (detail(); as detail) {\n            @if (isExpanded(row)) {\n              <tr class=\"detail-row\" [id]=\"detailId(i)\">\n                <td [attr.colspan]=\"colspan()\">\n                  <ng-container [ngTemplateOutlet]=\"detail.template\" [ngTemplateOutletContext]=\"{ $implicit: row }\" />\n                </td>\n              </tr>\n            }\n          }\n        }\n      </tbody>\n    </table>\n  </div>\n}\n",
+		styles: [":host{display:block}.table-wrapper{overflow-x:auto;border:var(--ui-table-border, 0);border-radius:var(--ui-table-border-radius, 0)}.table{width:100%;border-collapse:collapse;color:var(--ui-table-color, var(--c9, #404040));font-size:var(--ui-table-font-size, 14px)}.table th{padding:var(--ui-table-cell-padding, 10px 12px);border-bottom:1px solid var(--ui-table-header-border-color, var(--b2, #d9e2ff));background:var(--ui-table-header-background, transparent);color:var(--ui-table-header-color, var(--c7, #707070));font-weight:var(--ui-table-header-font-weight, 600);text-align:start;white-space:nowrap}.table td{padding:var(--ui-table-cell-padding, 10px 12px);border-bottom:1px solid var(--ui-table-row-border-color, var(--b1, #e7ecff));white-space:var(--ui-table-cell-white-space, normal);vertical-align:middle}.table tbody tr:not(.detail-row):hover{background:var(--ui-table-row-hover-background, var(--b0, #f0f3ff))}.table tr.expanded>td{border-bottom-color:transparent}.col-toggle,.col-actions{width:1%}.col-actions{text-align:end}.toggle{display:grid;place-items:center;width:var(--ui-table-toggle-size, 28px);height:var(--ui-table-toggle-size, 28px);padding:0;border:0;border-radius:6px;background:transparent;color:var(--ui-table-toggle-color, var(--c8, #595959));cursor:pointer}.toggle svg{transition:transform .2s ease}.toggle[aria-expanded=true] svg{transform:rotate(90deg)}.toggle:hover{background:var(--ui-table-toggle-hover-background, var(--b1, #e7ecff))}.toggle:focus-visible{outline:2px solid var(--ui-table-focus-color, var(--b10, #1769aa));outline-offset:2px}.detail-row>td{padding:var(--ui-table-detail-padding, 16px 12px 16px 52px);background:var(--ui-table-detail-background, var(--b0, #f0f3ff));white-space:normal}.table-empty{margin:0;padding:var(--ui-table-empty-padding, 32px);color:var(--ui-table-empty-color, var(--c7, #707070));font-size:var(--ui-table-font-size, 14px);text-align:center}.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}@media(prefers-reduced-motion:reduce){.toggle svg{transition:none}}\n"],
+		dependencies: [
+			{
+				kind: "directive",
+				type: NgTemplateOutlet,
+				selector: "[ngTemplateOutlet]",
+				inputs: [
+					"ngTemplateOutletContext",
+					"ngTemplateOutlet",
+					"ngTemplateOutletInjector"
+				]
+			},
+			{
+				kind: "component",
+				type: UiMenu,
+				selector: "ui-menu",
+				inputs: ["items", "label"],
+				outputs: ["itemSelect"]
+			},
+			{
+				kind: "component",
+				type: UiSkeleton,
+				selector: "ui-skeleton",
+				inputs: [
+					"variant",
+					"quantity",
+					"label"
+				]
+			}
+		],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiTable,
+	decorators: [{
+		type: Component,
+		args: [{
+			imports: [
+				NgTemplateOutlet,
+				UiMenu,
+				UiSkeleton
+			],
+			selector: "ui-table",
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			template: "@if (loading()) {\n  <ui-skeleton variant=\"table\" [quantity]=\"loadingRows()\" [label]=\"loadingText()\" />\n} @else if (rows().length === 0) {\n  <p class=\"table-empty\" role=\"status\">{{ emptyText() }}</p>\n} @else {\n  <div class=\"table-wrapper\">\n    <table class=\"table\" [attr.aria-label]=\"label() || null\">\n      <thead>\n        <tr>\n          @if (detail()) {\n            <th scope=\"col\" class=\"col-toggle\"><span class=\"visually-hidden\">{{ detailsLabel() }}</span></th>\n          }\n          @for (column of columns(); track column.key) {\n            <th scope=\"col\" [style.text-align]=\"column.align\" [style.width]=\"column.width\">\n              {{ column.header }}\n            </th>\n          }\n          @if (actions().length) {\n            <th scope=\"col\" class=\"col-actions\">\n              <span class=\"visually-hidden\">{{ actionsLabel() }}</span>\n            </th>\n          }\n        </tr>\n      </thead>\n\n      <tbody>\n        @for (row of rows(); track rowKey()(row); let i = $index) {\n          <tr [class.expanded]=\"isExpanded(row)\">\n            @if (detail()) {\n              <td class=\"col-toggle\">\n                <button\n                  class=\"toggle\"\n                  type=\"button\"\n                  [attr.aria-expanded]=\"isExpanded(row)\"\n                  [attr.aria-controls]=\"isExpanded(row) ? detailId(i) : null\"\n                  [attr.aria-label]=\"(isExpanded(row) ? hideDetailsLabel() : showDetailsLabel()) + ': ' + rowName(row)\"\n                  (click)=\"toggleRow(row)\"\n                >\n                  <svg width=\"14\" height=\"14\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n                    <path d=\"M6 3l5 5-5 5\" />\n                  </svg>\n                </button>\n              </td>\n            }\n\n            @for (column of columns(); track column.key) {\n              <td [style.text-align]=\"column.align\">\n                @if (cellTemplateMap().get(column.key); as template) {\n                  <ng-container\n                    [ngTemplateOutlet]=\"template\"\n                    [ngTemplateOutletContext]=\"{ $implicit: row, value: cellValue(row, column) }\"\n                  />\n                } @else {\n                  {{ cellValue(row, column) }}\n                }\n              </td>\n            }\n\n            @if (actions().length) {\n              <td class=\"col-actions\">\n                <ui-menu\n                  [items]=\"menuItems().get(row) ?? []\"\n                  [label]=\"actionsLabel() + ': ' + rowName(row)\"\n                  (itemSelect)=\"emitAction($event, row)\"\n                />\n              </td>\n            }\n          </tr>\n\n          @if (detail(); as detail) {\n            @if (isExpanded(row)) {\n              <tr class=\"detail-row\" [id]=\"detailId(i)\">\n                <td [attr.colspan]=\"colspan()\">\n                  <ng-container [ngTemplateOutlet]=\"detail.template\" [ngTemplateOutletContext]=\"{ $implicit: row }\" />\n                </td>\n              </tr>\n            }\n          }\n        }\n      </tbody>\n    </table>\n  </div>\n}\n",
+			styles: [":host{display:block}.table-wrapper{overflow-x:auto;border:var(--ui-table-border, 0);border-radius:var(--ui-table-border-radius, 0)}.table{width:100%;border-collapse:collapse;color:var(--ui-table-color, var(--c9, #404040));font-size:var(--ui-table-font-size, 14px)}.table th{padding:var(--ui-table-cell-padding, 10px 12px);border-bottom:1px solid var(--ui-table-header-border-color, var(--b2, #d9e2ff));background:var(--ui-table-header-background, transparent);color:var(--ui-table-header-color, var(--c7, #707070));font-weight:var(--ui-table-header-font-weight, 600);text-align:start;white-space:nowrap}.table td{padding:var(--ui-table-cell-padding, 10px 12px);border-bottom:1px solid var(--ui-table-row-border-color, var(--b1, #e7ecff));white-space:var(--ui-table-cell-white-space, normal);vertical-align:middle}.table tbody tr:not(.detail-row):hover{background:var(--ui-table-row-hover-background, var(--b0, #f0f3ff))}.table tr.expanded>td{border-bottom-color:transparent}.col-toggle,.col-actions{width:1%}.col-actions{text-align:end}.toggle{display:grid;place-items:center;width:var(--ui-table-toggle-size, 28px);height:var(--ui-table-toggle-size, 28px);padding:0;border:0;border-radius:6px;background:transparent;color:var(--ui-table-toggle-color, var(--c8, #595959));cursor:pointer}.toggle svg{transition:transform .2s ease}.toggle[aria-expanded=true] svg{transform:rotate(90deg)}.toggle:hover{background:var(--ui-table-toggle-hover-background, var(--b1, #e7ecff))}.toggle:focus-visible{outline:2px solid var(--ui-table-focus-color, var(--b10, #1769aa));outline-offset:2px}.detail-row>td{padding:var(--ui-table-detail-padding, 16px 12px 16px 52px);background:var(--ui-table-detail-background, var(--b0, #f0f3ff));white-space:normal}.table-empty{margin:0;padding:var(--ui-table-empty-padding, 32px);color:var(--ui-table-empty-color, var(--c7, #707070));font-size:var(--ui-table-font-size, 14px);text-align:center}.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}@media(prefers-reduced-motion:reduce){.toggle svg{transition:none}}\n"]
+		}]
+	}],
+	propDecorators: {
+		columns: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "columns",
+				required: true
+			}]
+		}],
+		rows: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "rows",
+				required: true
+			}]
+		}],
+		rowKey: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "rowKey",
+				required: false
+			}]
+		}],
+		actions: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "actions",
+				required: false
+			}]
+		}],
+		label: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "label",
+				required: false
+			}]
+		}],
+		loading: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "loading",
+				required: false
+			}]
+		}],
+		loadingRows: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "loadingRows",
+				required: false
+			}]
+		}],
+		loadingText: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "loadingText",
+				required: false
+			}]
+		}],
+		emptyText: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "emptyText",
+				required: false
+			}]
+		}],
+		actionsLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "actionsLabel",
+				required: false
+			}]
+		}],
+		detailsLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "detailsLabel",
+				required: false
+			}]
+		}],
+		showDetailsLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "showDetailsLabel",
+				required: false
+			}]
+		}],
+		hideDetailsLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "hideDetailsLabel",
+				required: false
+			}]
+		}],
+		action: [{
+			type: i0.Output,
+			args: ["action"]
+		}],
+		rowToggle: [{
+			type: i0.Output,
+			args: ["rowToggle"]
+		}],
+		detail: [{
+			type: i0.ContentChild,
+			args: [i0.forwardRef(() => UiTableDetail), { isSignal: true }]
+		}],
+		cellTemplates: [{
+			type: i0.ContentChildren,
+			args: [i0.forwardRef(() => UiTableCell), { isSignal: true }]
+		}]
+	}
+});
+var UiAuthLayout = class UiAuthLayout {
+	panel = input.required(...ngDevMode ? [{ debugName: "panel" }] : /* istanbul ignore next */ []);
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiAuthLayout,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.0.0",
+		version: "22.2.1",
+		type: UiAuthLayout,
+		isStandalone: true,
+		selector: "ui-layout-auth",
+		inputs: { panel: {
+			classPropertyName: "panel",
+			publicName: "panel",
+			isSignal: true,
+			isRequired: true,
+			transformFunction: null
+		} },
+		ngImport: i0,
+		template: "<div class=\"auth\">\n  <div class=\"auth-panel\">\n    @if (panel().logo; as logo) {\n      <img class=\"auth-logo\" [ngSrc]=\"logo.src\" [alt]=\"logo.alt\" [width]=\"logo.width\" [height]=\"logo.height\" />\n    }\n    @if (panel().image; as image) {\n      <img\n        class=\"auth-image\"\n        [ngSrc]=\"image.src\"\n        [alt]=\"image.alt\"\n        [width]=\"image.width\"\n        [height]=\"image.height\"\n        priority\n      />\n    }\n    <p class=\"auth-title\">{{ panel().title }}</p>\n    @if (panel().description) {\n      <p class=\"auth-description\">{{ panel().description }}</p>\n    }\n  </div>\n\n  <main class=\"auth-content\">\n    <div class=\"auth-content-inner\">\n      <ng-content />\n    </div>\n  </main>\n</div>\n",
+		styles: [":host{display:block}.auth{box-sizing:border-box;display:grid;grid-template-columns:minmax(0,var(--ui-auth-panel-width, 1fr)) minmax(0,1fr);gap:var(--ui-auth-gap, 14px);min-height:100dvh;padding:var(--ui-auth-padding, 14px);background:var(--ui-auth-background, var(--white, #fff))}.auth-panel{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:var(--ui-auth-panel-padding, 48px);border-radius:var(--ui-auth-panel-border-radius, 20px);background:var(--ui-auth-panel-background, var(--g1, #e7ecff));text-align:center}.auth-logo{align-self:flex-start;width:auto;height:var(--ui-auth-logo-height, 32px)}.auth-image{width:100%;max-width:var(--ui-auth-image-max-width, 420px);height:auto}.auth-title{margin:0;color:var(--ui-auth-title-color, var(--b12, #152557));font-size:var(--ui-auth-title-font-size, clamp(22px, 2vw + 10px, 32px));font-weight:700;line-height:1.25}.auth-description{max-width:44ch;margin:0;color:var(--ui-auth-description-color, var(--c8, #595959));font-size:var(--ui-auth-description-font-size, 15px);line-height:1.5}.auth-content{display:grid;place-items:center;padding:var(--ui-auth-content-padding, 32px 16px)}.auth-content-inner{width:100%;max-width:var(--ui-auth-content-max-width, 420px)}@media(max-width:900px){.auth{grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr}.auth-panel{flex-direction:row;justify-content:flex-start;padding:16px 20px;text-align:left}.auth-logo{align-self:center}.auth-image,.auth-description{display:none}.auth-title{font-size:18px}}\n"],
+		dependencies: [{
+			kind: "directive",
+			type: NgOptimizedImage,
+			selector: "img[ngSrc]",
+			inputs: [
+				"ngSrc",
+				"ngSrcset",
+				"sizes",
+				"width",
+				"height",
+				"decoding",
+				"loading",
+				"priority",
+				"loaderParams",
+				"disableOptimizedSrcset",
+				"fill",
+				"placeholder",
+				"placeholderConfig",
+				"src",
+				"srcset"
+			]
+		}],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiAuthLayout,
+	decorators: [{
+		type: Component,
+		args: [{
+			imports: [NgOptimizedImage],
+			selector: "ui-layout-auth",
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			template: "<div class=\"auth\">\n  <div class=\"auth-panel\">\n    @if (panel().logo; as logo) {\n      <img class=\"auth-logo\" [ngSrc]=\"logo.src\" [alt]=\"logo.alt\" [width]=\"logo.width\" [height]=\"logo.height\" />\n    }\n    @if (panel().image; as image) {\n      <img\n        class=\"auth-image\"\n        [ngSrc]=\"image.src\"\n        [alt]=\"image.alt\"\n        [width]=\"image.width\"\n        [height]=\"image.height\"\n        priority\n      />\n    }\n    <p class=\"auth-title\">{{ panel().title }}</p>\n    @if (panel().description) {\n      <p class=\"auth-description\">{{ panel().description }}</p>\n    }\n  </div>\n\n  <main class=\"auth-content\">\n    <div class=\"auth-content-inner\">\n      <ng-content />\n    </div>\n  </main>\n</div>\n",
+			styles: [":host{display:block}.auth{box-sizing:border-box;display:grid;grid-template-columns:minmax(0,var(--ui-auth-panel-width, 1fr)) minmax(0,1fr);gap:var(--ui-auth-gap, 14px);min-height:100dvh;padding:var(--ui-auth-padding, 14px);background:var(--ui-auth-background, var(--white, #fff))}.auth-panel{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:var(--ui-auth-panel-padding, 48px);border-radius:var(--ui-auth-panel-border-radius, 20px);background:var(--ui-auth-panel-background, var(--g1, #e7ecff));text-align:center}.auth-logo{align-self:flex-start;width:auto;height:var(--ui-auth-logo-height, 32px)}.auth-image{width:100%;max-width:var(--ui-auth-image-max-width, 420px);height:auto}.auth-title{margin:0;color:var(--ui-auth-title-color, var(--b12, #152557));font-size:var(--ui-auth-title-font-size, clamp(22px, 2vw + 10px, 32px));font-weight:700;line-height:1.25}.auth-description{max-width:44ch;margin:0;color:var(--ui-auth-description-color, var(--c8, #595959));font-size:var(--ui-auth-description-font-size, 15px);line-height:1.5}.auth-content{display:grid;place-items:center;padding:var(--ui-auth-content-padding, 32px 16px)}.auth-content-inner{width:100%;max-width:var(--ui-auth-content-max-width, 420px)}@media(max-width:900px){.auth{grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr}.auth-panel{flex-direction:row;justify-content:flex-start;padding:16px 20px;text-align:left}.auth-logo{align-self:center}.auth-image,.auth-description{display:none}.auth-title{font-size:18px}}\n"]
+		}]
+	}],
+	propDecorators: { panel: [{
+		type: i0.Input,
+		args: [{
+			isSignal: true,
+			alias: "panel",
+			required: true
+		}]
+	}] }
+});
+let nextId = 0;
+var UiDashboardLayout = class UiDashboardLayout {
+	menu = input.required(...ngDevMode ? [{ debugName: "menu" }] : /* istanbul ignore next */ []);
+	brandName = input("", ...ngDevMode ? [{ debugName: "brandName" }] : /* istanbul ignore next */ []);
+	brandLogo = input(null, ...ngDevMode ? [{ debugName: "brandLogo" }] : /* istanbul ignore next */ []);
+	user = input(null, ...ngDevMode ? [{ debugName: "user" }] : /* istanbul ignore next */ []);
+	userLoading = input(false, ...ngDevMode ? [{ debugName: "userLoading" }] : /* istanbul ignore next */ []);
+	userError = input(null, ...ngDevMode ? [{ debugName: "userError" }] : /* istanbul ignore next */ []);
+	showThemeToggle = input(true, ...ngDevMode ? [{ debugName: "showThemeToggle" }] : /* istanbul ignore next */ []);
+	collapsed = model(false, ...ngDevMode ? [{ debugName: "collapsed" }] : /* istanbul ignore next */ []);
+	menuLabel = input("Menu principal", ...ngDevMode ? [{ debugName: "menuLabel" }] : /* istanbul ignore next */ []);
+	collapseLabel = input("Recolher menu", ...ngDevMode ? [{ debugName: "collapseLabel" }] : /* istanbul ignore next */ []);
+	expandLabel = input("Expandir menu", ...ngDevMode ? [{ debugName: "expandLabel" }] : /* istanbul ignore next */ []);
+	openMenuLabel = input("Abrir menu", ...ngDevMode ? [{ debugName: "openMenuLabel" }] : /* istanbul ignore next */ []);
+	closeMenuLabel = input("Fechar menu", ...ngDevMode ? [{ debugName: "closeMenuLabel" }] : /* istanbul ignore next */ []);
+	logoutLabel = input("Sair", ...ngDevMode ? [{ debugName: "logoutLabel" }] : /* istanbul ignore next */ []);
+	userLoadingLabel = input("Carregando usuário...", ...ngDevMode ? [{ debugName: "userLoadingLabel" }] : /* istanbul ignore next */ []);
+	logout = output();
+	mobileOpen = signal(false, ...ngDevMode ? [{ debugName: "mobileOpen" }] : /* istanbul ignore next */ []);
+	sidebarId = `ui-dashboard-sidebar-${nextId++}`;
+	userState = computed(() => {
+		if (this.userLoading()) return "loading";
+		if (this.userError()) return "error";
+		return this.user() ? "content" : "none";
+	}, ...ngDevMode ? [{ debugName: "userState" }] : /* istanbul ignore next */ []);
+	initials = computed(() => {
+		const parts = (this.user()?.name ?? "").trim().split(/\s+/).filter(Boolean);
+		if (parts.length === 0) return "";
+		return (parts[0][0] + (parts.length > 1 ? parts[parts.length - 1][0] : "")).toUpperCase();
+	}, ...ngDevMode ? [{ debugName: "initials" }] : /* istanbul ignore next */ []);
+	toggle() {
+		this.collapsed.update((value) => !value);
+	}
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiDashboardLayout,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.0.0",
+		version: "22.2.1",
+		type: UiDashboardLayout,
+		isStandalone: true,
+		selector: "ui-layout-dashboard",
+		inputs: {
+			menu: {
+				classPropertyName: "menu",
+				publicName: "menu",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			brandName: {
+				classPropertyName: "brandName",
+				publicName: "brandName",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			brandLogo: {
+				classPropertyName: "brandLogo",
+				publicName: "brandLogo",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			user: {
+				classPropertyName: "user",
+				publicName: "user",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			userLoading: {
+				classPropertyName: "userLoading",
+				publicName: "userLoading",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			userError: {
+				classPropertyName: "userError",
+				publicName: "userError",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			showThemeToggle: {
+				classPropertyName: "showThemeToggle",
+				publicName: "showThemeToggle",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			collapsed: {
+				classPropertyName: "collapsed",
+				publicName: "collapsed",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			menuLabel: {
+				classPropertyName: "menuLabel",
+				publicName: "menuLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			collapseLabel: {
+				classPropertyName: "collapseLabel",
+				publicName: "collapseLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			expandLabel: {
+				classPropertyName: "expandLabel",
+				publicName: "expandLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			openMenuLabel: {
+				classPropertyName: "openMenuLabel",
+				publicName: "openMenuLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			closeMenuLabel: {
+				classPropertyName: "closeMenuLabel",
+				publicName: "closeMenuLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			logoutLabel: {
+				classPropertyName: "logoutLabel",
+				publicName: "logoutLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			userLoadingLabel: {
+				classPropertyName: "userLoadingLabel",
+				publicName: "userLoadingLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		outputs: {
+			collapsed: "collapsedChange",
+			logout: "logout"
+		},
+		host: { listeners: { "document:keydown.escape": "mobileOpen.set(false)" } },
+		ngImport: i0,
+		template: "<div class=\"dashboard\" [class.collapsed]=\"collapsed()\" [class.mobile-open]=\"mobileOpen()\">\n  <aside class=\"sidebar\" [id]=\"sidebarId\">\n    <div class=\"sidebar-header\">\n      <div class=\"brand\">\n        @if (brandLogo(); as logo) {\n          <img class=\"brand-logo\" [src]=\"logo\" alt=\"\" width=\"24\" height=\"24\" />\n        }\n        @if (brandName()) {\n          <strong class=\"brand-name\">{{ brandName() }}</strong>\n        }\n      </div>\n\n      <button\n        class=\"icon-button collapse-button\"\n        type=\"button\"\n        [attr.aria-label]=\"collapsed() ? expandLabel() : collapseLabel()\"\n        [attr.aria-expanded]=\"!collapsed()\"\n        [attr.aria-controls]=\"sidebarId\"\n        (click)=\"toggle()\"\n      >\n        <svg width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n          <rect x=\"2\" y=\"3\" width=\"14\" height=\"12\" rx=\"2\" />\n          <path d=\"M7 3v12\" />\n          @if (collapsed()) {\n            <path d=\"M10.5 7.5L12 9l-1.5 1.5\" />\n          } @else {\n            <path d=\"M12 7.5L10.5 9 12 10.5\" />\n          }\n        </svg>\n      </button>\n\n      <button\n        class=\"icon-button close-button\"\n        type=\"button\"\n        [attr.aria-label]=\"closeMenuLabel()\"\n        (click)=\"mobileOpen.set(false)\"\n      >\n        <svg width=\"14\" height=\"14\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\" focusable=\"false\">\n          <path d=\"M3 3l10 10M13 3L3 13\" />\n        </svg>\n      </button>\n    </div>\n\n    <nav class=\"sidebar-nav\" [attr.aria-label]=\"menuLabel()\">\n      <ul>\n        @for (item of menu(); track item.id) {\n          <li>\n            <a\n              class=\"nav-link\"\n              [routerLink]=\"item.link\"\n              routerLinkActive=\"active\"\n              ariaCurrentWhenActive=\"page\"\n              [attr.title]=\"collapsed() ? item.text : null\"\n              (click)=\"mobileOpen.set(false)\"\n            >\n              @if (item.icon) {\n                <img class=\"nav-icon\" [src]=\"item.icon\" alt=\"\" width=\"16\" height=\"16\" />\n              } @else {\n                <span class=\"nav-icon nav-initial\" aria-hidden=\"true\">{{ item.text.charAt(0) }}</span>\n              }\n              <span class=\"nav-text\">{{ item.text }}</span>\n            </a>\n          </li>\n        }\n      </ul>\n    </nav>\n\n    @if (userState() !== 'none') {\n      <div class=\"user\">\n        <span class=\"avatar\" aria-hidden=\"true\">\n          @if (user()?.avatar; as avatar) {\n            <img [src]=\"avatar\" alt=\"\" width=\"34\" height=\"34\" />\n          } @else {\n            {{ initials() }}\n          }\n        </span>\n\n        <div class=\"user-info\">\n          @switch (userState()) {\n            @case ('loading') {\n              <ui-skeleton variant=\"menu\" [label]=\"userLoadingLabel()\" />\n            }\n            @case ('error') {\n              <span class=\"user-error\" role=\"alert\">{{ userError() }}</span>\n            }\n            @case ('content') {\n              <span class=\"user-name\">{{ user()?.name }}</span>\n              <span class=\"user-email\">{{ user()?.email }}</span>\n            }\n          }\n        </div>\n\n        <button\n          class=\"icon-button logout-button\"\n          type=\"button\"\n          [attr.aria-label]=\"logoutLabel()\"\n          [attr.title]=\"logoutLabel()\"\n          (click)=\"logout.emit()\"\n        >\n          <svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n            <path d=\"M6 14H3.5A1.5 1.5 0 0 1 2 12.5v-9A1.5 1.5 0 0 1 3.5 2H6M10.5 11.5L14 8l-3.5-3.5M14 8H6\" />\n          </svg>\n        </button>\n      </div>\n    }\n  </aside>\n\n  <div class=\"backdrop\" (click)=\"mobileOpen.set(false)\"></div>\n\n  <header class=\"header\">\n    <button\n      class=\"icon-button mobile-menu-button\"\n      type=\"button\"\n      [attr.aria-label]=\"openMenuLabel()\"\n      [attr.aria-expanded]=\"mobileOpen()\"\n      [attr.aria-controls]=\"sidebarId\"\n      (click)=\"mobileOpen.set(true)\"\n    >\n      <svg width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" aria-hidden=\"true\" focusable=\"false\">\n        <path d=\"M3 5h12M3 9h12M3 13h12\" />\n      </svg>\n    </button>\n    <ui-breadcrumb class=\"header-breadcrumb\" />\n    <div class=\"header-actions\">\n      <ng-content select=\"[uiDashboardHeader]\" />\n      @if (showThemeToggle()) {\n        <ui-theme-toggle />\n      }\n    </div>\n  </header>\n\n  <main class=\"main\">\n    <ng-content />\n  </main>\n</div>\n",
+		styles: [":host{display:block}.dashboard{box-sizing:border-box;display:grid;grid-template-columns:var(--ui-dashboard-sidebar-width, 232px) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);grid-template-areas:\"sidebar header\" \"sidebar main\";column-gap:var(--ui-dashboard-gap, 30px);row-gap:var(--ui-dashboard-header-gap, 20px);height:100dvh;padding:var(--ui-dashboard-padding, 14px);transition:grid-template-columns .3s ease}.sidebar{grid-area:sidebar;box-sizing:border-box;display:flex;flex-direction:column;gap:24px;min-height:0;overflow-x:hidden;overflow-y:auto;padding:var(--ui-dashboard-sidebar-padding, 18px);border:var(--ui-dashboard-sidebar-border, 1px solid var(--b4, #b5c6f9));border-radius:var(--ui-dashboard-sidebar-border-radius, 20px);background-color:var(--ui-dashboard-sidebar-background, var(--b0, #f0f3ff))}.sidebar-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:30px}.brand{display:flex;align-items:center;gap:12px;min-width:0}.brand-logo{flex-shrink:0}.brand-name{overflow:hidden;color:var(--ui-dashboard-brand-color, var(--c8, #595959));font-size:var(--ui-dashboard-brand-font-size, 13px);font-weight:600;white-space:nowrap;text-overflow:ellipsis}.icon-button{display:grid;flex-shrink:0;place-items:center;width:34px;height:34px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--ui-dashboard-icon-color, var(--c8, #595959));cursor:pointer;transition:background-color .2s ease}.icon-button:hover{background-color:var(--ui-dashboard-icon-hover-background, var(--b1, #e7ecff))}.icon-button:focus-visible{outline:2px solid var(--ui-dashboard-focus-color, var(--b10, #1769aa));outline-offset:2px}.close-button,.mobile-menu-button{display:none}.sidebar-nav{flex:1;min-width:0}.sidebar-nav ul{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--ui-dashboard-nav-gap, 8px);margin:0;padding:0;list-style:none}.sidebar-nav li{min-width:0}.nav-link{box-sizing:border-box;display:flex;align-items:center;gap:8px;width:100%;min-width:0;min-height:var(--ui-dashboard-nav-height, 40px);padding:var(--ui-dashboard-nav-padding, 10px 14px);border-radius:var(--ui-dashboard-nav-border-radius, 40px);background-color:var(--ui-dashboard-nav-background, var(--b-white, #f6f9ff));color:var(--ui-dashboard-nav-color, var(--c7, #707070));font-size:var(--ui-dashboard-nav-font-size, 14px);font-weight:500;text-decoration:none;transition:background-color .2s ease}.nav-link:hover{background-color:var(--ui-dashboard-nav-hover-background, var(--b1, #e7ecff))}.nav-link.active{background-color:var(--ui-dashboard-nav-active-background, var(--b2, #d9e2ff));color:var(--ui-dashboard-nav-active-color, var(--b10, #335cd6));font-weight:600}.nav-link:focus-visible{outline:2px solid var(--ui-dashboard-focus-color, var(--b10, #1769aa));outline-offset:2px}.nav-icon{flex-shrink:0;width:16px;height:16px}.nav-initial{display:grid;place-items:center;font-size:12px;font-weight:700}.nav-text{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.user{display:flex;align-items:center;gap:8px;padding:2px;border:var(--ui-dashboard-user-border, 1px solid var(--b1, #e7ecff));border-radius:40px;background-color:var(--ui-dashboard-user-background, var(--b-white, #f6f9ff))}.avatar{display:grid;flex-shrink:0;place-items:center;width:34px;height:34px;overflow:hidden;border-radius:50%;background-color:var(--ui-dashboard-avatar-background, var(--b9, #4c72e2));color:var(--ui-dashboard-avatar-color, #fff);font-size:12px;font-weight:700}.avatar img{width:100%;height:100%;object-fit:cover}.user-info{display:grid;flex:1;gap:4px;min-width:0;--ui-skeleton-height: 26px;--ui-skeleton-border-radius: 13px}.user-info span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.user-name{color:var(--ui-dashboard-user-name-color, var(--c9, #404040));font-size:12px;font-weight:600}.user-email,.user-error{color:var(--ui-dashboard-user-email-color, var(--c7, #707070));font-size:11px}.user-error{color:var(--ui-dashboard-user-error-color, var(--erro, #b3261e))}.header{grid-area:header;display:flex;align-items:center;gap:12px;min-height:var(--ui-dashboard-header-height, 36px)}.header-breadcrumb{flex:1;min-width:0}.header-actions{display:flex;align-items:center;gap:12px}.main{grid-area:main;min-height:0;overflow-x:hidden;overflow-y:auto}.backdrop{display:none}@media(min-width:769px){.dashboard.collapsed{grid-template-columns:var(--ui-dashboard-sidebar-collapsed-width, 72px) minmax(0,1fr)}.dashboard.collapsed .sidebar{padding-inline:12px}.dashboard.collapsed .sidebar-header{flex-direction:column}.dashboard.collapsed .brand-name,.dashboard.collapsed .nav-text{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}.dashboard.collapsed .nav-link{justify-content:center;padding:10px}.dashboard.collapsed .user{flex-direction:column;padding:4px 2px}.dashboard.collapsed .user-info{display:none}}@media(max-width:768px){.dashboard{grid-template-columns:minmax(0,1fr);grid-template-areas:\"header\" \"main\"}.sidebar{position:fixed;inset:0 auto 0 0;z-index:var(--ui-dashboard-z-index, 900);width:min(280px,85vw);border-radius:0 20px 20px 0;visibility:hidden;transform:translate(-100%);transition:transform .3s ease,visibility .3s}.collapse-button{display:none}.close-button,.mobile-menu-button{display:grid}.mobile-open .sidebar{visibility:visible;transform:none}.mobile-open .backdrop{position:fixed;inset:0;z-index:calc(var(--ui-dashboard-z-index, 900) - 1);display:block;background:var(--ui-dashboard-backdrop, rgba(11, 11, 11, .4))}}@media(prefers-reduced-motion:reduce){.dashboard,.sidebar,.nav-link,.icon-button{transition:none}}\n"],
+		dependencies: [
+			{
+				kind: "directive",
+				type: RouterLink,
+				selector: "[routerLink]",
+				inputs: [
+					"target",
+					"queryParams",
+					"fragment",
+					"queryParamsHandling",
+					"state",
+					"info",
+					"relativeTo",
+					"preserveFragment",
+					"skipLocationChange",
+					"replaceUrl",
+					"browserUrl",
+					"routerLink"
+				]
+			},
+			{
+				kind: "directive",
+				type: RouterLinkActive,
+				selector: "[routerLinkActive]",
+				inputs: [
+					"routerLinkActiveOptions",
+					"ariaCurrentWhenActive",
+					"routerLinkActive"
+				],
+				outputs: ["isActiveChange"],
+				exportAs: ["routerLinkActive"]
+			},
+			{
+				kind: "component",
+				type: UiBreadcrumb,
+				selector: "ui-breadcrumb",
+				inputs: ["label", "separator"]
+			},
+			{
+				kind: "component",
+				type: UiSkeleton,
+				selector: "ui-skeleton",
+				inputs: [
+					"variant",
+					"quantity",
+					"label"
+				]
+			},
+			{
+				kind: "component",
+				type: UiThemeToggle,
+				selector: "ui-theme-toggle",
+				inputs: ["label"]
+			}
+		],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiDashboardLayout,
+	decorators: [{
+		type: Component,
+		args: [{
+			imports: [
+				RouterLink,
+				RouterLinkActive,
+				UiBreadcrumb,
+				UiSkeleton,
+				UiThemeToggle
+			],
+			selector: "ui-layout-dashboard",
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			host: { "(document:keydown.escape)": "mobileOpen.set(false)" },
+			template: "<div class=\"dashboard\" [class.collapsed]=\"collapsed()\" [class.mobile-open]=\"mobileOpen()\">\n  <aside class=\"sidebar\" [id]=\"sidebarId\">\n    <div class=\"sidebar-header\">\n      <div class=\"brand\">\n        @if (brandLogo(); as logo) {\n          <img class=\"brand-logo\" [src]=\"logo\" alt=\"\" width=\"24\" height=\"24\" />\n        }\n        @if (brandName()) {\n          <strong class=\"brand-name\">{{ brandName() }}</strong>\n        }\n      </div>\n\n      <button\n        class=\"icon-button collapse-button\"\n        type=\"button\"\n        [attr.aria-label]=\"collapsed() ? expandLabel() : collapseLabel()\"\n        [attr.aria-expanded]=\"!collapsed()\"\n        [attr.aria-controls]=\"sidebarId\"\n        (click)=\"toggle()\"\n      >\n        <svg width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n          <rect x=\"2\" y=\"3\" width=\"14\" height=\"12\" rx=\"2\" />\n          <path d=\"M7 3v12\" />\n          @if (collapsed()) {\n            <path d=\"M10.5 7.5L12 9l-1.5 1.5\" />\n          } @else {\n            <path d=\"M12 7.5L10.5 9 12 10.5\" />\n          }\n        </svg>\n      </button>\n\n      <button\n        class=\"icon-button close-button\"\n        type=\"button\"\n        [attr.aria-label]=\"closeMenuLabel()\"\n        (click)=\"mobileOpen.set(false)\"\n      >\n        <svg width=\"14\" height=\"14\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\" focusable=\"false\">\n          <path d=\"M3 3l10 10M13 3L3 13\" />\n        </svg>\n      </button>\n    </div>\n\n    <nav class=\"sidebar-nav\" [attr.aria-label]=\"menuLabel()\">\n      <ul>\n        @for (item of menu(); track item.id) {\n          <li>\n            <a\n              class=\"nav-link\"\n              [routerLink]=\"item.link\"\n              routerLinkActive=\"active\"\n              ariaCurrentWhenActive=\"page\"\n              [attr.title]=\"collapsed() ? item.text : null\"\n              (click)=\"mobileOpen.set(false)\"\n            >\n              @if (item.icon) {\n                <img class=\"nav-icon\" [src]=\"item.icon\" alt=\"\" width=\"16\" height=\"16\" />\n              } @else {\n                <span class=\"nav-icon nav-initial\" aria-hidden=\"true\">{{ item.text.charAt(0) }}</span>\n              }\n              <span class=\"nav-text\">{{ item.text }}</span>\n            </a>\n          </li>\n        }\n      </ul>\n    </nav>\n\n    @if (userState() !== 'none') {\n      <div class=\"user\">\n        <span class=\"avatar\" aria-hidden=\"true\">\n          @if (user()?.avatar; as avatar) {\n            <img [src]=\"avatar\" alt=\"\" width=\"34\" height=\"34\" />\n          } @else {\n            {{ initials() }}\n          }\n        </span>\n\n        <div class=\"user-info\">\n          @switch (userState()) {\n            @case ('loading') {\n              <ui-skeleton variant=\"menu\" [label]=\"userLoadingLabel()\" />\n            }\n            @case ('error') {\n              <span class=\"user-error\" role=\"alert\">{{ userError() }}</span>\n            }\n            @case ('content') {\n              <span class=\"user-name\">{{ user()?.name }}</span>\n              <span class=\"user-email\">{{ user()?.email }}</span>\n            }\n          }\n        </div>\n\n        <button\n          class=\"icon-button logout-button\"\n          type=\"button\"\n          [attr.aria-label]=\"logoutLabel()\"\n          [attr.title]=\"logoutLabel()\"\n          (click)=\"logout.emit()\"\n        >\n          <svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\">\n            <path d=\"M6 14H3.5A1.5 1.5 0 0 1 2 12.5v-9A1.5 1.5 0 0 1 3.5 2H6M10.5 11.5L14 8l-3.5-3.5M14 8H6\" />\n          </svg>\n        </button>\n      </div>\n    }\n  </aside>\n\n  <div class=\"backdrop\" (click)=\"mobileOpen.set(false)\"></div>\n\n  <header class=\"header\">\n    <button\n      class=\"icon-button mobile-menu-button\"\n      type=\"button\"\n      [attr.aria-label]=\"openMenuLabel()\"\n      [attr.aria-expanded]=\"mobileOpen()\"\n      [attr.aria-controls]=\"sidebarId\"\n      (click)=\"mobileOpen.set(true)\"\n    >\n      <svg width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" aria-hidden=\"true\" focusable=\"false\">\n        <path d=\"M3 5h12M3 9h12M3 13h12\" />\n      </svg>\n    </button>\n    <ui-breadcrumb class=\"header-breadcrumb\" />\n    <div class=\"header-actions\">\n      <ng-content select=\"[uiDashboardHeader]\" />\n      @if (showThemeToggle()) {\n        <ui-theme-toggle />\n      }\n    </div>\n  </header>\n\n  <main class=\"main\">\n    <ng-content />\n  </main>\n</div>\n",
+			styles: [":host{display:block}.dashboard{box-sizing:border-box;display:grid;grid-template-columns:var(--ui-dashboard-sidebar-width, 232px) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);grid-template-areas:\"sidebar header\" \"sidebar main\";column-gap:var(--ui-dashboard-gap, 30px);row-gap:var(--ui-dashboard-header-gap, 20px);height:100dvh;padding:var(--ui-dashboard-padding, 14px);transition:grid-template-columns .3s ease}.sidebar{grid-area:sidebar;box-sizing:border-box;display:flex;flex-direction:column;gap:24px;min-height:0;overflow-x:hidden;overflow-y:auto;padding:var(--ui-dashboard-sidebar-padding, 18px);border:var(--ui-dashboard-sidebar-border, 1px solid var(--b4, #b5c6f9));border-radius:var(--ui-dashboard-sidebar-border-radius, 20px);background-color:var(--ui-dashboard-sidebar-background, var(--b0, #f0f3ff))}.sidebar-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:30px}.brand{display:flex;align-items:center;gap:12px;min-width:0}.brand-logo{flex-shrink:0}.brand-name{overflow:hidden;color:var(--ui-dashboard-brand-color, var(--c8, #595959));font-size:var(--ui-dashboard-brand-font-size, 13px);font-weight:600;white-space:nowrap;text-overflow:ellipsis}.icon-button{display:grid;flex-shrink:0;place-items:center;width:34px;height:34px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--ui-dashboard-icon-color, var(--c8, #595959));cursor:pointer;transition:background-color .2s ease}.icon-button:hover{background-color:var(--ui-dashboard-icon-hover-background, var(--b1, #e7ecff))}.icon-button:focus-visible{outline:2px solid var(--ui-dashboard-focus-color, var(--b10, #1769aa));outline-offset:2px}.close-button,.mobile-menu-button{display:none}.sidebar-nav{flex:1;min-width:0}.sidebar-nav ul{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--ui-dashboard-nav-gap, 8px);margin:0;padding:0;list-style:none}.sidebar-nav li{min-width:0}.nav-link{box-sizing:border-box;display:flex;align-items:center;gap:8px;width:100%;min-width:0;min-height:var(--ui-dashboard-nav-height, 40px);padding:var(--ui-dashboard-nav-padding, 10px 14px);border-radius:var(--ui-dashboard-nav-border-radius, 40px);background-color:var(--ui-dashboard-nav-background, var(--b-white, #f6f9ff));color:var(--ui-dashboard-nav-color, var(--c7, #707070));font-size:var(--ui-dashboard-nav-font-size, 14px);font-weight:500;text-decoration:none;transition:background-color .2s ease}.nav-link:hover{background-color:var(--ui-dashboard-nav-hover-background, var(--b1, #e7ecff))}.nav-link.active{background-color:var(--ui-dashboard-nav-active-background, var(--b2, #d9e2ff));color:var(--ui-dashboard-nav-active-color, var(--b10, #335cd6));font-weight:600}.nav-link:focus-visible{outline:2px solid var(--ui-dashboard-focus-color, var(--b10, #1769aa));outline-offset:2px}.nav-icon{flex-shrink:0;width:16px;height:16px}.nav-initial{display:grid;place-items:center;font-size:12px;font-weight:700}.nav-text{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.user{display:flex;align-items:center;gap:8px;padding:2px;border:var(--ui-dashboard-user-border, 1px solid var(--b1, #e7ecff));border-radius:40px;background-color:var(--ui-dashboard-user-background, var(--b-white, #f6f9ff))}.avatar{display:grid;flex-shrink:0;place-items:center;width:34px;height:34px;overflow:hidden;border-radius:50%;background-color:var(--ui-dashboard-avatar-background, var(--b9, #4c72e2));color:var(--ui-dashboard-avatar-color, #fff);font-size:12px;font-weight:700}.avatar img{width:100%;height:100%;object-fit:cover}.user-info{display:grid;flex:1;gap:4px;min-width:0;--ui-skeleton-height: 26px;--ui-skeleton-border-radius: 13px}.user-info span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.user-name{color:var(--ui-dashboard-user-name-color, var(--c9, #404040));font-size:12px;font-weight:600}.user-email,.user-error{color:var(--ui-dashboard-user-email-color, var(--c7, #707070));font-size:11px}.user-error{color:var(--ui-dashboard-user-error-color, var(--erro, #b3261e))}.header{grid-area:header;display:flex;align-items:center;gap:12px;min-height:var(--ui-dashboard-header-height, 36px)}.header-breadcrumb{flex:1;min-width:0}.header-actions{display:flex;align-items:center;gap:12px}.main{grid-area:main;min-height:0;overflow-x:hidden;overflow-y:auto}.backdrop{display:none}@media(min-width:769px){.dashboard.collapsed{grid-template-columns:var(--ui-dashboard-sidebar-collapsed-width, 72px) minmax(0,1fr)}.dashboard.collapsed .sidebar{padding-inline:12px}.dashboard.collapsed .sidebar-header{flex-direction:column}.dashboard.collapsed .brand-name,.dashboard.collapsed .nav-text{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}.dashboard.collapsed .nav-link{justify-content:center;padding:10px}.dashboard.collapsed .user{flex-direction:column;padding:4px 2px}.dashboard.collapsed .user-info{display:none}}@media(max-width:768px){.dashboard{grid-template-columns:minmax(0,1fr);grid-template-areas:\"header\" \"main\"}.sidebar{position:fixed;inset:0 auto 0 0;z-index:var(--ui-dashboard-z-index, 900);width:min(280px,85vw);border-radius:0 20px 20px 0;visibility:hidden;transform:translate(-100%);transition:transform .3s ease,visibility .3s}.collapse-button{display:none}.close-button,.mobile-menu-button{display:grid}.mobile-open .sidebar{visibility:visible;transform:none}.mobile-open .backdrop{position:fixed;inset:0;z-index:calc(var(--ui-dashboard-z-index, 900) - 1);display:block;background:var(--ui-dashboard-backdrop, rgba(11, 11, 11, .4))}}@media(prefers-reduced-motion:reduce){.dashboard,.sidebar,.nav-link,.icon-button{transition:none}}\n"]
+		}]
+	}],
+	propDecorators: {
+		menu: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "menu",
+				required: true
+			}]
+		}],
+		brandName: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "brandName",
+				required: false
+			}]
+		}],
+		brandLogo: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "brandLogo",
+				required: false
+			}]
+		}],
+		user: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "user",
+				required: false
+			}]
+		}],
+		userLoading: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "userLoading",
+				required: false
+			}]
+		}],
+		userError: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "userError",
+				required: false
+			}]
+		}],
+		showThemeToggle: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "showThemeToggle",
+				required: false
+			}]
+		}],
+		collapsed: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "collapsed",
+				required: false
+			}]
+		}, {
+			type: i0.Output,
+			args: ["collapsedChange"]
+		}],
+		menuLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "menuLabel",
+				required: false
+			}]
+		}],
+		collapseLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "collapseLabel",
+				required: false
+			}]
+		}],
+		expandLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "expandLabel",
+				required: false
+			}]
+		}],
+		openMenuLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "openMenuLabel",
+				required: false
+			}]
+		}],
+		closeMenuLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "closeMenuLabel",
+				required: false
+			}]
+		}],
+		logoutLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "logoutLabel",
+				required: false
+			}]
+		}],
+		userLoadingLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "userLoadingLabel",
+				required: false
+			}]
+		}],
+		logout: [{
+			type: i0.Output,
+			args: ["logout"]
+		}]
+	}
+});
+function formatBytes(bytes) {
+	if (!Number.isFinite(bytes) || bytes < 0) throw new Error("O valor de bytes não pode ser um número negativo.");
+	const units = [
+		"B",
+		"KB",
+		"MB",
+		"GB",
+		"TB"
+	];
+	let value = bytes;
+	let unitIndex = 0;
+	while (value >= 1024 && unitIndex < units.length - 1) {
+		value /= 1024;
+		unitIndex++;
+	}
+	return `${value.toFixed(unitIndex === 0 ? 0 : 2)} ${units[unitIndex]}`;
+}
+export { UiAuthLayout, UiAutocomplete, UiBanner, UiBreadcrumb, UiButton, UiColumnGraph, UiCopyTextButton, UiDashboardLayout, UiField, UiFieldset, UiInput, UiInputPassword, UiInputSearch, UiMenu, UiModal, UiOtpInput, UiPagination, UiPieChart, UiPopup, UiSelect, UiSkeleton, UiTable, UiTableCell, UiTableDetail, UiThemeToggle, formatBytes };
 
 //# sourceMappingURL=reusable-union-kit.mjs.map

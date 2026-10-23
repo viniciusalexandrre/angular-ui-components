@@ -16,7 +16,14 @@ E instale no projeto consumidor:
 npm install caminho/para/reusable-union-kit-<versão>.tgz
 ```
 
-Peer dependencies: `@angular/core`, `@angular/common` e `@angular/forms`.
+Ou publique na branch `dist` do repositório (`npm run publish:dist`) e instale direto do GitHub:
+
+```bash
+npm install github:viniciusalexandrre/angular-ui-components#dist
+npm update reusable-union-kit   # para pegar uma publicação mais nova
+```
+
+Peer dependencies: `@angular/core`, `@angular/common`, `@angular/forms` e `@angular/router`.
 
 ## Tema (opcional)
 
@@ -64,13 +71,31 @@ trocados por inputs, por exemplo `emptyText`, `loadingText`, `showPasswordLabel`
 
 ## Componentes
 
-| Componente         | Seletor                                  |
-| ------------------ | ---------------------------------------- |
-| `UiAutocomplete`   | `<ui-autocomplete>`                      |
-| `UiBanner`         | `<ui-banner>`                            |
-| `UiButton`         | `<button ui-button>` / `<a ui-button>`   |
-| `UiCopyTextButton` | `<ui-copy-text-button>`                  |
-| `UiField`          | `<ui-field>`                             |
-| `UiInput`          | `<ui-input>`                             |
-| `UiInputPassword`  | `<ui-input-password>`                    |
-| `UiInputSearch`    | `<ui-input-search>`                      |
+Tudo é importado de `'reusable-union-kit'`. Estilos de cada um: [docs/ESTILOS.md](docs/ESTILOS.md).
+
+| Categoria              | Componente            | Seletor                                |
+| ---------------------- | --------------------- | -------------------------------------- |
+| Formulário             | `UiAutocomplete`      | `<ui-autocomplete>`                    |
+|                        | `UiField`             | `<ui-field>`                           |
+|                        | `UiFieldset`          | `<ui-fieldset>`                        |
+|                        | `UiInput`             | `<ui-input>`                           |
+|                        | `UiInputPassword`     | `<ui-input-password>`                  |
+|                        | `UiInputSearch`       | `<ui-input-search>`                    |
+|                        | `UiOtpInput`          | `<ui-otp-input>`                       |
+|                        | `UiSelect`            | `<ui-select>`                          |
+| Ações e navegação      | `UiBreadcrumb`        | `<ui-breadcrumb>`                      |
+|                        | `UiButton`            | `<button ui-button>` / `<a ui-button>` |
+|                        | `UiCopyTextButton`    | `<ui-copy-text-button>`                |
+|                        | `UiMenu`              | `<ui-menu>`                            |
+|                        | `UiPagination`        | `<ui-pagination>`                      |
+|                        | `UiThemeToggle`       | `<ui-theme-toggle>`                    |
+| Feedback               | `UiModal`             | `<ui-modal>`                           |
+|                        | `UiPopup`             | `<ui-popup>`                           |
+|                        | `UiSkeleton`          | `<ui-skeleton>`                        |
+| Exibição de dados      | `UiBanner`            | `<ui-banner>`                          |
+|                        | `UiColumnGraph`       | `<ui-column-graph>`                    |
+|                        | `UiPieChart`          | `<ui-pie-chart>`                       |
+|                        | `UiTable`             | `<ui-table>` (+ `uiTableCell`, `uiTableDetail`) |
+| Layouts                | `UiAuthLayout`        | `<ui-layout-auth>`                     |
+|                        | `UiDashboardLayout`   | `<ui-layout-dashboard>`                |
+| Utilitários            | `formatBytes`         | função                                 |
