@@ -1,0 +1,92 @@
+:host {
+  display: block;
+}
+
+.auth {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, var(--ui-auth-panel-width, 1fr)) minmax(0, 1fr);
+  gap: var(--ui-auth-gap, 14px);
+  min-height: 100dvh;
+  padding: var(--ui-auth-padding, 14px);
+  background: var(--ui-auth-background, var(--white, #fff));
+}
+
+.auth-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: var(--ui-auth-panel-padding, 48px);
+  border-radius: var(--ui-auth-panel-border-radius, 20px);
+  background: var(--ui-auth-panel-background, var(--g1, #e7ecff));
+  text-align: center;
+}
+
+.auth-logo {
+  align-self: flex-start;
+  width: auto;
+  height: var(--ui-auth-logo-height, 32px);
+}
+
+.auth-image {
+  width: 100%;
+  max-width: var(--ui-auth-image-max-width, 420px);
+  height: auto;
+}
+
+.auth-title {
+  margin: 0;
+  color: var(--ui-auth-title-color, var(--b12, #152557));
+  font-size: var(--ui-auth-title-font-size, clamp(22px, 2vw + 10px, 32px));
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.auth-description {
+  max-width: 44ch;
+  margin: 0;
+  color: var(--ui-auth-description-color, var(--c8, #595959));
+  font-size: var(--ui-auth-description-font-size, 15px);
+  line-height: 1.5;
+}
+
+.auth-content {
+  display: grid;
+  place-items: center;
+  padding: var(--ui-auth-content-padding, 32px 16px);
+}
+
+.auth-content-inner {
+  width: 100%;
+  max-width: var(--ui-auth-content-max-width, 420px);
+}
+
+// Em telas estreitas, o painel vira uma faixa compacta com logo e título.
+@media (max-width: 900px) {
+  .auth {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+  }
+
+  .auth-panel {
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 16px 20px;
+    text-align: left;
+  }
+
+  .auth-logo {
+    align-self: center;
+  }
+
+  .auth-image,
+  .auth-description {
+    display: none;
+  }
+
+  .auth-title {
+    font-size: 18px;
+  }
+}

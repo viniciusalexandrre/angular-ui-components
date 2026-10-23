@@ -1,0 +1,345 @@
+@use '../../styles/input-base' as base;
+
+// Abaixo deste ponto o menu lateral vira gaveta (media queries não aceitam variáveis CSS).
+$mobile: 768px;
+$desktop: 769px;
+
+:host {
+  display: block;
+}
+
+.dashboard {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: var(--ui-dashboard-sidebar-width, 232px) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas:
+    'sidebar header'
+    'sidebar main';
+  column-gap: var(--ui-dashboard-gap, 30px);
+  row-gap: var(--ui-dashboard-header-gap, 20px);
+  height: 100dvh;
+  padding: var(--ui-dashboard-padding, 14px);
+  transition: grid-template-columns 0.3s ease;
+}
+
+// ---------- Menu lateral ----------
+
+.sidebar {
+  grid-area: sidebar;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: var(--ui-dashboard-sidebar-padding, 18px);
+  border: var(--ui-dashboard-sidebar-border, 1px solid var(--b4, #b5c6f9));
+  border-radius: var(--ui-dashboard-sidebar-border-radius, 20px);
+  background-color: var(--ui-dashboard-sidebar-background, var(--b0, #f0f3ff));
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 30px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.brand-logo {
+  flex-shrink: 0;
+}
+
+.brand-name {
+  overflow: hidden;
+  color: var(--ui-dashboard-brand-color, var(--c8, #595959));
+  font-size: var(--ui-dashboard-brand-font-size, 13px);
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.icon-button {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ui-dashboard-icon-color, var(--c8, #595959));
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--ui-dashboard-icon-hover-background, var(--b1, #e7ecff));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-dashboard-focus-color, var(--b10, #1769aa));
+    outline-offset: 2px;
+  }
+}
+
+.close-button,
+.mobile-menu-button {
+  display: none;
+}
+
+.sidebar-nav {
+  flex: 1;
+
+  ul {
+    display: grid;
+    gap: var(--ui-dashboard-nav-gap, 8px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: var(--ui-dashboard-nav-padding, 10px 14px);
+  border-radius: var(--ui-dashboard-nav-border-radius, 40px);
+  background-color: var(--ui-dashboard-nav-background, var(--b-white, #f6f9ff));
+  color: var(--ui-dashboard-nav-color, var(--c7, #707070));
+  font-size: var(--ui-dashboard-nav-font-size, 14px);
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--ui-dashboard-nav-hover-background, var(--b1, #e7ecff));
+  }
+
+  &.active {
+    background-color: var(--ui-dashboard-nav-active-background, var(--b2, #d9e2ff));
+    color: var(--ui-dashboard-nav-active-color, var(--b10, #335cd6));
+    font-weight: 600;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-dashboard-focus-color, var(--b10, #1769aa));
+    outline-offset: 2px;
+  }
+}
+
+.nav-icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.nav-initial {
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.nav-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// ---------- Usuário ----------
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px;
+  border: var(--ui-dashboard-user-border, 1px solid var(--b1, #e7ecff));
+  border-radius: 40px;
+  background-color: var(--ui-dashboard-user-background, var(--b-white, #f6f9ff));
+}
+
+.avatar {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  overflow: hidden;
+  border-radius: 50%;
+  background-color: var(--ui-dashboard-avatar-background, var(--b9, #4c72e2));
+  color: var(--ui-dashboard-avatar-color, #fff);
+  font-size: 12px;
+  font-weight: 700;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.user-info {
+  display: grid;
+  flex: 1;
+  gap: 4px;
+  min-width: 0;
+  --ui-skeleton-height: 26px;
+  --ui-skeleton-border-radius: 13px;
+
+  span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+.user-name {
+  color: var(--ui-dashboard-user-name-color, var(--c9, #404040));
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.user-email,
+.user-error {
+  color: var(--ui-dashboard-user-email-color, var(--c7, #707070));
+  font-size: 11px;
+}
+
+.user-error {
+  color: var(--ui-dashboard-user-error-color, var(--erro, #b3261e));
+}
+
+// ---------- Cabeçalho e conteúdo ----------
+
+.header {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: var(--ui-dashboard-header-height, 36px);
+}
+
+.header-breadcrumb {
+  flex: 1;
+  min-width: 0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.main {
+  grid-area: main;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.backdrop {
+  display: none;
+}
+
+// ---------- Menu recolhido (só no desktop) ----------
+
+@media (min-width: $desktop) {
+  .dashboard.collapsed {
+    grid-template-columns: var(--ui-dashboard-sidebar-collapsed-width, 72px) minmax(0, 1fr);
+
+    .sidebar {
+      padding-inline: 12px;
+    }
+
+    .sidebar-header {
+      flex-direction: column;
+    }
+
+    .brand-name,
+    .nav-text {
+      @include base.visually-hidden;
+    }
+
+    .nav-link {
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .user {
+      flex-direction: column;
+      padding: 4px 2px;
+    }
+
+    .user-info {
+      display: none;
+    }
+  }
+}
+
+// ---------- Celular: o menu vira gaveta ----------
+
+@media (max-width: $mobile) {
+  .dashboard {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'header'
+      'main';
+  }
+
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: var(--ui-dashboard-z-index, 900);
+    width: min(280px, 85vw);
+    border-radius: 0 20px 20px 0;
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition:
+      transform 0.3s ease,
+      visibility 0.3s;
+  }
+
+  .collapse-button {
+    display: none;
+  }
+
+  .close-button,
+  .mobile-menu-button {
+    display: grid;
+  }
+
+  .mobile-open {
+    .sidebar {
+      visibility: visible;
+      transform: none;
+    }
+
+    .backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: calc(var(--ui-dashboard-z-index, 900) - 1);
+      display: block;
+      background: var(--ui-dashboard-backdrop, rgba(11, 11, 11, 0.4));
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard,
+  .sidebar,
+  .nav-link,
+  .icon-button {
+    transition: none;
+  }
+}

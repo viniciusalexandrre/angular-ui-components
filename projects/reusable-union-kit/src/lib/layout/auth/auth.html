@@ -1,0 +1,27 @@
+<div class="auth">
+  <div class="auth-panel">
+    @if (panel().logo; as logo) {
+      <img class="auth-logo" [ngSrc]="logo.src" [alt]="logo.alt" [width]="logo.width" [height]="logo.height" />
+    }
+    @if (panel().image; as image) {
+      <img
+        class="auth-image"
+        [ngSrc]="image.src"
+        [alt]="image.alt"
+        [width]="image.width"
+        [height]="image.height"
+        priority
+      />
+    }
+    <p class="auth-title">{{ panel().title }}</p>
+    @if (panel().description) {
+      <p class="auth-description">{{ panel().description }}</p>
+    }
+  </div>
+
+  <main class="auth-content">
+    <div class="auth-content-inner">
+      <ng-content />
+    </div>
+  </main>
+</div>

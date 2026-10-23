@@ -26,17 +26,30 @@ const componentes: Record<string, Routes[number]['loadComponent']> = {
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'cenarios/formulario' },
+  // Fora da área logada: usa o ui-layout-auth.
   {
-    path: 'cenarios',
-    data: { breadcrumb: 'Cenários' },
+    path: 'entrar',
+    title: 'Entrar · UI Kit Showcase',
+    loadComponent: () => import('./entrar/entrar').then((m) => m.EntrarComponent),
+  },
+  // Área logada: o shell usa o ui-layout-dashboard e renderiza os cenários dentro dele.
+  {
+    path: '',
+    loadComponent: () => import('./shell/shell').then((m) => m.ShellComponent),
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'formulario' },
-      ...CENARIOS.map((cenario) => ({
-        path: cenario.path,
-        title: `${cenario.titulo} · UI Kit Showcase`,
-        data: { breadcrumb: cenario.titulo },
-        loadComponent: componentes[cenario.path],
-      })),
+      {
+        path: 'cenarios',
+        data: { breadcrumb: 'Cenários' },
+        children: [
+          { path: '', pathMatch: 'full', redirectTo: 'formulario' },
+          ...CENARIOS.map((cenario) => ({
+            path: cenario.path,
+            title: `${cenario.titulo} · UI Kit Showcase`,
+            data: { breadcrumb: cenario.titulo },
+            loadComponent: componentes[cenario.path],
+          })),
+        ],
+      },
     ],
   },
   { path: '**', redirectTo: 'cenarios/formulario' },

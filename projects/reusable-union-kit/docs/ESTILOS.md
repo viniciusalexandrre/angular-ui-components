@@ -860,6 +860,118 @@ devolve o foco ao botão. Fecha também com clique fora, rolagem e redimensionam
 | `--ui-menu-item-danger-color`        | `#c0392b`                      | Cor de itens `danger`        |
 | `--ui-menu-item-disabled-opacity`    | `0.45`                         | Opacidade de itens desabilitados |
 
+### Layouts 🚧
+
+Estruturas de página inteira. Elas **não** têm `<router-outlet>` dentro: você envolve o seu
+`<router-outlet>` (ou qualquer conteúdo) com o layout, num componente de rota próprio. Assim dá
+para passar os inputs normalmente.
+
+#### `ui-layout-dashboard`
+
+Menu lateral recolhível, cabeçalho com breadcrumb e troca de tema, e o conteúdo na área principal.
+Abaixo de **768px**, o menu vira uma gaveta aberta pelo botão "☰" (fecha com `Esc`, clique fora
+ou ao escolher um link).
+
+```ts
+// shell.ts — componente da rota pai das páginas logadas
+menu: UiDashboardMenuItem[] = [
+  { id: 'inicio', text: 'Início', link: '/inicio', icon: '/icons/home.svg' },
+  { id: 'relatorios', text: 'Relatórios', link: '/relatorios' }, // sem ícone: mostra a inicial
+];
+```
+
+```html
+<ui-layout-dashboard brandName="Minha empresa" brandLogo="/logo.svg" [menu]="menu"
+  [user]="usuario()" [userLoading]="carregando()" [userError]="erro()"
+  [(collapsed)]="menuRecolhido" (logout)="sair()">
+  <button ui-button variant="ghost" size="sm" uiDashboardHeader>Ajuda</button> <!-- opcional -->
+  <router-outlet />
+</ui-layout-dashboard>
+```
+
+- `user` aceita `{ name, email, avatar? }`; sem `avatar`, mostra as iniciais.
+- `userLoading` mostra um skeleton no lugar do usuário; `userError` mostra a mensagem de erro.
+- `[(collapsed)]` permite lembrar a escolha (ex.: salvar no `localStorage`).
+- Elementos com o atributo `uiDashboardHeader` aparecem no cabeçalho, antes da troca de tema
+  (`[showThemeToggle]="false"` a esconde).
+- A área principal tem rolagem própria; o menu e o cabeçalho ficam fixos.
+
+| Variável                                   | Padrão                | Controla                          |
+| ------------------------------------------ | --------------------- | --------------------------------- |
+| `--ui-dashboard-padding`                   | `14px`                | Margem em volta de tudo           |
+| `--ui-dashboard-gap`                       | `30px`                | Espaço entre menu e conteúdo      |
+| `--ui-dashboard-header-gap`                | `20px`                | Espaço entre cabeçalho e conteúdo |
+| `--ui-dashboard-header-height`             | `36px`                | Altura mínima do cabeçalho        |
+| `--ui-dashboard-sidebar-width`             | `232px`               | Largura do menu aberto            |
+| `--ui-dashboard-sidebar-collapsed-width`   | `72px`                | Largura do menu recolhido         |
+| `--ui-dashboard-sidebar-padding`           | `18px`                | Espaçamento interno do menu       |
+| `--ui-dashboard-sidebar-background`        | `var(--b0)`           | Fundo do menu                     |
+| `--ui-dashboard-sidebar-border`            | `1px solid var(--b4)` | Borda do menu                     |
+| `--ui-dashboard-sidebar-border-radius`     | `20px`                | Arredondamento do menu            |
+| `--ui-dashboard-brand-color`               | `var(--c8)`           | Cor do nome da marca              |
+| `--ui-dashboard-brand-font-size`           | `13px`                | Tamanho do nome da marca          |
+| `--ui-dashboard-nav-gap`                   | `8px`                 | Espaço entre os links             |
+| `--ui-dashboard-nav-padding`               | `10px 14px`           | Espaçamento dos links             |
+| `--ui-dashboard-nav-border-radius`         | `40px`                | Arredondamento dos links          |
+| `--ui-dashboard-nav-background`            | `var(--b-white)`      | Fundo dos links                   |
+| `--ui-dashboard-nav-hover-background`      | `var(--b1)`           | Fundo no hover                    |
+| `--ui-dashboard-nav-color`                 | `var(--c7)`           | Texto dos links                   |
+| `--ui-dashboard-nav-font-size`             | `14px`                | Tamanho do texto dos links        |
+| `--ui-dashboard-nav-active-background`     | `var(--b2)`           | Fundo da página atual             |
+| `--ui-dashboard-nav-active-color`          | `var(--b10)`          | Texto da página atual             |
+| `--ui-dashboard-user-background`           | `var(--b-white)`      | Fundo do bloco do usuário         |
+| `--ui-dashboard-user-border`               | `1px solid var(--b1)` | Borda do bloco do usuário         |
+| `--ui-dashboard-avatar-background`         | `var(--b9)`           | Fundo das iniciais                |
+| `--ui-dashboard-avatar-color`              | `#fff`                | Cor das iniciais                  |
+| `--ui-dashboard-user-name-color`           | `var(--c9)`           | Cor do nome                       |
+| `--ui-dashboard-user-email-color`          | `var(--c7)`           | Cor do e-mail                     |
+| `--ui-dashboard-user-error-color`          | `var(--erro)`         | Cor da mensagem de erro           |
+| `--ui-dashboard-icon-color`                | `var(--c8)`           | Ícones (recolher, sair, ☰)        |
+| `--ui-dashboard-icon-hover-background`     | `var(--b1)`           | Hover dos botões de ícone         |
+| `--ui-dashboard-focus-color`               | `var(--b10)`          | Contorno de foco                  |
+| `--ui-dashboard-z-index`                   | `900`                 | Camada da gaveta no celular       |
+| `--ui-dashboard-backdrop`                  | `rgba(11,11,11,.4)`   | Fundo atrás da gaveta             |
+
+O breadcrumb e a troca de tema do cabeçalho usam `--ui-breadcrumb-*` e `--ui-theme-toggle-*`.
+
+#### `ui-layout-auth`
+
+Tela dividida para login, cadastro e recuperação de senha: painel da marca à esquerda e o seu
+conteúdo à direita. Abaixo de **900px**, o painel vira uma faixa com logo e título.
+
+```html
+<ui-layout-auth [panel]="{
+  logo: { src: '/logo.svg', alt: 'Minha empresa', width: 24, height: 24 },
+  image: { src: '/ilustracao.svg', alt: '', width: 420, height: 320 },
+  title: 'Bem-vindo de volta',
+  description: 'Acesse sua conta para continuar.'
+}">
+  <router-outlet />
+</ui-layout-auth>
+```
+
+`logo`, `image` e `description` são opcionais. A imagem é carregada com prioridade (costuma ser o
+maior elemento da tela). O título do painel não é um `<h1>`: o `<h1>` fica com a página projetada
+(ex.: "Entrar").
+
+| Variável                             | Padrão                            | Controla                       |
+| ------------------------------------ | --------------------------------- | ------------------------------ |
+| `--ui-auth-padding`                  | `14px`                            | Margem em volta de tudo        |
+| `--ui-auth-gap`                      | `14px`                            | Espaço entre painel e conteúdo |
+| `--ui-auth-background`               | `var(--white)`                    | Fundo da página                |
+| `--ui-auth-panel-width`              | `1fr`                             | Largura do painel (ex.: `40%`) |
+| `--ui-auth-panel-padding`            | `48px`                            | Espaçamento do painel          |
+| `--ui-auth-panel-border-radius`      | `20px`                            | Arredondamento do painel       |
+| `--ui-auth-panel-background`         | `var(--g1)`                       | Fundo do painel (aceita gradiente) |
+| `--ui-auth-logo-height`              | `32px`                            | Altura do logo                 |
+| `--ui-auth-image-max-width`          | `420px`                           | Largura máxima da ilustração   |
+| `--ui-auth-title-color`              | `var(--b12)`                      | Cor do título                  |
+| `--ui-auth-title-font-size`          | `clamp(22px, 2vw + 10px, 32px)`   | Tamanho do título              |
+| `--ui-auth-description-color`        | `var(--c8)`                       | Cor da descrição               |
+| `--ui-auth-description-font-size`    | `15px`                            | Tamanho da descrição           |
+| `--ui-auth-content-padding`          | `32px 16px`                       | Espaçamento da área do conteúdo |
+| `--ui-auth-content-max-width`        | `420px`                           | Largura máxima do conteúdo     |
+
 ### Em construção
 
 `ui-file-table` ainda não tem template nem estilos. Ele pode ser montado sobre o `ui-table`

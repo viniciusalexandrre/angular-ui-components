@@ -33,3 +33,13 @@ export {
   type PieChartProps,
 } from '../../../reusable-union-kit/src/lib/components/graphics/pie-chart/pie-chart';
 export { formatBytes } from '../../../reusable-union-kit/src/lib/utils/conversion';
+
+export {
+  UiAuthLayout,
+  type UiAuthLayoutPanel,
+} from '../../../reusable-union-kit/src/lib/layout/auth/auth';
+export {
+  UiDashboardLayout,
+  type UiDashboardMenuItem,
+  type UiDashboardUser,
+} from '../../../reusable-union-kit/src/lib/layout/dashboard/dashboard';

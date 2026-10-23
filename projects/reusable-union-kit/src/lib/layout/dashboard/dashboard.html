@@ -1,0 +1,135 @@
+<div class="dashboard" [class.collapsed]="collapsed()" [class.mobile-open]="mobileOpen()">
+  <aside class="sidebar" [id]="sidebarId">
+    <div class="sidebar-header">
+      <div class="brand">
+        @if (brandLogo(); as logo) {
+          <img class="brand-logo" [src]="logo" alt="" width="24" height="24" />
+        }
+        @if (brandName()) {
+          <strong class="brand-name">{{ brandName() }}</strong>
+        }
+      </div>
+
+      <button
+        class="icon-button collapse-button"
+        type="button"
+        [attr.aria-label]="collapsed() ? expandLabel() : collapseLabel()"
+        [attr.aria-expanded]="!collapsed()"
+        [attr.aria-controls]="sidebarId"
+        (click)="toggle()"
+      >
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <rect x="2" y="3" width="14" height="12" rx="2" />
+          <path d="M7 3v12" />
+          @if (collapsed()) {
+            <path d="M10.5 7.5L12 9l-1.5 1.5" />
+          } @else {
+            <path d="M12 7.5L10.5 9 12 10.5" />
+          }
+        </svg>
+      </button>
+
+      <button
+        class="icon-button close-button"
+        type="button"
+        [attr.aria-label]="closeMenuLabel()"
+        (click)="mobileOpen.set(false)"
+      >
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false">
+          <path d="M3 3l10 10M13 3L3 13" />
+        </svg>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav" [attr.aria-label]="menuLabel()">
+      <ul>
+        @for (item of menu(); track item.id) {
+          <li>
+            <a
+              class="nav-link"
+              [routerLink]="item.link"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+              [attr.title]="collapsed() ? item.text : null"
+              (click)="mobileOpen.set(false)"
+            >
+              @if (item.icon) {
+                <img class="nav-icon" [src]="item.icon" alt="" width="16" height="16" />
+              } @else {
+                <span class="nav-icon nav-initial" aria-hidden="true">{{ item.text.charAt(0) }}</span>
+              }
+              <span class="nav-text">{{ item.text }}</span>
+            </a>
+          </li>
+        }
+      </ul>
+    </nav>
+
+    @if (userState() !== 'none') {
+      <div class="user">
+        <span class="avatar" aria-hidden="true">
+          @if (user()?.avatar; as avatar) {
+            <img [src]="avatar" alt="" width="34" height="34" />
+          } @else {
+            {{ initials() }}
+          }
+        </span>
+
+        <div class="user-info">
+          @switch (userState()) {
+            @case ('loading') {
+              <ui-skeleton variant="menu" [label]="userLoadingLabel()" />
+            }
+            @case ('error') {
+              <span class="user-error" role="alert">{{ userError() }}</span>
+            }
+            @case ('content') {
+              <span class="user-name">{{ user()?.name }}</span>
+              <span class="user-email">{{ user()?.email }}</span>
+            }
+          }
+        </div>
+
+        <button
+          class="icon-button logout-button"
+          type="button"
+          [attr.aria-label]="logoutLabel()"
+          [attr.title]="logoutLabel()"
+          (click)="logout.emit()"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M6 14H3.5A1.5 1.5 0 0 1 2 12.5v-9A1.5 1.5 0 0 1 3.5 2H6M10.5 11.5L14 8l-3.5-3.5M14 8H6" />
+          </svg>
+        </button>
+      </div>
+    }
+  </aside>
+
+  <div class="backdrop" (click)="mobileOpen.set(false)"></div>
+
+  <header class="header">
+    <button
+      class="icon-button mobile-menu-button"
+      type="button"
+      [attr.aria-label]="openMenuLabel()"
+      [attr.aria-expanded]="mobileOpen()"
+      [attr.aria-controls]="sidebarId"
+      (click)="mobileOpen.set(true)"
+    >
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false">
+        <path d="M3 5h12M3 9h12M3 13h12" />
+      </svg>
+    </button>
+    <ui-breadcrumb class="header-breadcrumb" />
+    <div class="header-actions">
+      <ng-content select="[uiDashboardHeader]" />
+      @if (showThemeToggle()) {
+        <ui-theme-toggle />
+      }
+    </div>
+  </header>
+
+  <main class="main">
+    <ng-content />
+  </main>
+</div>

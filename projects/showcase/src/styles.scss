@@ -54,6 +54,17 @@ ul {
 
 /* ---------- Layout compartilhado pelos cenários ---------- */
 
+app-form,
+app-login,
+app-arquivos,
+app-painel,
+app-personalizacao {
+  display: grid;
+  gap: 20px;
+  max-width: 1100px;
+  padding-bottom: 24px;
+}
+
 .page-header {
   display: grid;
   gap: 6px;
