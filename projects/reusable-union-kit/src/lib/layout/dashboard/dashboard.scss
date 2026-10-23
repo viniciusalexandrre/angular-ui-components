@@ -97,22 +97,34 @@ $desktop: 769px;
   display: none;
 }
 
+// Itens de grid e flex não encolhem abaixo do conteúdo por padrão (min-width: auto).
+// Sem os min-width: 0 abaixo, um texto longo deixa o <li> mais largo que o <ul>.
 .sidebar-nav {
   flex: 1;
+  min-width: 0;
 
   ul {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--ui-dashboard-nav-gap, 8px);
     margin: 0;
     padding: 0;
     list-style: none;
   }
+
+  li {
+    min-width: 0;
+  }
 }
 
 .nav-link {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: 8px;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--ui-dashboard-nav-height, 40px);
   padding: var(--ui-dashboard-nav-padding, 10px 14px);
   border-radius: var(--ui-dashboard-nav-border-radius, 40px);
   background-color: var(--ui-dashboard-nav-background, var(--b-white, #f6f9ff));
@@ -152,6 +164,8 @@ $desktop: 769px;
 }
 
 .nav-text {
+  flex: 1;
+  min-width: 0;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

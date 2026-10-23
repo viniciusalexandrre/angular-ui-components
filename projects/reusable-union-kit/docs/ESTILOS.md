@@ -911,6 +911,7 @@ menu: UiDashboardMenuItem[] = [
 | `--ui-dashboard-brand-color`               | `var(--c8)`           | Cor do nome da marca              |
 | `--ui-dashboard-brand-font-size`           | `13px`                | Tamanho do nome da marca          |
 | `--ui-dashboard-nav-gap`                   | `8px`                 | Espaço entre os links             |
+| `--ui-dashboard-nav-height`                | `40px`                | Altura mínima de cada link        |
 | `--ui-dashboard-nav-padding`               | `10px 14px`           | Espaçamento dos links             |
 | `--ui-dashboard-nav-border-radius`         | `40px`                | Arredondamento dos links          |
 | `--ui-dashboard-nav-background`            | `var(--b-white)`      | Fundo dos links                   |
