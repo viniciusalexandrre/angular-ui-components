@@ -1,0 +1,9 @@
+<fieldset class="fieldset">
+  <legend class="fieldset-legend">{{ title() }}</legend>
+  @if (description()) {
+    <p class="fieldset-description">{{ description() }}</p>
+  }
+  <div class="fieldset-content">
+    <ng-content />
+  </div>
+</fieldset>

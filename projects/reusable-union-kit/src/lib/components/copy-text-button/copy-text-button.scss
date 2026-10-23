@@ -22,7 +22,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--ui-input-focus-color, var(--b10, #1769aa));
+    outline: 2px solid var(--ui-copy-button-focus-color, var(--ui-input-focus-color, var(--b10, #1769aa)));
     outline-offset: 2px;
   }
 

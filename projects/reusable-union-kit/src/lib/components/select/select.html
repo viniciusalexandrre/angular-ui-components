@@ -1,1 +1,58 @@
-<p>select works!</p>
+<ui-field
+  [id]="id()"
+  [label]="label()"
+  [hint]="hint()"
+  [required]="required()"
+  [errors]="errors()"
+  [showErrors]="showErrors()"
+>
+  <div class="control">
+    <button
+      class="trigger"
+      type="button"
+      role="combobox"
+      aria-haspopup="listbox"
+      [id]="id()"
+      [disabled]="disabled()"
+      [attr.aria-expanded]="isOpen()"
+      [attr.aria-controls]="listboxId()"
+      [attr.aria-activedescendant]="activeDescendant()"
+      [attr.aria-invalid]="showErrors()"
+      [attr.aria-required]="required()"
+      [attr.aria-readonly]="readonly() || null"
+      [attr.aria-describedby]="describedBy()"
+      (click)="toggle()"
+      (keydown)="handleKeydown($event)"
+      (blur)="handleBlur()"
+    >
+      <span class="trigger-text" [class.placeholder]="!selectedOption()">{{ displayText() }}</span>
+      <svg class="arrow" [class.rotate]="isOpen()" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <path d="M3 6l5 5 5-5" />
+      </svg>
+    </button>
+
+    @if (isOpen()) {
+      <div class="panel">
+        @if (options().length === 0) {
+          <span class="panel-message" role="status">{{ emptyText() }}</span>
+        } @else {
+          <ul class="options" role="listbox" [id]="listboxId()" [attr.aria-label]="label()">
+            @for (option of options(); track option.value; let i = $index) {
+              <li
+                role="option"
+                [id]="optionId(i)"
+                [class.active]="i === activeIndex()"
+                [attr.aria-selected]="option.value === value()"
+                [attr.aria-disabled]="option.disabled || null"
+                (mousedown)="$event.preventDefault()"
+                (click)="select(option)"
+              >
+                {{ option.label }}
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    }
+  </div>
+</ui-field>

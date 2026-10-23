@@ -6,7 +6,7 @@
   box-sizing: border-box;
   height: var(--ui-button-height, 40px);
   padding: var(--ui-button-padding, 0 20px);
-  border: 1px solid transparent;
+  border: var(--ui-button-border-width, 1px) solid transparent;
   border-radius: var(--ui-button-border-radius, 10px);
   font-family: var(--ui-button-font-family, inherit);
   font-size: var(--ui-button-font-size, 14px);
@@ -65,9 +65,14 @@
   outline-offset: 2px;
 }
 
-:host(:disabled) {
+:host(:disabled),
+:host([aria-disabled='true']) {
   cursor: not-allowed;
-  opacity: 0.55;
+  opacity: var(--ui-button-disabled-opacity, 0.55);
+}
+
+:host([aria-disabled='true']) {
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

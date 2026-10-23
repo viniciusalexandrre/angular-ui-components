@@ -1,1 +1,30 @@
-<p>pie-chart works!</p>
+<div class="pie-chart-card">
+  <h3 class="chart-title">{{ title() }}</h3>
+  <div class="chart-content">
+    <div class="chart-container">
+      <div
+        class="donut"
+        role="img"
+        [attr.aria-label]="title() + ': ' + percentage() + '%'"
+        [style.--_percentage.%]="percentage()"
+        [style.--_fill]="data()[0]?.color"
+        [style.--_track]="data()[1]?.color"
+      ></div>
+    </div>
+    <div class="legend-container">
+      @for (item of data(); track item.label; let i = $index) {
+        <div class="legend-card">
+          <span
+            class="card-indicator"
+            [class.card-indicator-track]="i > 0"
+            [style.background-color]="item.color"
+          ></span>
+          <div class="card-content">
+            <strong class="card-value">{{ item.value }}</strong>
+            <span class="card-label">{{ item.label }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

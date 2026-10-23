@@ -1,1 +1,47 @@
-<p>menu works!</p>
+<button
+  #trigger
+  class="menu-trigger"
+  type="button"
+  aria-haspopup="menu"
+  [attr.aria-expanded]="isOpen()"
+  [attr.aria-controls]="isOpen() ? menuId : null"
+  [attr.aria-label]="label()"
+  (click)="toggle()"
+  (keydown)="handleTriggerKeydown($event)"
+>
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
+    <circle cx="8" cy="3" r="1.5" />
+    <circle cx="8" cy="8" r="1.5" />
+    <circle cx="8" cy="13" r="1.5" />
+  </svg>
+</button>
+
+@if (isOpen()) {
+  <ul
+    #panel
+    class="menu-panel"
+    role="menu"
+    [id]="menuId"
+    [attr.aria-label]="label()"
+    [style.top.px]="position().top"
+    [style.right.px]="position().right"
+    (keydown)="handleMenuKeydown($event)"
+  >
+    @for (item of items(); track item.id) {
+      <li role="none">
+        <button
+          #menuItem
+          class="menu-item"
+          type="button"
+          role="menuitem"
+          tabindex="-1"
+          [class.danger]="item.danger"
+          [attr.aria-disabled]="item.disabled || null"
+          (click)="choose(item)"
+        >
+          {{ item.label }}
+        </button>
+      </li>
+    }
+  </ul>
+}

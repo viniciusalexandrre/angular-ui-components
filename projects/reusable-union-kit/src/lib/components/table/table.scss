@@ -1,0 +1,106 @@
+@use '../../styles/input-base' as base;
+
+:host {
+  display: block;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border: var(--ui-table-border, 0);
+  border-radius: var(--ui-table-border-radius, 0);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--ui-table-color, var(--c9, #404040));
+  font-size: var(--ui-table-font-size, 14px);
+
+  th {
+    padding: var(--ui-table-cell-padding, 10px 12px);
+    border-bottom: 1px solid var(--ui-table-header-border-color, var(--b2, #d9e2ff));
+    background: var(--ui-table-header-background, transparent);
+    color: var(--ui-table-header-color, var(--c7, #707070));
+    font-weight: var(--ui-table-header-font-weight, 600);
+    text-align: start;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: var(--ui-table-cell-padding, 10px 12px);
+    border-bottom: 1px solid var(--ui-table-row-border-color, var(--b1, #e7ecff));
+    white-space: var(--ui-table-cell-white-space, normal);
+    vertical-align: middle;
+  }
+
+  tbody tr:not(.detail-row):hover {
+    background: var(--ui-table-row-hover-background, var(--b0, #f0f3ff));
+  }
+
+  tr.expanded > td {
+    border-bottom-color: transparent;
+  }
+}
+
+.col-toggle,
+.col-actions {
+  width: 1%;
+}
+
+.col-actions {
+  text-align: end;
+}
+
+.toggle {
+  display: grid;
+  place-items: center;
+  width: var(--ui-table-toggle-size, 28px);
+  height: var(--ui-table-toggle-size, 28px);
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ui-table-toggle-color, var(--c8, #595959));
+  cursor: pointer;
+
+  svg {
+    transition: transform 0.2s ease;
+  }
+
+  &[aria-expanded='true'] svg {
+    transform: rotate(90deg);
+  }
+
+  &:hover {
+    background: var(--ui-table-toggle-hover-background, var(--b1, #e7ecff));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-table-focus-color, var(--b10, #1769aa));
+    outline-offset: 2px;
+  }
+}
+
+.detail-row > td {
+  padding: var(--ui-table-detail-padding, 16px 12px 16px 52px);
+  background: var(--ui-table-detail-background, var(--b0, #f0f3ff));
+  white-space: normal;
+}
+
+.table-empty {
+  margin: 0;
+  padding: var(--ui-table-empty-padding, 32px);
+  color: var(--ui-table-empty-color, var(--c7, #707070));
+  font-size: var(--ui-table-font-size, 14px);
+  text-align: center;
+}
+
+.visually-hidden {
+  @include base.visually-hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle svg {
+    transition: none;
+  }
+}

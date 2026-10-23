@@ -1,0 +1,78 @@
+@use '../../styles/input-base' as base;
+
+// Cada variante só define os valores padrão; --ui-skeleton-* sobrescreve qualquer uma delas.
+:host {
+  display: grid;
+  grid-template-columns: var(--ui-skeleton-columns, var(--_skeleton-columns, 1fr));
+  gap: var(--ui-skeleton-gap, var(--_skeleton-gap, 12px));
+  width: 100%;
+}
+
+:host(.ui-skeleton-menu) {
+  --_skeleton-height: 36px;
+  --_skeleton-radius: 8px;
+  --_skeleton-gap: 8px;
+}
+
+:host(.ui-skeleton-table) {
+  --_skeleton-height: 48px;
+  --_skeleton-radius: 4px;
+  --_skeleton-gap: 2px;
+}
+
+:host(.ui-skeleton-form) {
+  --_skeleton-height: 40px;
+  --_skeleton-radius: 10px;
+  --_skeleton-gap: 20px;
+}
+
+:host(.ui-skeleton-input) {
+  --_skeleton-height: 40px;
+  --_skeleton-radius: 10px;
+}
+
+:host(.ui-skeleton-banner) {
+  --_skeleton-height: 240px;
+  --_skeleton-radius: 20px;
+}
+
+:host(.ui-skeleton-card) {
+  --_skeleton-height: 160px;
+  --_skeleton-radius: 15px;
+  --_skeleton-gap: 16px;
+  --_skeleton-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+.skeleton {
+  display: block;
+  width: var(--ui-skeleton-width, 100%);
+  height: var(--ui-skeleton-height, var(--_skeleton-height, 40px));
+  border-radius: var(--ui-skeleton-border-radius, var(--_skeleton-radius, 10px));
+  background: linear-gradient(
+    90deg,
+    var(--ui-skeleton-color, var(--b1, #e7ecff)) 25%,
+    var(--ui-skeleton-highlight-color, var(--b0, #f0f3ff)) 50%,
+    var(--ui-skeleton-color, var(--b1, #e7ecff)) 75%
+  );
+  background-size: 200% 100%;
+  animation: ui-skeleton-shimmer var(--ui-skeleton-animation-duration, 1.4s) ease-in-out infinite;
+}
+
+.visually-hidden {
+  @include base.visually-hidden;
+}
+
+@keyframes ui-skeleton-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

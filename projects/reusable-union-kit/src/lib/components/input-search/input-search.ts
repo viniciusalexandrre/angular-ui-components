@@ -7,6 +7,8 @@ import { FormValueControl } from '@angular/forms/signals';
   styleUrl: './input-search.scss',
   templateUrl: './input-search.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // O `id` é repassado para dentro; sem isto o atributo estático também ficaria no host.
+  host: { '[attr.id]': 'null' },
 })
 export class UiInputSearch implements FormValueControl<string> {
   readonly value = model<string>('');

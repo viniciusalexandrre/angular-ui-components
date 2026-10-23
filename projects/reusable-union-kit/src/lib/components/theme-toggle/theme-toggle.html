@@ -1,1 +1,22 @@
-<p>theme-toggle works!</p>
+<button
+  type="button"
+  class="toggle"
+  role="switch"
+  [class.dark]="isDark()"
+  [attr.aria-checked]="isDark()"
+  [attr.aria-label]="label()"
+  (click)="toggle()"
+>
+  <span class="thumb">
+    @if (isDark()) {
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
+        <path d="M6.2 1.1a.6.6 0 0 1 .1.7A5.6 5.6 0 0 0 13.6 9.7a.6.6 0 0 1 .8.7A7 7 0 1 1 5.6 1a.6.6 0 0 1 .6.1Z" />
+      </svg>
+    } @else {
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false">
+        <circle cx="8" cy="8" r="3" />
+        <path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.89 11.89l1.06 1.06M3.05 12.95l1.06-1.06M11.89 4.11l1.06-1.06" />
+      </svg>
+    }
+  </span>
+</button>

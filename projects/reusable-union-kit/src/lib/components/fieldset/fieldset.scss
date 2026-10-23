@@ -1,0 +1,34 @@
+:host {
+  display: block;
+}
+
+.fieldset {
+  display: grid;
+  gap: var(--ui-fieldset-gap, 10px);
+  min-width: 0;
+  margin: 0;
+  padding: var(--ui-fieldset-padding, 0);
+  border: var(--ui-fieldset-border, 0);
+  border-radius: var(--ui-fieldset-border-radius, 0);
+}
+
+.fieldset-legend {
+  padding: 0;
+  color: var(--ui-fieldset-title-color, var(--c8, #595959));
+  font-size: var(--ui-fieldset-title-font-size, 16px);
+  font-weight: var(--ui-fieldset-title-font-weight, 500);
+}
+
+.fieldset-description {
+  margin: 0;
+  color: var(--ui-fieldset-description-color, var(--c7, #707070));
+  font-size: var(--ui-fieldset-description-font-size, 14px);
+  font-weight: 400;
+  white-space: pre-line;
+}
+
+.fieldset-content {
+  display: grid;
+  gap: var(--ui-fieldset-content-gap, 16px);
+  margin-top: var(--ui-fieldset-content-margin-top, 10px);
+}

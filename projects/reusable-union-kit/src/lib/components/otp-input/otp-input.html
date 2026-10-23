@@ -1,1 +1,19 @@
-<p>otp-input works!</p>
+<div class="otp-input" role="group" [attr.aria-label]="label()" [class.otp-input-error]="error()">
+  @for (digit of otp(); track $index) {
+    <input
+      #otpRef
+      type="text"
+      maxlength="1"
+      inputmode="numeric"
+      [attr.autocomplete]="$first ? 'one-time-code' : 'off'"
+      [value]="digit"
+      [disabled]="disabled()"
+      [attr.aria-invalid]="error()"
+      [attr.aria-label]="digitLabel() + ' ' + ($index + 1)"
+      (input)="handleInput($index, $event)"
+      (keydown)="handleKeyDown($index, $event)"
+      (paste)="handlePaste($event)"
+      (focus)="handleFocus($event)"
+    />
+  }
+</div>

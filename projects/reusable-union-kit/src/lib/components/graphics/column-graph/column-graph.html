@@ -1,1 +1,35 @@
-<p>column-graph works!</p>
+<div class="chart-card">
+  <h3 class="chart-title">{{ title() }}</h3>
+  <div class="chart-container">
+    <div class="axis-y" aria-hidden="true">
+      @for (item of data().x_axios; track $index) {
+        <span class="axis-y-label">
+          {{ item.label }}
+        </span>
+      }
+    </div>
+    <div class="chart-content">
+      <div class="bars-container" role="list" [attr.aria-label]="title()">
+        @for (bar of data().y_axios; track bar.label) {
+          <div class="bar-wrapper" role="listitem" [attr.aria-label]="bar.label + ': ' + bar.value">
+            <div
+              class="bar-column"
+              [style.height.%]="getBarHeight(bar.value)"
+              [class.highlighted]="bar.label === highlight()"
+              [title]="bar.label + ': ' + bar.value"
+            >
+              <span class="bar-value">{{ bar.value }}</span>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="axis-x" aria-hidden="true">
+        @for (bar of data().y_axios; track bar.label) {
+          <div class="axis-x-label" [class.highlighted-text]="bar.label === highlight()">
+            {{ bar.label }}
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

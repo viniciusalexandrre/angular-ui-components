@@ -1,1 +1,48 @@
-<p>pagination works!</p>
+<nav class="pagination" [attr.aria-label]="label()">
+  <ul class="pagination-list">
+    @if (totalPages() > 1) {
+      <li>
+        <button
+          type="button"
+          class="pagination-button"
+          [attr.aria-label]="previousLabel()"
+          [disabled]="displayPage() === 1"
+          (click)="goTo(displayPage() - 1)"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M10 3L5 8l5 5" />
+          </svg>
+        </button>
+      </li>
+    }
+    @for (page of pages(); track page) {
+      <li>
+        <button
+          type="button"
+          class="pagination-button"
+          [class.active]="page === displayPage()"
+          [attr.aria-current]="page === displayPage() ? 'page' : null"
+          [attr.aria-label]="pageLabel() + ' ' + page"
+          (click)="goTo(page)"
+        >
+          {{ page }}
+        </button>
+      </li>
+    }
+    @if (totalPages() > 1) {
+      <li>
+        <button
+          type="button"
+          class="pagination-button"
+          [attr.aria-label]="nextLabel()"
+          [disabled]="displayPage() === totalPages()"
+          (click)="goTo(displayPage() + 1)"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M6 3l5 5-5 5" />
+          </svg>
+        </button>
+      </li>
+    }
+  </ul>
+</nav>

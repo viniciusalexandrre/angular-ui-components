@@ -7,6 +7,8 @@ import { ValidationError } from '@angular/forms/signals';
   styleUrl: './field.scss',
   templateUrl: './field.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // O `id` é repassado para dentro; sem isto o atributo estático também ficaria no host.
+  host: { '[attr.id]': 'null' },
 })
 export class UiField {
   readonly id = input.required<string>();

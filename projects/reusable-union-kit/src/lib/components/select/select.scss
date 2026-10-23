@@ -1,0 +1,124 @@
+@use '../../styles/input-base' as base;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.control {
+  position: relative;
+}
+
+// Usa a mesma base dos campos de texto: --ui-input-* também afeta o select.
+.trigger {
+  @include base.input-base;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: var(--ui-select-width, var(--ui-input-width, 100%));
+  background-color: var(--ui-select-background, var(--ui-input-background, var(--b0, #f0f3ff)));
+  text-align: left;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background-color: var(--ui-select-hover-background, var(--b1, #e7ecff));
+  }
+}
+
+.trigger-text {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  &.placeholder {
+    color: var(--ui-input-placeholder-color, var(--c7, #666));
+  }
+}
+
+.arrow {
+  flex-shrink: 0;
+  color: var(--ui-select-arrow-color, var(--c8, #595959));
+  transition: transform 0.3s ease;
+
+  &.rotate {
+    transform: rotate(180deg);
+  }
+}
+
+.panel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: var(--ui-select-z-index, 1000);
+  margin-top: var(--ui-select-panel-margin-top, 4px);
+  max-height: var(--ui-select-max-height, 280px);
+  overflow-y: auto;
+  padding: var(--ui-select-panel-padding, 0);
+  border: var(--ui-select-panel-border, 1px solid var(--b1, #e7ecff));
+  border-radius: var(--ui-select-panel-border-radius, 8px);
+  background-color: var(--ui-select-panel-background, var(--b0, #f0f3ff));
+  box-shadow: var(--ui-select-panel-shadow, 0 4px 6px rgba(0, 0, 0, 0.1));
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: var(--ui-select-scrollbar-color, var(--b2, #d9e2ff));
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--ui-select-scrollbar-hover-color, var(--b4, #b5c6f9));
+  }
+
+  &::-webkit-scrollbar-track {
+    border-left: 1px solid var(--b1, #e7ecff);
+    background-color: var(--ui-select-panel-background, var(--b0, #f0f3ff));
+  }
+}
+
+.panel-message {
+  display: block;
+  padding: 0.75rem;
+  color: var(--ui-select-message-color, var(--c7, #707070));
+  font-size: var(--ui-select-font-size, 14px);
+}
+
+.options {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[role='option'] {
+  padding: var(--ui-select-option-padding, 10px 14px);
+  color: var(--ui-select-option-color, var(--c9, #404040));
+  font-size: var(--ui-select-font-size, 14px);
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover,
+  &.active {
+    background-color: var(--ui-select-option-active-background, var(--b1, #e7ecff));
+  }
+
+  &[aria-selected='true'] {
+    font-weight: var(--ui-select-option-selected-font-weight, 600);
+  }
+
+  &[aria-disabled='true'] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arrow,
+  [role='option'] {
+    transition: none;
+  }
+}

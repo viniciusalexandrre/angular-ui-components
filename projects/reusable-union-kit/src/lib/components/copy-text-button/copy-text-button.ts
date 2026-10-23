@@ -17,7 +17,6 @@ import {
 })
 export class UiCopyTextButton {
   readonly text = input.required<string>();
-  /** Tempo (ms) que o estado "copiado" fica visível. */
   readonly resetDelay = input<number>(2000);
   readonly copyLabel = input<string>('Copiar');
   readonly copiedLabel = input<string>('Copiado!');

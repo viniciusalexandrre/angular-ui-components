@@ -1,1 +1,4 @@
-<p>skeleton works!</p>
+<span class="visually-hidden">{{ label() }}</span>
+@for (block of blocks(); track block) {
+  <span class="skeleton" aria-hidden="true"></span>
+}

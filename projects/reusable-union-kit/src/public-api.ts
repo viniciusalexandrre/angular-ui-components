@@ -14,3 +14,4 @@ export * from './lib/components/field/field';
 export * from './lib/components/input/input';
 export * from './lib/components/input-password/input-password';
 export * from './lib/components/input-search/input-search';
+export * from './lib/components/select/select';

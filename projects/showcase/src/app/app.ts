@@ -1,13 +1,14 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { UiInput } from 'reusable-union-kit';
+import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { CENARIOS } from './app.routes';
+import { UiBreadcrumb, UiThemeToggle } from './kit';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, UiInput],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, UiBreadcrumb, UiThemeToggle],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App {
-  protected readonly title = signal('showcase');
+  protected readonly cenarios = CENARIOS;
 }

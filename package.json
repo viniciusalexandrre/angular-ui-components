@@ -9,7 +9,8 @@
     "watch": "ng build reusable-union-kit --watch --configuration development",
     "test": "ng test reusable-union-kit",
     "test:showcase": "ng test showcase",
-    "pack": "npm run build && cd dist/reusable-union-kit && npm pack"
+    "pack": "npm run build && cd dist/reusable-union-kit && npm pack",
+    "publish:dist": "bash scripts/publish-dist.sh"
   },
   "prettier": {
     "printWidth": 100,

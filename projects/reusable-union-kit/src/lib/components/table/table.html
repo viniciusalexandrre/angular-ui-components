@@ -1,1 +1,83 @@
-<p>table works!</p>
+@if (loading()) {
+  <ui-skeleton variant="table" [quantity]="loadingRows()" [label]="loadingText()" />
+} @else if (rows().length === 0) {
+  <p class="table-empty" role="status">{{ emptyText() }}</p>
+} @else {
+  <div class="table-wrapper">
+    <table class="table" [attr.aria-label]="label() || null">
+      <thead>
+        <tr>
+          @if (detail()) {
+            <th scope="col" class="col-toggle"><span class="visually-hidden">{{ detailsLabel() }}</span></th>
+          }
+          @for (column of columns(); track column.key) {
+            <th scope="col" [style.text-align]="column.align" [style.width]="column.width">
+              {{ column.header }}
+            </th>
+          }
+          @if (actions().length) {
+            <th scope="col" class="col-actions">
+              <span class="visually-hidden">{{ actionsLabel() }}</span>
+            </th>
+          }
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (row of rows(); track rowKey()(row); let i = $index) {
+          <tr [class.expanded]="isExpanded(row)">
+            @if (detail()) {
+              <td class="col-toggle">
+                <button
+                  class="toggle"
+                  type="button"
+                  [attr.aria-expanded]="isExpanded(row)"
+                  [attr.aria-controls]="isExpanded(row) ? detailId(i) : null"
+                  [attr.aria-label]="(isExpanded(row) ? hideDetailsLabel() : showDetailsLabel()) + ': ' + rowName(row)"
+                  (click)="toggleRow(row)"
+                >
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                    <path d="M6 3l5 5-5 5" />
+                  </svg>
+                </button>
+              </td>
+            }
+
+            @for (column of columns(); track column.key) {
+              <td [style.text-align]="column.align">
+                @if (cellTemplateMap().get(column.key); as template) {
+                  <ng-container
+                    [ngTemplateOutlet]="template"
+                    [ngTemplateOutletContext]="{ $implicit: row, value: cellValue(row, column) }"
+                  />
+                } @else {
+                  {{ cellValue(row, column) }}
+                }
+              </td>
+            }
+
+            @if (actions().length) {
+              <td class="col-actions">
+                <ui-menu
+                  [items]="menuItems().get(row) ?? []"
+                  [label]="actionsLabel() + ': ' + rowName(row)"
+                  (itemSelect)="emitAction($event, row)"
+                />
+              </td>
+            }
+          </tr>
+
+          @if (detail(); as detail) {
+            @if (isExpanded(row)) {
+              <tr class="detail-row" [id]="detailId(i)">
+                <td [attr.colspan]="colspan()">
+                  <ng-container [ngTemplateOutlet]="detail.template" [ngTemplateOutletContext]="{ $implicit: row }" />
+                </td>
+              </tr>
+            }
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+}

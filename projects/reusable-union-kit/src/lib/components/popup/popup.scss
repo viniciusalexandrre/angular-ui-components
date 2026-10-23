@@ -1,0 +1,110 @@
+// Cada tipo define as variáveis "internas" --_popup-*; quem usa a lib sobrescreve as --ui-popup-*.
+:host {
+  position: fixed;
+  top: var(--ui-popup-top, 20px);
+  right: var(--ui-popup-right, 20px);
+  z-index: var(--ui-popup-z-index, 9999);
+  display: block;
+  box-sizing: border-box;
+  min-width: min(var(--ui-popup-min-width, 300px), calc(100vw - 40px));
+  max-width: min(var(--ui-popup-max-width, 500px), calc(100vw - 40px));
+  padding: var(--ui-popup-padding, 15px 20px);
+  border-left: var(--ui-popup-border-width, 4px) solid var(--_popup-border);
+  border-radius: var(--ui-popup-border-radius, 8px);
+  background: var(--_popup-background);
+  color: var(--_popup-color);
+  box-shadow: var(--ui-popup-shadow, 0 4px 12px rgba(0, 0, 0, 0.15));
+  font-size: var(--ui-popup-font-size, 14px);
+  animation: ui-popup-enter var(--ui-popup-animation-duration, 0.3s) ease-out;
+}
+
+:host(.ui-popup-success) {
+  --_popup-background: var(--ui-popup-success-background, #d4edda);
+  --_popup-color: var(--ui-popup-success-color, #155724);
+  --_popup-border: var(--ui-popup-success-border-color, #28a745);
+}
+
+:host(.ui-popup-error) {
+  --_popup-background: var(--ui-popup-error-background, #f8d7da);
+  --_popup-color: var(--ui-popup-error-color, #721c24);
+  --_popup-border: var(--ui-popup-error-border-color, #dc3545);
+}
+
+:host(.ui-popup-warning) {
+  --_popup-background: var(--ui-popup-warning-background, #fff3cd);
+  --_popup-color: var(--ui-popup-warning-color, #856404);
+  --_popup-border: var(--ui-popup-warning-border-color, #ffc107);
+}
+
+:host(.ui-popup-info) {
+  --_popup-background: var(--ui-popup-info-background, #d1ecf1);
+  --_popup-color: var(--ui-popup-info-color, #0c5460);
+  --_popup-border: var(--ui-popup-info-border-color, #17a2b8);
+}
+
+// Use com `<ui-popup animate.leave="ui-popup-leave">` para animar a saída.
+:host(.ui-popup-leave) {
+  animation: ui-popup-leave var(--ui-popup-animation-duration, 0.3s) ease-in forwards;
+}
+
+.popup-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.popup-icon {
+  flex-shrink: 0;
+  font-size: var(--ui-popup-icon-size, 20px);
+}
+
+.popup-message {
+  flex: 1;
+  font-weight: var(--ui-popup-font-weight, 500);
+  line-height: 1.4;
+}
+
+.popup-close {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  padding: 4px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 1px;
+    opacity: 1;
+  }
+}
+
+@keyframes ui-popup-enter {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+}
+
+@keyframes ui-popup-leave {
+  to {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host,
+  :host(.ui-popup-leave) {
+    animation-duration: 1ms;
+  }
+}

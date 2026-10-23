@@ -1,32 +1,41 @@
-import { Component, inject, linkedSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter } from 'rxjs';
 
+export interface UiBreadcrumbItem {
+  label: string;
+  url: string;
+}
+
+/** Monta os itens a partir de `data: { breadcrumb: 'Rótulo' }` nas rotas ativas. */
 @Component({
-  imports: [],
+  imports: [RouterLink],
   selector: 'ui-breadcrumb',
   styleUrl: './breadcrumb.scss',
   templateUrl: './breadcrumb.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UiBreadcrumb {
-  private router = inject(Router);
+  private readonly router = inject(Router);
 
-  private navigationEnd = toSignal(
+  readonly label = input<string>('Navegação estrutural');
+  readonly separator = input<string>('/');
+
+  private readonly navigationEnd = toSignal(
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)),
   );
 
-  breadcrumbs = linkedSignal(() => {
+  readonly breadcrumbs = computed(() => {
     this.navigationEnd();
-    const result = this.buildBreadcrumbs(this.router.routerState.root);
-    return result;
+    return this.buildBreadcrumbs(this.router.routerState.root);
   });
 
   private buildBreadcrumbs(
     route: ActivatedRoute,
     url: string = '',
-    breadcrumbs: { label: string; url: string }[] = [],
-  ): { label: string; url: string }[] {
+    breadcrumbs: UiBreadcrumbItem[] = [],
+  ): UiBreadcrumbItem[] {
     const child = route.firstChild;
 
     if (!child) return breadcrumbs;

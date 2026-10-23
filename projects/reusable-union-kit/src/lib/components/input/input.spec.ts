@@ -29,6 +29,15 @@ describe('UiInput com Signal Forms', () => {
     expect(input.required).toBe(true);
   });
 
+  it('com id estático, o id fica só no <input> e o label aponta para ele', async () => {
+    const fixture = TestBed.createComponent(FormHost);
+    await fixture.whenStable();
+    const el: HTMLElement = fixture.nativeElement;
+
+    expect(el.querySelectorAll('#nome').length).toBe(1);
+    expect(el.querySelector('label')!.control).toBe(el.querySelector('input'));
+  });
+
   it('sincroniza o valor digitado com o model do formulário', async () => {
     const fixture = TestBed.createComponent(FormHost);
     await fixture.whenStable();

@@ -23,6 +23,8 @@ export interface AutocompleteOption {
   templateUrl: './autocomplete.html',
   styleUrl: './autocomplete.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // O `id` é repassado para dentro; sem isto o atributo estático também ficaria no host.
+  host: { '[attr.id]': 'null' },
 })
 export class UiAutocomplete implements FormValueControl<string | null> {
   readonly id = input.required<string>();
@@ -40,7 +42,7 @@ export class UiAutocomplete implements FormValueControl<string | null> {
   readonly touched = input<boolean>(false);
   readonly errors = input<readonly ValidationError[]>([]);
 
-  readonly options = input<readonly AutocompleteOption[]>([]);
+  readonly options = input.required<readonly AutocompleteOption[]>();
   readonly isLoading = input<boolean>(false);
   /** Mensagem exibida na lista quando a busca falha. */
   readonly loadError = input<string | null>(null);
@@ -65,9 +67,17 @@ export class UiAutocomplete implements FormValueControl<string | null> {
 
   protected readonly listboxId = computed(() => `${this.id()}-options`);
 
-  protected readonly showPanel = computed(
-    () => this.isOpen() && this.searchTerm().trim().length >= this.minSearchLength(),
-  );
+  protected readonly showPanel = computed(() => {
+    const term = this.searchTerm().trim();
+    return this.isOpen() && (term.length === 0 || term.length >= this.minSearchLength());
+  });
+
+  protected readonly panelState = computed<'loading' | 'error' | 'empty' | 'options'>(() => {
+    if (this.isLoading()) return 'loading';
+    if (this.loadError()) return 'error';
+    if (this.options().length === 0) return 'empty';
+    return 'options';
+  });
 
   protected readonly showErrors = computed(
     () => this.hasInvalidValue() || (this.invalid() && this.touched()),
@@ -166,7 +176,9 @@ export class UiAutocomplete implements FormValueControl<string | null> {
 
     if (this.value() !== null) return;
 
-    const match = this.options().find((option) => option.label.toLowerCase() === term.toLowerCase());
+    const match = this.options().find(
+      (option) => option.label.toLowerCase() === term.toLowerCase(),
+    );
 
     if (match) {
       this.select(match);

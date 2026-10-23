@@ -24,13 +24,19 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--ui-input-focus-color, var(--b10, #1769aa));
+    outline: 2px solid var(--ui-input-focus-color, var(--b4, #1769aa));
     outline-offset: 2px;
   }
 
   &[aria-invalid='true'] {
     border-color: var(--ui-input-error-color, var(--erro, #b3261e));
     background-color: var(--ui-input-error-background, var(--bg-erro, transparent));
+    outline: var(--ui-input-error-color, var(--erro, #b3261e));
+
+    &:focus-visible {
+      outline: 2px solid var(--ui-input-error-color, var(--erro, #b3261e));
+      outline-offset: 2px;
+    }
   }
 
   &:disabled {
@@ -59,6 +65,11 @@
   border-radius: 50%;
   background: var(--ui-icon-button-background, transparent);
   color: var(--ui-icon-button-color, var(--c8, #595959));
+  transition: background-color 120ms ease;
+
+  &:hover:not(:disabled) {
+    background: var(--ui-icon-button-hover-background, var(--b1, #e7ecff));
+  }
   cursor: pointer;
   transform: translateY(-50%);
 

@@ -1,1 +1,21 @@
-<p>modal works!</p>
+<div class="backdrop" (click)="handleBackdropClick()">
+  <div
+    #dialog
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    tabindex="-1"
+    [attr.aria-label]="label() || null"
+    [attr.aria-labelledby]="labelledBy()"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="modal-header">
+      <button type="button" class="modal-close" [attr.aria-label]="closeLabel()" (click)="close.emit()">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false">
+          <path d="M3 3l10 10M13 3L3 13" />
+        </svg>
+      </button>
+    </div>
+    <ng-content />
+  </div>
+</div>

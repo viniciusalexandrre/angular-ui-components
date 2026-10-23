@@ -16,6 +16,8 @@ import { UiField } from '../field/field';
   templateUrl: './input-password.html',
   styleUrl: './input-password.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // O `id` é repassado para dentro; sem isto o atributo estático também ficaria no host.
+  host: { '[attr.id]': 'null' },
 })
 export class UiInputPassword implements FormValueControl<string> {
   readonly value = model<string>('');
@@ -34,7 +36,7 @@ export class UiInputPassword implements FormValueControl<string> {
   readonly id = input.required<string>();
   readonly hint = input<string>('');
   readonly placeholder = input<string>('');
-  /** Use 'new-password' em telas de cadastro/troca de senha. */
+
   readonly autocomplete = input<'current-password' | 'new-password' | 'off'>('current-password');
   readonly showPasswordLabel = input<string>('Mostrar senha');
   readonly hidePasswordLabel = input<string>('Ocultar senha');

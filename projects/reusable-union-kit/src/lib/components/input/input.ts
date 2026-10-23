@@ -8,6 +8,8 @@ import { UiField } from '../field/field';
   imports: [UiField],
   styleUrl: './input.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // O `id` é repassado para dentro; sem isto o atributo estático também ficaria no host.
+  host: { '[attr.id]': 'null' },
 })
 export class UiInput implements FormValueControl<string | null> {
   readonly value = model<string | null>('');

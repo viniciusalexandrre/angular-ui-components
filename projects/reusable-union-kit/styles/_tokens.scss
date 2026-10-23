@@ -1,4 +1,8 @@
-/* Design tokens (light/dark) usados pelos componentes do reusable-union-kit. */
+/*
+ * Design tokens (light/dark) usados pelos componentes do reusable-union-kit.
+ * Para trocar uma cor em toda a biblioteca, redefina o token no :root da aplicação
+ * (depois do @use). Veja docs/ESTILOS.md.
+ */
 :root {
   /* Gradient - Light Mode */
   --green: linear-gradient(274.05deg, #12a454 33.64%, #7fdfbd 122.13%);
@@ -108,5 +112,26 @@
   --c2: #1a1a1a; /* Cinza escuro */
   --c1: #121212; /* Preto quase puro */
   --white: #000000; /* Preto */
+
+  /* Box-shadow - Dark Mode */
+  --shadow-1:
+    0.625rem 0.9375rem 1.5625rem rgba(0, 0, 0, 0.45),
+    -0.625rem -0.3125rem 1.5625rem rgba(0, 0, 0, 0.25);
+
+  --shadow-2:
+    0.25rem 0.5rem 1.5625rem rgba(0, 0, 0, 0.4),
+    -0.3125rem -0.125rem 1.5625rem rgba(0, 0, 0, 0.2);
+
+  --shadow-hover:
+    0rem 0rem 0rem 0.25rem rgba(32, 32, 32, 0.92),
+    0rem 0rem 0rem 0.3125rem rgba(97, 132, 235, 0.6);
+
+  --shadow-erro:
+    0rem 0rem 0rem 0.25rem rgba(60, 20, 26, 0.6),
+    0rem 0rem 0rem 0.3125rem rgba(241, 143, 159, 0.6);
+
+  /* Error Color - Dark Mode */
+  --erro: #f18f9f;
+  --bg-erro: rgba(241, 143, 159, 0.08);
 }
 

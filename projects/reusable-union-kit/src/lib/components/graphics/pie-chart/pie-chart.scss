@@ -1,0 +1,100 @@
+:host {
+  display: block;
+}
+
+.pie-chart-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--ui-pie-chart-padding, 10px);
+  border: var(--ui-pie-chart-border, 1px solid var(--b1, #e7ecff));
+  border-radius: var(--ui-pie-chart-border-radius, 15px);
+  background: var(--ui-pie-chart-background, var(--white, #fff));
+}
+
+.chart-title {
+  margin: 0 0 12px;
+  color: var(--ui-pie-chart-title-color, var(--c7, #707070));
+  font-size: var(--ui-pie-chart-title-font-size, 18px);
+  text-align: center;
+}
+
+.chart-content {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  width: 100%;
+}
+
+.chart-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ui-pie-chart-size, 80px);
+  height: var(--ui-pie-chart-size, 80px);
+  margin-bottom: 10px;
+}
+
+// --_fill/--_track vêm de `color` em data; sem ela, valem as variáveis --ui-pie-chart-*.
+.donut {
+  --_fill-color: var(--_fill, var(--ui-pie-chart-fill-color, var(--b6, #8ba7f9)));
+  --_track-color: var(--_track, var(--ui-pie-chart-track-color, var(--b3, #c6d4fe)));
+
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--_fill-color) 0% var(--_percentage),
+    var(--_track-color) var(--_percentage) 100%
+  );
+  -webkit-mask: radial-gradient(circle, transparent 62%, black 63%);
+  mask: radial-gradient(circle, transparent 62%, black 63%);
+}
+
+.legend-container {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+}
+
+.legend-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 28px;
+  margin-left: 20px;
+  overflow: hidden;
+  border: var(--ui-pie-chart-legend-border, 1px solid var(--b1, #e7ecff));
+  border-radius: 12px;
+  background: var(--ui-pie-chart-legend-background, var(--white, #fff));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.card-indicator {
+  display: block;
+  width: 12px;
+  height: 100%;
+  background-color: var(--ui-pie-chart-fill-color, var(--b6, #8ba7f9));
+
+  &.card-indicator-track {
+    background-color: var(--ui-pie-chart-track-color, var(--b3, #c6d4fe));
+  }
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-left: 16px;
+}
+
+.card-value {
+  color: var(--ui-pie-chart-value-color, var(--c7, #707070));
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.card-label {
+  color: var(--ui-pie-chart-label-color, var(--c7, #707070));
+  font-size: 12px;
+  font-weight: 500;
+}

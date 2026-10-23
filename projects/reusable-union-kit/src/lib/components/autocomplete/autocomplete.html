@@ -33,27 +33,32 @@
 
     @if (showPanel()) {
       <div class="panel">
-        @if (isLoading()) {
-          <span class="panel-message" role="status">{{ loadingText() }}</span>
-        } @else if (loadError(); as message) {
-          <span class="panel-message" role="alert">{{ message }}</span>
-        } @else if (options().length === 0) {
-          <span class="panel-message" role="status">{{ emptyText() }}</span>
-        } @else {
-          <ul class="options" role="listbox" [id]="listboxId()" [attr.aria-label]="label()">
-            @for (option of options(); track option.value; let i = $index) {
-              <li
-                role="option"
-                [id]="optionId(i)"
-                [class.active]="i === activeIndex()"
-                [attr.aria-selected]="option.value === value()"
-                (mousedown)="$event.preventDefault()"
-                (click)="select(option)"
-              >
-                {{ option.label }}
-              </li>
-            }
-          </ul>
+        @switch (panelState()) {
+          @case ('loading') {
+            <span class="panel-message" role="status">{{ loadingText() }}</span>
+          }
+          @case ('error') {
+            <span class="panel-message" role="alert">{{ loadError() }}</span>
+          }
+          @case ('empty') {
+            <span class="panel-message" role="status">{{ emptyText() }}</span>
+          }
+          @default {
+            <ul class="options" role="listbox" [id]="listboxId()" [attr.aria-label]="label()">
+              @for (option of options(); track option.value; let i = $index) {
+                <li
+                  role="option"
+                  [id]="optionId(i)"
+                  [class.active]="i === activeIndex()"
+                  [attr.aria-selected]="option.value === value()"
+                  (mousedown)="$event.preventDefault()"
+                  (click)="select(option)"
+                >
+                  {{ option.label }}
+                </li>
+              }
+            </ul>
+          }
         }
       </div>
     }

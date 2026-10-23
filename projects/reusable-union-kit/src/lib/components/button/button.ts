@@ -3,13 +3,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 export type UiButtonVariant = 'primary' | 'secondary' | 'ghost';
 export type UiButtonSize = 'sm' | 'md' | 'lg';
 
-/**
- * Aplicado direto no elemento nativo, preservando todos os atributos dele
- * (type, disabled, form, aria-*, routerLink...):
- *
- * <button ui-button type="submit">Salvar</button>
- * <a ui-button variant="secondary" routerLink="/home">Início</a>
- */
 @Component({
   imports: [],
   selector: 'button[ui-button], a[ui-button]',

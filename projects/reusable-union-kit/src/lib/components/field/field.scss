@@ -11,7 +11,7 @@
     color: var(--ui-field-label-color, var(--c8, #333));
     font-family: var(--ui-field-label-font-family, inherit);
     font-size: var(--ui-field-label-font-size, 14px);
-    font-weight: var(--ui-field-label-font-weight, 500);
+    font-weight: var(--ui-field-label-font-weight, 400);
   }
 
   & > [role='alert'] {
@@ -19,6 +19,7 @@
     gap: var(--ui-field-error-gap, 2px);
     color: var(--ui-field-error-color, var(--erro, #b3261e));
     font-size: var(--ui-field-error-font-size, 13px);
+    margin-top: var(--ui-field-error-margin-top, 2px);
   }
 }
 
