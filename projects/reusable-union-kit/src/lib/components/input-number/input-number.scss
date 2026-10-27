@@ -1,0 +1,22 @@
+@use '../../styles/input-base' as base;
+
+:host {
+  display: block;
+}
+
+.input {
+  @include base.input-base;
+  text-align: var(--ui-input-number-text-align, start);
+}
+
+// [spinButtons]="false": esconde as setinhas do navegador.
+.no-spin {
+  -moz-appearance: textfield;
+  appearance: textfield;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+  }
+}

@@ -10,6 +10,7 @@ export * from './lib/components/autocomplete/autocomplete';
 export * from './lib/components/field/field';
 export * from './lib/components/fieldset/fieldset';
 export * from './lib/components/input/input';
+export * from './lib/components/input-number/input-number';
 export * from './lib/components/input-password/input-password';
 export * from './lib/components/input-search/input-search';
 export * from './lib/components/otp-input/otp-input';

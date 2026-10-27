@@ -1,0 +1,30 @@
+<ui-field
+  [id]="id()"
+  [label]="label()"
+  [hint]="hint()"
+  [required]="required()"
+  [errors]="errors()"
+  [showErrors]="showErrors()"
+>
+  <input
+    class="input"
+    type="number"
+    [class.no-spin]="!spinButtons()"
+    [id]="id()"
+    [name]="name()"
+    [value]="value() ?? ''"
+    [disabled]="disabled()"
+    [readOnly]="readonly()"
+    [required]="required()"
+    [placeholder]="placeholder()"
+    [attr.min]="min()"
+    [attr.max]="max()"
+    [attr.step]="step()"
+    [attr.inputmode]="inputMode()"
+    [attr.autocomplete]="autocomplete()"
+    [attr.aria-invalid]="showErrors()"
+    [attr.aria-describedby]="describedBy()"
+    (input)="handleInput($event)"
+    (blur)="touch.emit()"
+  />
+</ui-field>

@@ -18,6 +18,14 @@ npm install caminho/para/reusable-union-kit-<versão>.tgz
 
 Ou publique na branch `dist` do repositório (`npm run publish:dist`) e instale direto do GitHub:
 
+A partir da npm 12, dependências vindas do git são bloqueadas por padrão (erro `EALLOWGIT`).
+Libere só para as dependências declaradas no seu projeto, criando um `.npmrc` na raiz dele:
+
+```ini
+# .npmrc do projeto consumidor
+allow-git=root
+```
+
 ```bash
 npm install github:viniciusalexandrre/angular-ui-components#dist
 npm update reusable-union-kit   # para pegar uma publicação mais nova
@@ -79,6 +87,7 @@ Tudo é importado de `'reusable-union-kit'`. Estilos de cada um: [docs/ESTILOS.m
 |                        | `UiField`             | `<ui-field>`                           |
 |                        | `UiFieldset`          | `<ui-fieldset>`                        |
 |                        | `UiInput`             | `<ui-input>`                           |
+|                        | `UiInputNumber`       | `<ui-input-number>`                    |
 |                        | `UiInputPassword`     | `<ui-input-password>`                  |
 |                        | `UiInputSearch`       | `<ui-input-search>`                    |
 |                        | `UiOtpInput`          | `<ui-otp-input>`                       |

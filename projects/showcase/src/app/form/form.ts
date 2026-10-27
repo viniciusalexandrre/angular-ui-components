@@ -6,6 +6,8 @@ import {
   form,
   FormField,
   FormRoot,
+  max,
+  min,
   minLength,
   pattern,
   readonly,
@@ -19,6 +21,7 @@ import {
   UiCopyTextButton,
   UiFieldset,
   UiInput,
+  UiInputNumber,
   UiInputPassword,
   UiPopup,
   UiSelect,
@@ -30,6 +33,7 @@ interface Cadastro {
   nome: string;
   email: string;
   telefone: string;
+  idade: number | null;
   estado: string | null;
   cidade: string | null;
   convite: string;
@@ -41,6 +45,7 @@ const INICIAL: Cadastro = {
   nome: '',
   email: '',
   telefone: '',
+  idade: null,
   estado: null,
   cidade: null,
   convite: 'CONVITE-2026-UI',
@@ -74,6 +79,7 @@ const CIDADES: Record<string, string[]> = {
     UiCopyTextButton,
     UiFieldset,
     UiInput,
+    UiInputNumber,
     UiInputPassword,
     UiPopup,
     UiSelect,
@@ -106,6 +112,12 @@ const CIDADES: Record<string, string[]> = {
             hint="Opcional. Ex.: (11) 91234-5678"
             autocomplete="tel"
             [formField]="cadastro.telefone"
+          />
+          <ui-input-number
+            id="idade"
+            label="Idade"
+            hint="Entre 18 e 120 anos."
+            [formField]="cadastro.idade"
           />
         </div>
       </ui-fieldset>
@@ -228,6 +240,10 @@ export class FormComponent {
       pattern(p.telefone, /^\(?\d{2}\)?\s?9?\d{4}-?\d{4}$/, {
         message: 'Use o formato (11) 91234-5678.',
       });
+
+      required(p.idade, { message: 'Informe sua idade.' });
+      min(p.idade, 18, { message: 'É preciso ter pelo menos 18 anos.' });
+      max(p.idade, 120, { message: 'Confira a idade informada.' });
 
       required(p.estado, { message: 'Selecione o estado.' });
       required(p.cidade, { message: 'Selecione a cidade.' });

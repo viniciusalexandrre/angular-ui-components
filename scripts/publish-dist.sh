@@ -6,7 +6,8 @@
 #   bash scripts/publish-dist.sh
 #
 # Depois disso, em outro projeto:
-#   npm install github:seu-usuario/angular-ui-components#dist
+#   echo "allow-git=root" >> .npmrc   (npm 12+ bloqueia dependências git por padrão)
+#   npm install github:viniciusalexandrre/angular-ui-components#dist
 #   npm update reusable-union-kit   (pra pegar uma publicação mais nova depois)
 
 set -euo pipefail
