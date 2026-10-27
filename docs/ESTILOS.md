@@ -164,7 +164,7 @@ consistente:
 
 | Grupo             | Afeta                                                                                    |
 | ----------------- | ---------------------------------------------------------------------------------------- |
-| `--ui-input-*`    | `ui-input`, `ui-input-password`, `ui-input-search`, `ui-autocomplete` e o botão do `ui-select` |
+| `--ui-input-*`    | `ui-input`, `ui-input-number`, `ui-input-password`, `ui-input-search`, `ui-autocomplete` e o botão do `ui-select` |
 | `--ui-field-*`    | Label, dica e mensagens de erro de todos os campos que usam `ui-field`                   |
 | `--ui-icon-button-*` | Botões de ícone dentro dos campos (mostrar senha, pesquisar)                          |
 
@@ -231,7 +231,7 @@ um token (ex.: `var(--b10)`), o valor acompanha o tema claro/escuro.
 
 ### Campos de formulário (base comum)
 
-`ui-input`, `ui-input-password`, `ui-input-search`, `ui-autocomplete` e `ui-select` usam a mesma
+`ui-input`, `ui-input-number`, `ui-input-password`, `ui-input-search`, `ui-autocomplete` e `ui-select` usam a mesma
 base visual. Estas variáveis valem para todos eles:
 
 | Variável                           | Padrão                     | Controla                           |
@@ -288,6 +288,40 @@ Usado internamente pelos campos. Também pode ser usado sozinho para envolver um
 ```
 
 Usa só as variáveis da [base comum](#campos-de-formulário-base-comum) e de [`ui-field`](#ui-field-label-dica-e-erro).
+
+### `ui-input-number`
+
+Para valores numéricos. O valor do formulário é `number | null` (campo vazio vira `null`), nunca
+texto. Use com um model numérico:
+
+```ts
+model = signal({ idade: null as number | null, preco: null as number | null });
+cadastro = form(this.model, (p) => {
+  required(p.idade, { message: 'Informe a idade.' });
+  min(p.idade, 18, { message: 'Mínimo de 18 anos.' }); // também vira o min do campo
+  max(p.idade, 120);
+});
+```
+
+```html
+<ui-input-number id="idade" label="Idade" [formField]="cadastro.idade" />
+<ui-input-number id="preco" label="Preço (R$)" [step]="0.01" [spinButtons]="false" [formField]="cadastro.preco" />
+```
+
+| Input          | Padrão  | Para que serve                                                     |
+| -------------- | ------- | ------------------------------------------------------------------ |
+| `step`         | `1`     | Incremento das setas; `0.01` para centavos, `'any'` para livre     |
+| `spinButtons`  | `true`  | `false` esconde as setinhas do navegador                           |
+| `min` / `max`  | —       | Preenchidos sozinhos por `min()`/`max()` do schema; ou informe direto |
+
+No celular, abre o teclado numérico (`step` inteiro) ou decimal (`step` com casas decimais).
+
+Usa as variáveis da [base comum](#campos-de-formulário-base-comum) e de
+[`ui-field`](#ui-field-label-dica-e-erro), mais:
+
+| Variável                        | Padrão  | Controla                                   |
+| ------------------------------- | ------- | ------------------------------------------ |
+| `--ui-input-number-text-align`  | `start` | Alinhamento do número (`end` para valores) |
 
 ### `ui-input-password`
 

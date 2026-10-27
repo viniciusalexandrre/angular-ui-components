@@ -320,6 +320,128 @@ export declare class UiInput implements FormValueControl<string | null> {
     "touch": "touch";
   }, never, never, true, never>;
 }
+/**
+ * Campo numérico: o valor é `number | null` (vazio vira `null`), não texto.
+ * `min`/`max` são preenchidos sozinhos pelos validadores min()/max() do Signal Forms.
+ */
+export declare class UiInputNumber implements FormValueControl<number | null> {
+  readonly value: import("@angular/core").ModelSignal<number | null>;
+  readonly touched: import("@angular/core").InputSignal<boolean>;
+  readonly touch: import("@angular/core").OutputEmitterRef<void>;
+  readonly disabled: import("@angular/core").InputSignal<boolean>;
+  readonly readonly: import("@angular/core").InputSignal<boolean>;
+  readonly invalid: import("@angular/core").InputSignal<boolean>;
+  readonly required: import("@angular/core").InputSignal<boolean>;
+  readonly min: import("@angular/core").InputSignal<number | undefined>;
+  readonly max: import("@angular/core").InputSignal<number | undefined>;
+  /** Incremento das setas/teclado. Use 0.01 para valores com centavos, ou 'any'. */
+  readonly step: import("@angular/core").InputSignal<number | "any">;
+  readonly errors: import("@angular/core").InputSignal<readonly ValidationError[]>;
+  readonly name: import("@angular/core").InputSignal<string>;
+  readonly label: import("@angular/core").InputSignal<string>;
+  readonly id: import("@angular/core").InputSignal<string>;
+  readonly hint: import("@angular/core").InputSignal<string>;
+  readonly placeholder: import("@angular/core").InputSignal<string>;
+  readonly autocomplete: import("@angular/core").InputSignal<string>;
+  /** Mostra as setinhas de aumentar/diminuir do navegador. */
+  readonly spinButtons: import("@angular/core").InputSignal<boolean>;
+  protected readonly showErrors: import("@angular/core").Signal<boolean>;
+  protected readonly describedBy: import("@angular/core").Signal<string | null>;
+  /** Teclado do celular: só números ou números com vírgula. */
+  protected readonly inputMode: import("@angular/core").Signal<"decimal" | "numeric">;
+  handleInput(event: Event): void;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiInputNumber, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiInputNumber, "ui-input-number", never, {
+    "value": {
+      "alias": "value";
+      "required": false;
+      "isSignal": true;
+    };
+    "touched": {
+      "alias": "touched";
+      "required": false;
+      "isSignal": true;
+    };
+    "disabled": {
+      "alias": "disabled";
+      "required": false;
+      "isSignal": true;
+    };
+    "readonly": {
+      "alias": "readonly";
+      "required": false;
+      "isSignal": true;
+    };
+    "invalid": {
+      "alias": "invalid";
+      "required": false;
+      "isSignal": true;
+    };
+    "required": {
+      "alias": "required";
+      "required": false;
+      "isSignal": true;
+    };
+    "min": {
+      "alias": "min";
+      "required": false;
+      "isSignal": true;
+    };
+    "max": {
+      "alias": "max";
+      "required": false;
+      "isSignal": true;
+    };
+    "step": {
+      "alias": "step";
+      "required": false;
+      "isSignal": true;
+    };
+    "errors": {
+      "alias": "errors";
+      "required": false;
+      "isSignal": true;
+    };
+    "name": {
+      "alias": "name";
+      "required": false;
+      "isSignal": true;
+    };
+    "label": {
+      "alias": "label";
+      "required": true;
+      "isSignal": true;
+    };
+    "id": {
+      "alias": "id";
+      "required": true;
+      "isSignal": true;
+    };
+    "hint": {
+      "alias": "hint";
+      "required": false;
+      "isSignal": true;
+    };
+    "placeholder": {
+      "alias": "placeholder";
+      "required": false;
+      "isSignal": true;
+    };
+    "autocomplete": {
+      "alias": "autocomplete";
+      "required": false;
+      "isSignal": true;
+    };
+    "spinButtons": {
+      "alias": "spinButtons";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {
+    "value": "valueChange";
+    "touch": "touch";
+  }, never, never, true, never>;
+}
 export declare class UiInputPassword implements FormValueControl<string> {
   readonly value: import("@angular/core").ModelSignal<string>;
   readonly touched: import("@angular/core").InputSignal<boolean>;

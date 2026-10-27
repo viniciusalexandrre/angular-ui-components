@@ -1041,6 +1041,360 @@ i0.ɵɵngDeclareClassMetadata({
 		}]
 	}
 });
+var UiInputNumber = class UiInputNumber {
+	value = model(null, ...ngDevMode ? [{ debugName: "value" }] : /* istanbul ignore next */ []);
+	touched = input(false, ...ngDevMode ? [{ debugName: "touched" }] : /* istanbul ignore next */ []);
+	touch = output();
+	disabled = input(false, ...ngDevMode ? [{ debugName: "disabled" }] : /* istanbul ignore next */ []);
+	readonly = input(false, ...ngDevMode ? [{ debugName: "readonly" }] : /* istanbul ignore next */ []);
+	invalid = input(false, ...ngDevMode ? [{ debugName: "invalid" }] : /* istanbul ignore next */ []);
+	required = input(false, ...ngDevMode ? [{ debugName: "required" }] : /* istanbul ignore next */ []);
+	min = input(void 0, ...ngDevMode ? [{ debugName: "min" }] : /* istanbul ignore next */ []);
+	max = input(void 0, ...ngDevMode ? [{ debugName: "max" }] : /* istanbul ignore next */ []);
+	step = input(1, ...ngDevMode ? [{ debugName: "step" }] : /* istanbul ignore next */ []);
+	errors = input([], ...ngDevMode ? [{ debugName: "errors" }] : /* istanbul ignore next */ []);
+	name = input("", ...ngDevMode ? [{ debugName: "name" }] : /* istanbul ignore next */ []);
+	label = input.required(...ngDevMode ? [{ debugName: "label" }] : /* istanbul ignore next */ []);
+	id = input.required(...ngDevMode ? [{ debugName: "id" }] : /* istanbul ignore next */ []);
+	hint = input("", ...ngDevMode ? [{ debugName: "hint" }] : /* istanbul ignore next */ []);
+	placeholder = input("", ...ngDevMode ? [{ debugName: "placeholder" }] : /* istanbul ignore next */ []);
+	autocomplete = input("off", ...ngDevMode ? [{ debugName: "autocomplete" }] : /* istanbul ignore next */ []);
+	spinButtons = input(true, ...ngDevMode ? [{ debugName: "spinButtons" }] : /* istanbul ignore next */ []);
+	showErrors = computed(() => this.invalid() && this.touched(), ...ngDevMode ? [{ debugName: "showErrors" }] : /* istanbul ignore next */ []);
+	describedBy = computed(() => {
+		if (this.showErrors()) return `${this.id()}-error`;
+		if (this.hint()) return `${this.id()}-hint`;
+		return null;
+	}, ...ngDevMode ? [{ debugName: "describedBy" }] : /* istanbul ignore next */ []);
+	inputMode = computed(() => {
+		const step = this.step();
+		return step === "any" || !Number.isInteger(step) ? "decimal" : "numeric";
+	}, ...ngDevMode ? [{ debugName: "inputMode" }] : /* istanbul ignore next */ []);
+	handleInput(event) {
+		const input = event.target;
+		this.value.set(input.value === "" || Number.isNaN(input.valueAsNumber) ? null : input.valueAsNumber);
+	}
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiInputNumber,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.1.0",
+		version: "22.2.1",
+		type: UiInputNumber,
+		isStandalone: true,
+		selector: "ui-input-number",
+		inputs: {
+			value: {
+				classPropertyName: "value",
+				publicName: "value",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			touched: {
+				classPropertyName: "touched",
+				publicName: "touched",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			disabled: {
+				classPropertyName: "disabled",
+				publicName: "disabled",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			readonly: {
+				classPropertyName: "readonly",
+				publicName: "readonly",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			invalid: {
+				classPropertyName: "invalid",
+				publicName: "invalid",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			required: {
+				classPropertyName: "required",
+				publicName: "required",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			min: {
+				classPropertyName: "min",
+				publicName: "min",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			max: {
+				classPropertyName: "max",
+				publicName: "max",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			step: {
+				classPropertyName: "step",
+				publicName: "step",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			errors: {
+				classPropertyName: "errors",
+				publicName: "errors",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			name: {
+				classPropertyName: "name",
+				publicName: "name",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			label: {
+				classPropertyName: "label",
+				publicName: "label",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			id: {
+				classPropertyName: "id",
+				publicName: "id",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			hint: {
+				classPropertyName: "hint",
+				publicName: "hint",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			placeholder: {
+				classPropertyName: "placeholder",
+				publicName: "placeholder",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			autocomplete: {
+				classPropertyName: "autocomplete",
+				publicName: "autocomplete",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			spinButtons: {
+				classPropertyName: "spinButtons",
+				publicName: "spinButtons",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		outputs: {
+			value: "valueChange",
+			touch: "touch"
+		},
+		host: { properties: { "attr.id": "null" } },
+		ngImport: i0,
+		template: "<ui-field\n  [id]=\"id()\"\n  [label]=\"label()\"\n  [hint]=\"hint()\"\n  [required]=\"required()\"\n  [errors]=\"errors()\"\n  [showErrors]=\"showErrors()\"\n>\n  <input\n    class=\"input\"\n    type=\"number\"\n    [class.no-spin]=\"!spinButtons()\"\n    [id]=\"id()\"\n    [name]=\"name()\"\n    [value]=\"value() ?? ''\"\n    [disabled]=\"disabled()\"\n    [readOnly]=\"readonly()\"\n    [required]=\"required()\"\n    [placeholder]=\"placeholder()\"\n    [attr.min]=\"min()\"\n    [attr.max]=\"max()\"\n    [attr.step]=\"step()\"\n    [attr.inputmode]=\"inputMode()\"\n    [attr.autocomplete]=\"autocomplete()\"\n    [attr.aria-invalid]=\"showErrors()\"\n    [attr.aria-describedby]=\"describedBy()\"\n    (input)=\"handleInput($event)\"\n    (blur)=\"touch.emit()\"\n  />\n</ui-field>\n",
+		styles: [":host{display:block}.input{box-sizing:border-box;width:var(--ui-input-width, 100%);min-width:0;height:var(--ui-input-height, 40px);padding:var(--ui-input-padding, 8px 12px);color:var(--ui-input-color, var(--c9, #202124));background-color:var(--ui-input-background, var(--b-white, #fff));border:var(--ui-input-border, 1px solid var(--b3, #767676));border-radius:var(--ui-input-border-radius, 10px);font-family:var(--ui-input-font-family, inherit);font-size:var(--ui-input-font-size, 14px)}.input::placeholder{color:var(--ui-input-placeholder-color, var(--c7, #666));opacity:1}.input:hover:not(:disabled){border-color:var(--ui-input-hover-border-color, var(--b6, #4d4d4d))}.input:focus-visible{outline:2px solid var(--ui-input-focus-color, var(--b4, #1769aa));outline-offset:2px}.input[aria-invalid=true]{border-color:var(--ui-input-error-color, var(--erro, #b3261e));background-color:var(--ui-input-error-background, var(--bg-erro, transparent));outline:var(--ui-input-error-color, var(--erro, #b3261e))}.input[aria-invalid=true]:focus-visible{outline:2px solid var(--ui-input-error-color, var(--erro, #b3261e));outline-offset:2px}.input:disabled{color:var(--ui-input-disabled-color, var(--c7, #595959));background-color:var(--ui-input-disabled-background, var(--c2, #f2f2f2));cursor:not-allowed}.input[readonly]{background-color:var(--ui-input-readonly-background, var(--c1, #f7f7f7))}.input{text-align:var(--ui-input-number-text-align, start)}.no-spin{-moz-appearance:textfield;appearance:textfield}.no-spin::-webkit-inner-spin-button,.no-spin::-webkit-outer-spin-button{margin:0;-webkit-appearance:none}\n"],
+		dependencies: [{
+			kind: "component",
+			type: UiField,
+			selector: "ui-field",
+			inputs: [
+				"id",
+				"label",
+				"hint",
+				"required",
+				"errors",
+				"showErrors"
+			]
+		}],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiInputNumber,
+	decorators: [{
+		type: Component,
+		args: [{
+			selector: "ui-input-number",
+			imports: [UiField],
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			host: { "[attr.id]": "null" },
+			template: "<ui-field\n  [id]=\"id()\"\n  [label]=\"label()\"\n  [hint]=\"hint()\"\n  [required]=\"required()\"\n  [errors]=\"errors()\"\n  [showErrors]=\"showErrors()\"\n>\n  <input\n    class=\"input\"\n    type=\"number\"\n    [class.no-spin]=\"!spinButtons()\"\n    [id]=\"id()\"\n    [name]=\"name()\"\n    [value]=\"value() ?? ''\"\n    [disabled]=\"disabled()\"\n    [readOnly]=\"readonly()\"\n    [required]=\"required()\"\n    [placeholder]=\"placeholder()\"\n    [attr.min]=\"min()\"\n    [attr.max]=\"max()\"\n    [attr.step]=\"step()\"\n    [attr.inputmode]=\"inputMode()\"\n    [attr.autocomplete]=\"autocomplete()\"\n    [attr.aria-invalid]=\"showErrors()\"\n    [attr.aria-describedby]=\"describedBy()\"\n    (input)=\"handleInput($event)\"\n    (blur)=\"touch.emit()\"\n  />\n</ui-field>\n",
+			styles: [":host{display:block}.input{box-sizing:border-box;width:var(--ui-input-width, 100%);min-width:0;height:var(--ui-input-height, 40px);padding:var(--ui-input-padding, 8px 12px);color:var(--ui-input-color, var(--c9, #202124));background-color:var(--ui-input-background, var(--b-white, #fff));border:var(--ui-input-border, 1px solid var(--b3, #767676));border-radius:var(--ui-input-border-radius, 10px);font-family:var(--ui-input-font-family, inherit);font-size:var(--ui-input-font-size, 14px)}.input::placeholder{color:var(--ui-input-placeholder-color, var(--c7, #666));opacity:1}.input:hover:not(:disabled){border-color:var(--ui-input-hover-border-color, var(--b6, #4d4d4d))}.input:focus-visible{outline:2px solid var(--ui-input-focus-color, var(--b4, #1769aa));outline-offset:2px}.input[aria-invalid=true]{border-color:var(--ui-input-error-color, var(--erro, #b3261e));background-color:var(--ui-input-error-background, var(--bg-erro, transparent));outline:var(--ui-input-error-color, var(--erro, #b3261e))}.input[aria-invalid=true]:focus-visible{outline:2px solid var(--ui-input-error-color, var(--erro, #b3261e));outline-offset:2px}.input:disabled{color:var(--ui-input-disabled-color, var(--c7, #595959));background-color:var(--ui-input-disabled-background, var(--c2, #f2f2f2));cursor:not-allowed}.input[readonly]{background-color:var(--ui-input-readonly-background, var(--c1, #f7f7f7))}.input{text-align:var(--ui-input-number-text-align, start)}.no-spin{-moz-appearance:textfield;appearance:textfield}.no-spin::-webkit-inner-spin-button,.no-spin::-webkit-outer-spin-button{margin:0;-webkit-appearance:none}\n"]
+		}]
+	}],
+	propDecorators: {
+		value: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "value",
+				required: false
+			}]
+		}, {
+			type: i0.Output,
+			args: ["valueChange"]
+		}],
+		touched: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "touched",
+				required: false
+			}]
+		}],
+		touch: [{
+			type: i0.Output,
+			args: ["touch"]
+		}],
+		disabled: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "disabled",
+				required: false
+			}]
+		}],
+		readonly: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "readonly",
+				required: false
+			}]
+		}],
+		invalid: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "invalid",
+				required: false
+			}]
+		}],
+		required: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "required",
+				required: false
+			}]
+		}],
+		min: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "min",
+				required: false
+			}]
+		}],
+		max: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "max",
+				required: false
+			}]
+		}],
+		step: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "step",
+				required: false
+			}]
+		}],
+		errors: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "errors",
+				required: false
+			}]
+		}],
+		name: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "name",
+				required: false
+			}]
+		}],
+		label: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "label",
+				required: true
+			}]
+		}],
+		id: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "id",
+				required: true
+			}]
+		}],
+		hint: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "hint",
+				required: false
+			}]
+		}],
+		placeholder: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "placeholder",
+				required: false
+			}]
+		}],
+		autocomplete: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "autocomplete",
+				required: false
+			}]
+		}],
+		spinButtons: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "spinButtons",
+				required: false
+			}]
+		}]
+	}
+});
 var UiInputPassword = class UiInputPassword {
 	value = model("", ...ngDevMode ? [{ debugName: "value" }] : /* istanbul ignore next */ []);
 	touched = input(false, ...ngDevMode ? [{ debugName: "touched" }] : /* istanbul ignore next */ []);
@@ -4709,6 +5063,6 @@ function formatBytes(bytes) {
 	}
 	return `${value.toFixed(unitIndex === 0 ? 0 : 2)} ${units[unitIndex]}`;
 }
-export { UiAuthLayout, UiAutocomplete, UiBanner, UiBreadcrumb, UiButton, UiColumnGraph, UiCopyTextButton, UiDashboardLayout, UiField, UiFieldset, UiInput, UiInputPassword, UiInputSearch, UiMenu, UiModal, UiOtpInput, UiPagination, UiPieChart, UiPopup, UiSelect, UiSkeleton, UiTable, UiTableCell, UiTableDetail, UiThemeToggle, formatBytes };
+export { UiAuthLayout, UiAutocomplete, UiBanner, UiBreadcrumb, UiButton, UiColumnGraph, UiCopyTextButton, UiDashboardLayout, UiField, UiFieldset, UiInput, UiInputNumber, UiInputPassword, UiInputSearch, UiMenu, UiModal, UiOtpInput, UiPagination, UiPieChart, UiPopup, UiSelect, UiSkeleton, UiTable, UiTableCell, UiTableDetail, UiThemeToggle, formatBytes };
 
 //# sourceMappingURL=reusable-union-kit.mjs.map
