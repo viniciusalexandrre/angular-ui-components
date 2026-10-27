@@ -1,0 +1,112 @@
+:host {
+  display: block;
+}
+
+.checkbox {
+  display: grid;
+  gap: var(--ui-field-gap, 4px);
+}
+
+.checkbox-label {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--ui-checkbox-gap, 8px);
+  width: fit-content;
+  color: var(--ui-checkbox-label-color, var(--c9, #404040));
+  font-size: var(--ui-checkbox-font-size, 14px);
+  line-height: var(--ui-checkbox-size, 18px);
+  cursor: pointer;
+
+  &.checkbox-disabled {
+    cursor: not-allowed;
+    opacity: var(--ui-checkbox-disabled-opacity, 0.55);
+  }
+}
+
+// O input nativo fica invisível por cima da caixa: continua focável e clicável.
+.checkbox-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--ui-checkbox-size, 18px);
+  height: var(--ui-checkbox-size, 18px);
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+
+.checkbox-box {
+  box-sizing: border-box;
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: var(--ui-checkbox-size, 18px);
+  height: var(--ui-checkbox-size, 18px);
+  border: var(--ui-checkbox-border, 1.5px solid var(--b4, #b5c6f9));
+  border-radius: var(--ui-checkbox-border-radius, 5px);
+  background: var(--ui-checkbox-background, var(--b-white, #fff));
+  color: var(--ui-checkbox-check-color, #fff);
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+
+  svg {
+    grid-area: 1 / 1;
+    visibility: hidden;
+  }
+}
+
+.checkbox-input:hover:not(:disabled) + .checkbox-box {
+  border-color: var(--ui-checkbox-hover-border-color, var(--b6, #8ba7f9));
+}
+
+.checkbox-input:checked + .checkbox-box,
+.checkbox-input:indeterminate + .checkbox-box {
+  border-color: var(--ui-checkbox-checked-background, var(--b10, #335cd6));
+  background: var(--ui-checkbox-checked-background, var(--b10, #335cd6));
+}
+
+.checkbox-input:checked:not(:indeterminate) + .checkbox-box .icon-check,
+.checkbox-input:indeterminate + .checkbox-box .icon-dash {
+  visibility: visible;
+}
+
+.checkbox-input:focus-visible + .checkbox-box {
+  outline: 2px solid var(--ui-checkbox-focus-color, var(--b10, #1769aa));
+  outline-offset: 2px;
+}
+
+.checkbox-invalid .checkbox-input:not(:checked) + .checkbox-box {
+  border-color: var(--ui-input-error-color, var(--erro, #b3261e));
+  background: var(--ui-input-error-background, var(--bg-erro, transparent));
+}
+
+.checkbox-required {
+  margin-left: 2px;
+  color: var(--ui-field-error-color, var(--erro, #b3261e));
+}
+
+// Dica e erro alinhados com o texto, não com a caixa.
+.checkbox-hint,
+.checkbox-errors {
+  padding-left: calc(var(--ui-checkbox-size, 18px) + var(--ui-checkbox-gap, 8px));
+}
+
+.checkbox-hint {
+  color: var(--ui-field-hint-color, var(--c7, #595959));
+  font-size: var(--ui-field-hint-font-size, 13px);
+}
+
+.checkbox-errors {
+  display: grid;
+  gap: var(--ui-field-error-gap, 2px);
+  color: var(--ui-field-error-color, var(--erro, #b3261e));
+  font-size: var(--ui-field-error-font-size, 13px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checkbox-box {
+    transition: none;
+  }
+}

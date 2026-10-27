@@ -18,6 +18,7 @@ import {
   AutocompleteOption,
   UiAutocomplete,
   UiButton,
+  UiCheckbox,
   UiCopyTextButton,
   UiFieldset,
   UiInput,
@@ -39,6 +40,8 @@ interface Cadastro {
   convite: string;
   senha: string;
   confirmarSenha: string;
+  novidades: boolean;
+  termos: boolean;
 }
 
 const INICIAL: Cadastro = {
@@ -51,6 +54,8 @@ const INICIAL: Cadastro = {
   convite: 'CONVITE-2026-UI',
   senha: '',
   confirmarSenha: '',
+  novidades: false,
+  termos: false,
 };
 
 const ESTADOS: UiSelectOption[] = [
@@ -76,6 +81,7 @@ const CIDADES: Record<string, string[]> = {
     JsonPipe,
     UiAutocomplete,
     UiButton,
+    UiCheckbox,
     UiCopyTextButton,
     UiFieldset,
     UiInput,
@@ -177,6 +183,16 @@ const CIDADES: Record<string, string[]> = {
         </div>
       </ui-fieldset>
 
+      <ui-fieldset title="Preferências">
+        <ui-checkbox
+          id="novidades"
+          label="Quero receber novidades por e-mail"
+          hint="Opcional. Você pode cancelar quando quiser."
+          [formField]="cadastro.novidades"
+        />
+        <ui-checkbox id="termos" label="Li e aceito os termos de uso" [formField]="cadastro.termos" />
+      </ui-fieldset>
+
       <div class="actions">
         <button ui-button variant="secondary" type="button" (click)="limpar()">Limpar</button>
         <button ui-button type="submit" [disabled]="cadastro().submitting()">
@@ -253,6 +269,8 @@ export class FormComponent {
 
       required(p.senha, { message: 'Crie uma senha.' });
       minLength(p.senha, 8, { message: 'A senha precisa ter pelo menos 8 caracteres.' });
+      required(p.termos, { message: 'É preciso aceitar os termos para continuar.' });
+
       required(p.confirmarSenha, { message: 'Confirme a senha.' });
       validate(p.confirmarSenha, ({ value, valueOf }) =>
         value() && value() !== valueOf(p.senha)

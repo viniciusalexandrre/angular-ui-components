@@ -7,6 +7,7 @@
 
 // Formulário
 export * from './lib/components/autocomplete/autocomplete';
+export * from './lib/components/checkbox/checkbox';
 export * from './lib/components/field/field';
 export * from './lib/components/fieldset/fieldset';
 export * from './lib/components/input/input';
