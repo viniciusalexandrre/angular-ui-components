@@ -1,4 +1,4 @@
-import { FormValueControl, ValidationError } from "@angular/forms/signals";
+import { FormCheckboxControl, FormValueControl, ValidationError } from "@angular/forms/signals";
 import * as i0 from "@angular/core";
 import { TemplateRef } from "@angular/core";
 export interface AutocompleteOption {
@@ -152,6 +152,97 @@ export declare class UiAutocomplete implements FormValueControl<string | null> {
     "value": "valueChange";
     "touch": "touch";
     "searchChange": "searchChange";
+  }, never, never, true, never>;
+}
+/**
+ * Caixa de seleção integrada ao Signal Forms: use [formField] com um campo boolean
+ * ou [(checked)] fora de formulários.
+ */
+export declare class UiCheckbox implements FormCheckboxControl {
+  readonly checked: import("@angular/core").ModelSignal<boolean>;
+  readonly touched: import("@angular/core").InputSignal<boolean>;
+  readonly touch: import("@angular/core").OutputEmitterRef<void>;
+  readonly disabled: import("@angular/core").InputSignal<boolean>;
+  readonly readonly: import("@angular/core").InputSignal<boolean>;
+  readonly invalid: import("@angular/core").InputSignal<boolean>;
+  readonly required: import("@angular/core").InputSignal<boolean>;
+  readonly errors: import("@angular/core").InputSignal<readonly ValidationError[]>;
+  readonly name: import("@angular/core").InputSignal<string>;
+  readonly label: import("@angular/core").InputSignal<string>;
+  readonly id: import("@angular/core").InputSignal<string>;
+  readonly hint: import("@angular/core").InputSignal<string>;
+  /** Estado "parcial" (traço), ex.: "selecionar todos" com só parte dos itens marcados. */
+  readonly indeterminate: import("@angular/core").InputSignal<boolean>;
+  protected readonly showErrors: import("@angular/core").Signal<boolean>;
+  protected readonly describedBy: import("@angular/core").Signal<string | null>;
+  handleChange(event: Event): void;
+  /** Checkbox nativo ignora `readonly`; bloqueia a troca manualmente. */
+  handleClick(event: MouseEvent): void;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiCheckbox, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiCheckbox, "ui-checkbox", never, {
+    "checked": {
+      "alias": "checked";
+      "required": false;
+      "isSignal": true;
+    };
+    "touched": {
+      "alias": "touched";
+      "required": false;
+      "isSignal": true;
+    };
+    "disabled": {
+      "alias": "disabled";
+      "required": false;
+      "isSignal": true;
+    };
+    "readonly": {
+      "alias": "readonly";
+      "required": false;
+      "isSignal": true;
+    };
+    "invalid": {
+      "alias": "invalid";
+      "required": false;
+      "isSignal": true;
+    };
+    "required": {
+      "alias": "required";
+      "required": false;
+      "isSignal": true;
+    };
+    "errors": {
+      "alias": "errors";
+      "required": false;
+      "isSignal": true;
+    };
+    "name": {
+      "alias": "name";
+      "required": false;
+      "isSignal": true;
+    };
+    "label": {
+      "alias": "label";
+      "required": true;
+      "isSignal": true;
+    };
+    "id": {
+      "alias": "id";
+      "required": true;
+      "isSignal": true;
+    };
+    "hint": {
+      "alias": "hint";
+      "required": false;
+      "isSignal": true;
+    };
+    "indeterminate": {
+      "alias": "indeterminate";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {
+    "checked": "checkedChange";
+    "touch": "touch";
   }, never, never, true, never>;
 }
 export declare class UiField {

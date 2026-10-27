@@ -84,6 +84,7 @@ Tudo é importado de `'reusable-union-kit'`. Estilos de cada um: [docs/ESTILOS.m
 | Categoria              | Componente            | Seletor                                |
 | ---------------------- | --------------------- | -------------------------------------- |
 | Formulário             | `UiAutocomplete`      | `<ui-autocomplete>`                    |
+|                        | `UiCheckbox`          | `<ui-checkbox>`                        |
 |                        | `UiField`             | `<ui-field>`                           |
 |                        | `UiFieldset`          | `<ui-fieldset>`                        |
 |                        | `UiInput`             | `<ui-input>`                           |

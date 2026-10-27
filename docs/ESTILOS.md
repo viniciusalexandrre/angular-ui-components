@@ -289,6 +289,44 @@ Usado internamente pelos campos. Também pode ser usado sozinho para envolver um
 
 Usa só as variáveis da [base comum](#campos-de-formulário-base-comum) e de [`ui-field`](#ui-field-label-dica-e-erro).
 
+### `ui-checkbox`
+
+Caixa de seleção com o texto ao lado. Com `[formField]`, use um campo `boolean`; fora de
+formulários, use `[(checked)]`.
+
+```ts
+model = signal({ termos: false, novidades: false });
+cadastro = form(this.model, (p) => {
+  required(p.termos, { message: 'Aceite os termos para continuar.' }); // false conta como vazio
+});
+```
+
+```html
+<ui-checkbox id="termos" label="Li e aceito os termos" [formField]="cadastro.termos" />
+<ui-checkbox id="novidades" label="Receber novidades" hint="Opcional." [formField]="cadastro.novidades" />
+
+<!-- Sem formulário, com estado parcial para "selecionar todos" -->
+<ui-checkbox id="todos" label="Selecionar todos" [(checked)]="todos" [indeterminate]="algunsMarcados()" />
+```
+
+Clicar no texto também marca. Dica e erro usam as variáveis `--ui-field-*`; a caixa com erro usa
+`--ui-input-error-color` e `--ui-input-error-background`.
+
+| Variável                              | Padrão                    | Controla                          |
+| ------------------------------------- | ------------------------- | --------------------------------- |
+| `--ui-checkbox-size`                  | `18px`                    | Largura e altura da caixa         |
+| `--ui-checkbox-gap`                   | `8px`                     | Espaço entre caixa e texto        |
+| `--ui-checkbox-border`                | `1.5px solid var(--b4)`   | Borda da caixa                    |
+| `--ui-checkbox-border-radius`         | `5px`                     | Arredondamento (`50%` = redondo)  |
+| `--ui-checkbox-background`            | `var(--b-white)`          | Fundo desmarcado                  |
+| `--ui-checkbox-hover-border-color`    | `var(--b6)`               | Borda no hover                    |
+| `--ui-checkbox-checked-background`    | `var(--b10)`              | Fundo e borda quando marcado      |
+| `--ui-checkbox-check-color`           | `#fff`                    | Cor do ✓ e do traço               |
+| `--ui-checkbox-focus-color`           | `var(--b10)`              | Contorno de foco                  |
+| `--ui-checkbox-label-color`           | `var(--c9)`               | Cor do texto                      |
+| `--ui-checkbox-font-size`             | `14px`                    | Tamanho do texto                  |
+| `--ui-checkbox-disabled-opacity`      | `0.55`                    | Opacidade desabilitado            |
+
 ### `ui-input-number`
 
 Para valores numéricos. O valor do formulário é `number | null` (campo vazio vira `null`), nunca

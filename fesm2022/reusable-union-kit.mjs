@@ -635,6 +635,264 @@ i0.ɵɵngDeclareClassMetadata({
 		}]
 	}
 });
+var UiCheckbox = class UiCheckbox {
+	checked = model(false, ...ngDevMode ? [{ debugName: "checked" }] : /* istanbul ignore next */ []);
+	touched = input(false, ...ngDevMode ? [{ debugName: "touched" }] : /* istanbul ignore next */ []);
+	touch = output();
+	disabled = input(false, ...ngDevMode ? [{ debugName: "disabled" }] : /* istanbul ignore next */ []);
+	readonly = input(false, ...ngDevMode ? [{ debugName: "readonly" }] : /* istanbul ignore next */ []);
+	invalid = input(false, ...ngDevMode ? [{ debugName: "invalid" }] : /* istanbul ignore next */ []);
+	required = input(false, ...ngDevMode ? [{ debugName: "required" }] : /* istanbul ignore next */ []);
+	errors = input([], ...ngDevMode ? [{ debugName: "errors" }] : /* istanbul ignore next */ []);
+	name = input("", ...ngDevMode ? [{ debugName: "name" }] : /* istanbul ignore next */ []);
+	label = input.required(...ngDevMode ? [{ debugName: "label" }] : /* istanbul ignore next */ []);
+	id = input.required(...ngDevMode ? [{ debugName: "id" }] : /* istanbul ignore next */ []);
+	hint = input("", ...ngDevMode ? [{ debugName: "hint" }] : /* istanbul ignore next */ []);
+	indeterminate = input(false, ...ngDevMode ? [{ debugName: "indeterminate" }] : /* istanbul ignore next */ []);
+	showErrors = computed(() => this.invalid() && this.touched(), ...ngDevMode ? [{ debugName: "showErrors" }] : /* istanbul ignore next */ []);
+	describedBy = computed(() => {
+		if (this.showErrors()) return `${this.id()}-error`;
+		if (this.hint()) return `${this.id()}-hint`;
+		return null;
+	}, ...ngDevMode ? [{ debugName: "describedBy" }] : /* istanbul ignore next */ []);
+	handleChange(event) {
+		this.checked.set(event.target.checked);
+	}
+	handleClick(event) {
+		if (this.readonly()) event.preventDefault();
+	}
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiCheckbox,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.0.0",
+		version: "22.2.1",
+		type: UiCheckbox,
+		isStandalone: true,
+		selector: "ui-checkbox",
+		inputs: {
+			checked: {
+				classPropertyName: "checked",
+				publicName: "checked",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			touched: {
+				classPropertyName: "touched",
+				publicName: "touched",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			disabled: {
+				classPropertyName: "disabled",
+				publicName: "disabled",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			readonly: {
+				classPropertyName: "readonly",
+				publicName: "readonly",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			invalid: {
+				classPropertyName: "invalid",
+				publicName: "invalid",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			required: {
+				classPropertyName: "required",
+				publicName: "required",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			errors: {
+				classPropertyName: "errors",
+				publicName: "errors",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			name: {
+				classPropertyName: "name",
+				publicName: "name",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			label: {
+				classPropertyName: "label",
+				publicName: "label",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			id: {
+				classPropertyName: "id",
+				publicName: "id",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			hint: {
+				classPropertyName: "hint",
+				publicName: "hint",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			indeterminate: {
+				classPropertyName: "indeterminate",
+				publicName: "indeterminate",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		outputs: {
+			checked: "checkedChange",
+			touch: "touch"
+		},
+		host: { properties: { "attr.id": "null" } },
+		ngImport: i0,
+		template: "<div class=\"checkbox\" [class.checkbox-invalid]=\"showErrors()\">\n  <label class=\"checkbox-label\" [class.checkbox-disabled]=\"disabled()\" [for]=\"id()\">\n    <input\n      class=\"checkbox-input\"\n      type=\"checkbox\"\n      [id]=\"id()\"\n      [name]=\"name()\"\n      [checked]=\"checked()\"\n      [indeterminate]=\"indeterminate()\"\n      [disabled]=\"disabled()\"\n      [required]=\"required()\"\n      [attr.aria-readonly]=\"readonly() || null\"\n      [attr.aria-invalid]=\"showErrors()\"\n      [attr.aria-describedby]=\"describedBy()\"\n      (change)=\"handleChange($event)\"\n      (click)=\"handleClick($event)\"\n      (blur)=\"touch.emit()\"\n    />\n    <span class=\"checkbox-box\" aria-hidden=\"true\">\n      <svg class=\"icon-check\" width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" focusable=\"false\">\n        <path d=\"M3 8.5l3.5 3.5L13 4.5\" />\n      </svg>\n      <svg class=\"icon-dash\" width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" focusable=\"false\">\n        <path d=\"M3.5 8h9\" />\n      </svg>\n    </span>\n    <span class=\"checkbox-text\">\n      {{ label() }}\n      @if (required()) {\n        <span class=\"checkbox-required\" aria-hidden=\"true\">*</span>\n      }\n    </span>\n  </label>\n\n  @if (hint() && !showErrors()) {\n    <small class=\"checkbox-hint\" [id]=\"id() + '-hint'\">{{ hint() }}</small>\n  }\n\n  @if (showErrors()) {\n    <div class=\"checkbox-errors\" [id]=\"id() + '-error'\" role=\"alert\">\n      @for (error of errors(); track error.kind + error.message) {\n        <small>{{ error.message }}</small>\n      }\n    </div>\n  }\n</div>\n",
+		styles: [":host{display:block}.checkbox{display:grid;gap:var(--ui-field-gap, 4px)}.checkbox-label{position:relative;display:inline-flex;align-items:flex-start;gap:var(--ui-checkbox-gap, 8px);width:fit-content;color:var(--ui-checkbox-label-color, var(--c9, #404040));font-size:var(--ui-checkbox-font-size, 14px);line-height:var(--ui-checkbox-size, 18px);cursor:pointer}.checkbox-label.checkbox-disabled{cursor:not-allowed;opacity:var(--ui-checkbox-disabled-opacity, .55)}.checkbox-input{position:absolute;top:0;left:0;width:var(--ui-checkbox-size, 18px);height:var(--ui-checkbox-size, 18px);margin:0;opacity:0;cursor:inherit}.checkbox-box{box-sizing:border-box;display:grid;flex-shrink:0;place-items:center;width:var(--ui-checkbox-size, 18px);height:var(--ui-checkbox-size, 18px);border:var(--ui-checkbox-border, 1.5px solid var(--b4, #b5c6f9));border-radius:var(--ui-checkbox-border-radius, 5px);background:var(--ui-checkbox-background, var(--b-white, #fff));color:var(--ui-checkbox-check-color, #fff);transition:background-color .12s ease,border-color .12s ease}.checkbox-box svg{grid-area:1/1;visibility:hidden}.checkbox-input:hover:not(:disabled)+.checkbox-box{border-color:var(--ui-checkbox-hover-border-color, var(--b6, #8ba7f9))}.checkbox-input:checked+.checkbox-box,.checkbox-input:indeterminate+.checkbox-box{border-color:var(--ui-checkbox-checked-background, var(--b10, #335cd6));background:var(--ui-checkbox-checked-background, var(--b10, #335cd6))}.checkbox-input:checked:not(:indeterminate)+.checkbox-box .icon-check,.checkbox-input:indeterminate+.checkbox-box .icon-dash{visibility:visible}.checkbox-input:focus-visible+.checkbox-box{outline:2px solid var(--ui-checkbox-focus-color, var(--b10, #1769aa));outline-offset:2px}.checkbox-invalid .checkbox-input:not(:checked)+.checkbox-box{border-color:var(--ui-input-error-color, var(--erro, #b3261e));background:var(--ui-input-error-background, var(--bg-erro, transparent))}.checkbox-required{margin-left:2px;color:var(--ui-field-error-color, var(--erro, #b3261e))}.checkbox-hint,.checkbox-errors{padding-left:calc(var(--ui-checkbox-size, 18px) + var(--ui-checkbox-gap, 8px))}.checkbox-hint{color:var(--ui-field-hint-color, var(--c7, #595959));font-size:var(--ui-field-hint-font-size, 13px)}.checkbox-errors{display:grid;gap:var(--ui-field-error-gap, 2px);color:var(--ui-field-error-color, var(--erro, #b3261e));font-size:var(--ui-field-error-font-size, 13px)}@media(prefers-reduced-motion:reduce){.checkbox-box{transition:none}}\n"],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiCheckbox,
+	decorators: [{
+		type: Component,
+		args: [{
+			selector: "ui-checkbox",
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			host: { "[attr.id]": "null" },
+			template: "<div class=\"checkbox\" [class.checkbox-invalid]=\"showErrors()\">\n  <label class=\"checkbox-label\" [class.checkbox-disabled]=\"disabled()\" [for]=\"id()\">\n    <input\n      class=\"checkbox-input\"\n      type=\"checkbox\"\n      [id]=\"id()\"\n      [name]=\"name()\"\n      [checked]=\"checked()\"\n      [indeterminate]=\"indeterminate()\"\n      [disabled]=\"disabled()\"\n      [required]=\"required()\"\n      [attr.aria-readonly]=\"readonly() || null\"\n      [attr.aria-invalid]=\"showErrors()\"\n      [attr.aria-describedby]=\"describedBy()\"\n      (change)=\"handleChange($event)\"\n      (click)=\"handleClick($event)\"\n      (blur)=\"touch.emit()\"\n    />\n    <span class=\"checkbox-box\" aria-hidden=\"true\">\n      <svg class=\"icon-check\" width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" focusable=\"false\">\n        <path d=\"M3 8.5l3.5 3.5L13 4.5\" />\n      </svg>\n      <svg class=\"icon-dash\" width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" focusable=\"false\">\n        <path d=\"M3.5 8h9\" />\n      </svg>\n    </span>\n    <span class=\"checkbox-text\">\n      {{ label() }}\n      @if (required()) {\n        <span class=\"checkbox-required\" aria-hidden=\"true\">*</span>\n      }\n    </span>\n  </label>\n\n  @if (hint() && !showErrors()) {\n    <small class=\"checkbox-hint\" [id]=\"id() + '-hint'\">{{ hint() }}</small>\n  }\n\n  @if (showErrors()) {\n    <div class=\"checkbox-errors\" [id]=\"id() + '-error'\" role=\"alert\">\n      @for (error of errors(); track error.kind + error.message) {\n        <small>{{ error.message }}</small>\n      }\n    </div>\n  }\n</div>\n",
+			styles: [":host{display:block}.checkbox{display:grid;gap:var(--ui-field-gap, 4px)}.checkbox-label{position:relative;display:inline-flex;align-items:flex-start;gap:var(--ui-checkbox-gap, 8px);width:fit-content;color:var(--ui-checkbox-label-color, var(--c9, #404040));font-size:var(--ui-checkbox-font-size, 14px);line-height:var(--ui-checkbox-size, 18px);cursor:pointer}.checkbox-label.checkbox-disabled{cursor:not-allowed;opacity:var(--ui-checkbox-disabled-opacity, .55)}.checkbox-input{position:absolute;top:0;left:0;width:var(--ui-checkbox-size, 18px);height:var(--ui-checkbox-size, 18px);margin:0;opacity:0;cursor:inherit}.checkbox-box{box-sizing:border-box;display:grid;flex-shrink:0;place-items:center;width:var(--ui-checkbox-size, 18px);height:var(--ui-checkbox-size, 18px);border:var(--ui-checkbox-border, 1.5px solid var(--b4, #b5c6f9));border-radius:var(--ui-checkbox-border-radius, 5px);background:var(--ui-checkbox-background, var(--b-white, #fff));color:var(--ui-checkbox-check-color, #fff);transition:background-color .12s ease,border-color .12s ease}.checkbox-box svg{grid-area:1/1;visibility:hidden}.checkbox-input:hover:not(:disabled)+.checkbox-box{border-color:var(--ui-checkbox-hover-border-color, var(--b6, #8ba7f9))}.checkbox-input:checked+.checkbox-box,.checkbox-input:indeterminate+.checkbox-box{border-color:var(--ui-checkbox-checked-background, var(--b10, #335cd6));background:var(--ui-checkbox-checked-background, var(--b10, #335cd6))}.checkbox-input:checked:not(:indeterminate)+.checkbox-box .icon-check,.checkbox-input:indeterminate+.checkbox-box .icon-dash{visibility:visible}.checkbox-input:focus-visible+.checkbox-box{outline:2px solid var(--ui-checkbox-focus-color, var(--b10, #1769aa));outline-offset:2px}.checkbox-invalid .checkbox-input:not(:checked)+.checkbox-box{border-color:var(--ui-input-error-color, var(--erro, #b3261e));background:var(--ui-input-error-background, var(--bg-erro, transparent))}.checkbox-required{margin-left:2px;color:var(--ui-field-error-color, var(--erro, #b3261e))}.checkbox-hint,.checkbox-errors{padding-left:calc(var(--ui-checkbox-size, 18px) + var(--ui-checkbox-gap, 8px))}.checkbox-hint{color:var(--ui-field-hint-color, var(--c7, #595959));font-size:var(--ui-field-hint-font-size, 13px)}.checkbox-errors{display:grid;gap:var(--ui-field-error-gap, 2px);color:var(--ui-field-error-color, var(--erro, #b3261e));font-size:var(--ui-field-error-font-size, 13px)}@media(prefers-reduced-motion:reduce){.checkbox-box{transition:none}}\n"]
+		}]
+	}],
+	propDecorators: {
+		checked: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "checked",
+				required: false
+			}]
+		}, {
+			type: i0.Output,
+			args: ["checkedChange"]
+		}],
+		touched: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "touched",
+				required: false
+			}]
+		}],
+		touch: [{
+			type: i0.Output,
+			args: ["touch"]
+		}],
+		disabled: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "disabled",
+				required: false
+			}]
+		}],
+		readonly: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "readonly",
+				required: false
+			}]
+		}],
+		invalid: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "invalid",
+				required: false
+			}]
+		}],
+		required: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "required",
+				required: false
+			}]
+		}],
+		errors: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "errors",
+				required: false
+			}]
+		}],
+		name: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "name",
+				required: false
+			}]
+		}],
+		label: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "label",
+				required: true
+			}]
+		}],
+		id: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "id",
+				required: true
+			}]
+		}],
+		hint: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "hint",
+				required: false
+			}]
+		}],
+		indeterminate: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "indeterminate",
+				required: false
+			}]
+		}]
+	}
+});
 var UiFieldset = class UiFieldset {
 	title = input.required(...ngDevMode ? [{ debugName: "title" }] : /* istanbul ignore next */ []);
 	description = input("", ...ngDevMode ? [{ debugName: "description" }] : /* istanbul ignore next */ []);
@@ -5063,6 +5321,6 @@ function formatBytes(bytes) {
 	}
 	return `${value.toFixed(unitIndex === 0 ? 0 : 2)} ${units[unitIndex]}`;
 }
-export { UiAuthLayout, UiAutocomplete, UiBanner, UiBreadcrumb, UiButton, UiColumnGraph, UiCopyTextButton, UiDashboardLayout, UiField, UiFieldset, UiInput, UiInputNumber, UiInputPassword, UiInputSearch, UiMenu, UiModal, UiOtpInput, UiPagination, UiPieChart, UiPopup, UiSelect, UiSkeleton, UiTable, UiTableCell, UiTableDetail, UiThemeToggle, formatBytes };
+export { UiAuthLayout, UiAutocomplete, UiBanner, UiBreadcrumb, UiButton, UiCheckbox, UiColumnGraph, UiCopyTextButton, UiDashboardLayout, UiField, UiFieldset, UiInput, UiInputNumber, UiInputPassword, UiInputSearch, UiMenu, UiModal, UiOtpInput, UiPagination, UiPieChart, UiPopup, UiSelect, UiSkeleton, UiTable, UiTableCell, UiTableDetail, UiThemeToggle, formatBytes };
 
 //# sourceMappingURL=reusable-union-kit.mjs.map
