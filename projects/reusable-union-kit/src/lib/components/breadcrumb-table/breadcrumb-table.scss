@@ -1,6 +1,7 @@
 :host {
   display: block;
   min-width: 0;
+  margin-bottom: var(--ui-breadcrumb-table-margin-bottom, 10px);
 }
 
 .breadcrumb {

@@ -21,7 +21,7 @@
 }
 
 :host(.ui-button-primary) {
-  background: var(--ui-button-primary-background, var(--b10, #335cd6));
+  background: var(--ui-button-primary-background, var(--b8, #335cd6));
   color: var(--ui-button-primary-color, #fff);
 
   &:hover:not(:disabled) {

@@ -1,5 +1,6 @@
 :host {
   display: block;
+  margin-bottom: var(--ui-field-margin-bottom, 0);
 }
 
 .field {

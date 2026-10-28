@@ -33,6 +33,7 @@
 
   &:hover:not(:disabled):not(.active) {
     background-color: var(--ui-pagination-button-hover-background, var(--b1, #e7ecff));
+    color: var(--ui-pagination-button-hover-color, var(--ui-pagination-button-color, var(--c8, #595959)));
   }
 
   &.active {

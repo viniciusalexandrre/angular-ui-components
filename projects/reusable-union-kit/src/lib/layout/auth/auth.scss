@@ -27,13 +27,21 @@
 .auth-logo {
   align-self: flex-start;
   width: auto;
-  height: var(--ui-auth-logo-height, 32px);
+  height: var(--ui-auth-logo-height, clamp(34px, 2.5vw, 48px));
 }
 
 .auth-image {
   width: 100%;
-  max-width: var(--ui-auth-image-max-width, 420px);
+  max-width: var(--ui-auth-image-max-width, clamp(320px, 26vw, 480px));
   height: auto;
+}
+
+// Em telas largas, o logo fica no topo e o resto centraliza no espaço abaixo dele.
+@media (min-width: 901px) {
+  .auth-logo,
+  .auth-panel > :last-child {
+    margin-bottom: auto;
+  }
 }
 
 .auth-title {

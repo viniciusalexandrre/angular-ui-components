@@ -3,6 +3,7 @@
 :host {
   display: block;
   width: 100%;
+  max-width: var(--ui-input-search-max-width, 100%);
 }
 
 label {

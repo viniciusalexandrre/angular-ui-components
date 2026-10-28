@@ -270,6 +270,7 @@ Usado internamente pelos campos. Também pode ser usado sozinho para envolver um
 | Variável                      | Padrão        | Controla                           |
 | ----------------------------- | ------------- | ---------------------------------- |
 | `--ui-field-gap`              | `4px`         | Espaço entre label, campo e dica   |
+| `--ui-field-margin-bottom`    | `0`           | Espaço abaixo do campo (ex.: `20px` no `<form>` para espaçar todos) |
 | `--ui-field-label-color`      | `var(--c8)`   | Cor do label                       |
 | `--ui-field-label-font-family`| `inherit`     | Fonte do label                     |
 | `--ui-field-label-font-size`  | `14px`        | Tamanho do label                   |
@@ -433,6 +434,7 @@ Base comum, mais estas, que têm prioridade sobre as da base:
 | `--ui-input-search-border`            | `1px solid var(--b1)`  | Borda                       |
 | `--ui-input-search-border-radius`     | `25px`                 | Arredondamento (pílula)     |
 | `--ui-input-search-button-background` | `var(--b1)`            | Fundo do botão de pesquisa  |
+| `--ui-input-search-max-width`         | `100%`                 | Largura máxima (ex.: `320px`) |
 
 O label fica oculto visualmente por padrão (`[hideLabel]="false"` para exibi-lo) e usa
 `--ui-field-label-color` e `--ui-field-label-font-size`.
@@ -733,6 +735,7 @@ aparecem ao mesmo tempo.
 | `--ui-pagination-button-border-radius`  | `8px`                 | Arredondamento                    |
 | `--ui-pagination-button-background`     | `var(--b0)`           | Fundo                             |
 | `--ui-pagination-button-hover-background` | `var(--b1)`         | Fundo no hover                    |
+| `--ui-pagination-button-hover-color`    | `--ui-pagination-button-color` | Cor do texto no hover    |
 | `--ui-pagination-button-color`          | `var(--c8)`           | Cor do texto/ícone                |
 | `--ui-pagination-font-size`             | `14px`                | Tamanho do número                 |
 | `--ui-pagination-active-background`     | `var(--b10)`          | Fundo (e borda) da página atual   |
@@ -833,6 +836,7 @@ O último item (ou a raiz, sem itens) é a pasta atual: não é clicável e rece
 
 | Variável                                   | Padrão                     | Controla                        |
 | ------------------------------------------ | -------------------------- | ------------------------------- |
+| `--ui-breadcrumb-table-margin-bottom`      | `10px`                     | Espaço até o `ui-file-table` abaixo |
 | `--ui-breadcrumb-table-padding`            | `10px`                     | Espaçamento interno             |
 | `--ui-breadcrumb-table-border`             | `1px solid var(--b2)`      | Borda                           |
 | `--ui-breadcrumb-table-border-radius`      | `15px`                     | Arredondamento                  |
@@ -1113,6 +1117,9 @@ conteúdo à direita. Abaixo de **900px**, o painel vira uma faixa com logo e t�
 maior elemento da tela). O título do painel não é um `<h1>`: o `<h1>` fica com a página projetada
 (ex.: "Entrar").
 
+Acima de 900px, o logo fica no topo do painel e o restante (imagem, título e descrição) é
+centralizado no espaço abaixo dele.
+
 | Variável                             | Padrão                            | Controla                       |
 | ------------------------------------ | --------------------------------- | ------------------------------ |
 | `--ui-auth-padding`                  | `14px`                            | Margem em volta de tudo        |
@@ -1122,8 +1129,8 @@ maior elemento da tela). O título do painel não é um `<h1>`: o `<h1>` fica co
 | `--ui-auth-panel-padding`            | `48px`                            | Espaçamento do painel          |
 | `--ui-auth-panel-border-radius`      | `20px`                            | Arredondamento do painel       |
 | `--ui-auth-panel-background`         | `var(--g1)`                       | Fundo do painel (aceita gradiente) |
-| `--ui-auth-logo-height`              | `32px`                            | Altura do logo                 |
-| `--ui-auth-image-max-width`          | `420px`                           | Largura máxima da ilustração   |
+| `--ui-auth-logo-height`              | `clamp(34px, 2.5vw, 48px)`        | Altura do logo                 |
+| `--ui-auth-image-max-width`          | `clamp(320px, 26vw, 480px)`       | Largura máxima da ilustração   |
 | `--ui-auth-title-color`              | `var(--b12)`                      | Cor do título                  |
 | `--ui-auth-title-font-size`          | `clamp(22px, 2vw + 10px, 32px)`   | Tamanho do título              |
 | `--ui-auth-description-color`        | `var(--c8)`                       | Cor da descrição               |
