@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, Directive, ElementRef, 
 import { toSignal } from "@angular/core/rxjs-interop";
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { filter } from "rxjs";
-import { DOCUMENT, NgOptimizedImage, NgTemplateOutlet, isPlatformBrowser } from "@angular/common";
+import { DOCUMENT, DatePipe, NgOptimizedImage, NgTemplateOutlet, isPlatformBrowser } from "@angular/common";
 var UiField = class UiField {
 	id = input.required(...ngDevMode ? [{ debugName: "id" }] : /* istanbul ignore next */ []);
 	label = input.required(...ngDevMode ? [{ debugName: "label" }] : /* istanbul ignore next */ []);
@@ -1299,6 +1299,497 @@ i0.ɵɵngDeclareClassMetadata({
 		}]
 	}
 });
+function formatBytes(bytes) {
+	if (!Number.isFinite(bytes) || bytes < 0) throw new Error("O valor de bytes não pode ser um número negativo.");
+	const units = [
+		"B",
+		"KB",
+		"MB",
+		"GB",
+		"TB"
+	];
+	let value = bytes;
+	let unitIndex = 0;
+	while (value >= 1024 && unitIndex < units.length - 1) {
+		value /= 1024;
+		unitIndex++;
+	}
+	return `${value.toFixed(unitIndex === 0 ? 0 : 2)} ${units[unitIndex]}`;
+}
+var UiInputFile = class UiInputFile {
+	value = model(null, ...ngDevMode ? [{ debugName: "value" }] : /* istanbul ignore next */ []);
+	touched = input(false, ...ngDevMode ? [{ debugName: "touched" }] : /* istanbul ignore next */ []);
+	touch = output();
+	disabled = input(false, ...ngDevMode ? [{ debugName: "disabled" }] : /* istanbul ignore next */ []);
+	readonly = input(false, ...ngDevMode ? [{ debugName: "readonly" }] : /* istanbul ignore next */ []);
+	invalid = input(false, ...ngDevMode ? [{ debugName: "invalid" }] : /* istanbul ignore next */ []);
+	required = input(false, ...ngDevMode ? [{ debugName: "required" }] : /* istanbul ignore next */ []);
+	errors = input([], ...ngDevMode ? [{ debugName: "errors" }] : /* istanbul ignore next */ []);
+	name = input("", ...ngDevMode ? [{ debugName: "name" }] : /* istanbul ignore next */ []);
+	label = input.required(...ngDevMode ? [{ debugName: "label" }] : /* istanbul ignore next */ []);
+	id = input.required(...ngDevMode ? [{ debugName: "id" }] : /* istanbul ignore next */ []);
+	hint = input("", ...ngDevMode ? [{ debugName: "hint" }] : /* istanbul ignore next */ []);
+	accept = input("", ...ngDevMode ? [{ debugName: "accept" }] : /* istanbul ignore next */ []);
+	multiple = input(false, ...ngDevMode ? [{ debugName: "multiple" }] : /* istanbul ignore next */ []);
+	maxSize = input(null, ...ngDevMode ? [{ debugName: "maxSize" }] : /* istanbul ignore next */ []);
+	titleText = input("Arraste seu arquivo para cá", ...ngDevMode ? [{ debugName: "titleText" }] : /* istanbul ignore next */ []);
+	actionText = input("clique para escolher um arquivo", ...ngDevMode ? [{ debugName: "actionText" }] : /* istanbul ignore next */ []);
+	orText = input("ou", ...ngDevMode ? [{ debugName: "orText" }] : /* istanbul ignore next */ []);
+	addMoreText = input("clique ou arraste para adicionar mais", ...ngDevMode ? [{ debugName: "addMoreText" }] : /* istanbul ignore next */ []);
+	removeLabel = input("Remover", ...ngDevMode ? [{ debugName: "removeLabel" }] : /* istanbul ignore next */ []);
+	selectedText = input((count) => `${count} ${count === 1 ? "arquivo selecionado" : "arquivos selecionados"}`, ...ngDevMode ? [{ debugName: "selectedText" }] : /* istanbul ignore next */ []);
+	rejected = output();
+	isDragging = signal(false, ...ngDevMode ? [{ debugName: "isDragging" }] : /* istanbul ignore next */ []);
+	selectedFiles = computed(() => {
+		const value = this.value();
+		if (value instanceof File) return [value];
+		if (Array.isArray(value)) return value.filter((item) => item instanceof File);
+		return [];
+	}, ...ngDevMode ? [{ debugName: "selectedFiles" }] : /* istanbul ignore next */ []);
+	hasFiles = computed(() => this.selectedFiles().length > 0, ...ngDevMode ? [{ debugName: "hasFiles" }] : /* istanbul ignore next */ []);
+	formatSize = formatBytes;
+	showErrors = computed(() => this.invalid() && this.touched(), ...ngDevMode ? [{ debugName: "showErrors" }] : /* istanbul ignore next */ []);
+	describedBy = computed(() => {
+		if (this.showErrors()) return `${this.id()}-error`;
+		if (this.hint()) return `${this.id()}-hint`;
+		return null;
+	}, ...ngDevMode ? [{ debugName: "describedBy" }] : /* istanbul ignore next */ []);
+	isInteractive = computed(() => !this.disabled() && !this.readonly(), ...ngDevMode ? [{ debugName: "isInteractive" }] : /* istanbul ignore next */ []);
+	onDragOver(event) {
+		event.preventDefault();
+		if (this.isInteractive()) this.isDragging.set(true);
+	}
+	onDragLeave(event) {
+		const current = event.currentTarget;
+		const related = event.relatedTarget;
+		if (!related || !current.contains(related)) this.isDragging.set(false);
+	}
+	onDrop(event) {
+		event.preventDefault();
+		this.isDragging.set(false);
+		if (!this.isInteractive()) return;
+		this.addFiles(Array.from(event.dataTransfer?.files ?? []));
+	}
+	handleChange(event) {
+		const input = event.target;
+		this.addFiles(Array.from(input.files ?? []));
+		input.value = "";
+	}
+	handleClick(event) {
+		if (this.readonly()) event.preventDefault();
+	}
+	removeFile(file) {
+		if (!this.isInteractive()) return;
+		this.value.set(this.multiple() ? this.selectedFiles().filter((f) => f !== file) : null);
+		this.touch.emit();
+	}
+	addFiles(files) {
+		const rejections = [];
+		const valid = files.filter((file) => {
+			const reason = this.rejectionReason(file);
+			if (reason) rejections.push({
+				file,
+				reason
+			});
+			return !reason;
+		});
+		if (rejections.length) this.rejected.emit(rejections);
+		if (valid.length > 0) {
+			if (this.multiple()) {
+				const merged = [...this.selectedFiles()];
+				for (const file of valid) if (!merged.some((f) => f.name === file.name && f.size === file.size)) merged.push(file);
+				this.value.set(merged);
+			} else this.value.set(valid[0]);
+		}
+		this.touch.emit();
+	}
+	rejectionReason(file) {
+		const max = this.maxSize();
+		if (max !== null && file.size > max) return "maxSize";
+		return matchesAccept(file, this.accept()) ? null : "accept";
+	}
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiInputFile,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.0.0",
+		version: "22.2.1",
+		type: UiInputFile,
+		isStandalone: true,
+		selector: "ui-input-file",
+		inputs: {
+			value: {
+				classPropertyName: "value",
+				publicName: "value",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			touched: {
+				classPropertyName: "touched",
+				publicName: "touched",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			disabled: {
+				classPropertyName: "disabled",
+				publicName: "disabled",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			readonly: {
+				classPropertyName: "readonly",
+				publicName: "readonly",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			invalid: {
+				classPropertyName: "invalid",
+				publicName: "invalid",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			required: {
+				classPropertyName: "required",
+				publicName: "required",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			errors: {
+				classPropertyName: "errors",
+				publicName: "errors",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			name: {
+				classPropertyName: "name",
+				publicName: "name",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			label: {
+				classPropertyName: "label",
+				publicName: "label",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			id: {
+				classPropertyName: "id",
+				publicName: "id",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			hint: {
+				classPropertyName: "hint",
+				publicName: "hint",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			accept: {
+				classPropertyName: "accept",
+				publicName: "accept",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			multiple: {
+				classPropertyName: "multiple",
+				publicName: "multiple",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			maxSize: {
+				classPropertyName: "maxSize",
+				publicName: "maxSize",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			titleText: {
+				classPropertyName: "titleText",
+				publicName: "titleText",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			actionText: {
+				classPropertyName: "actionText",
+				publicName: "actionText",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			orText: {
+				classPropertyName: "orText",
+				publicName: "orText",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			addMoreText: {
+				classPropertyName: "addMoreText",
+				publicName: "addMoreText",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			removeLabel: {
+				classPropertyName: "removeLabel",
+				publicName: "removeLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			selectedText: {
+				classPropertyName: "selectedText",
+				publicName: "selectedText",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		outputs: {
+			value: "valueChange",
+			touch: "touch",
+			rejected: "rejected"
+		},
+		host: { properties: { "attr.id": "null" } },
+		ngImport: i0,
+		template: "<ui-field\n  [id]=\"id()\"\n  [label]=\"label() || ''\"\n  [hint]=\"hint()\"\n  [required]=\"required()\"\n  [errors]=\"errors()\"\n  [showErrors]=\"showErrors()\"\n>\n  <div\n    class=\"file\"\n    [class.is-invalid]=\"showErrors()\"\n    [class.is-dragging]=\"isDragging()\"\n    [class.is-disabled]=\"disabled()\"\n    (dragover)=\"onDragOver($event)\"\n    (dragleave)=\"onDragLeave($event)\"\n    (drop)=\"onDrop($event)\"\n  >\n    <label class=\"file-dropzone\">\n      <input\n        class=\"file-input\"\n        type=\"file\"\n        [id]=\"id()\"\n        [name]=\"name()\"\n        [multiple]=\"multiple()\"\n        [disabled]=\"disabled()\"\n        [required]=\"required() && !hasFiles()\"\n        [attr.accept]=\"accept() || null\"\n        [attr.aria-readonly]=\"readonly() || null\"\n        [attr.aria-invalid]=\"showErrors()\"\n        [attr.aria-describedby]=\"describedBy()\"\n        (change)=\"handleChange($event)\"\n        (click)=\"handleClick($event)\"\n        (blur)=\"touch.emit()\"\n      />\n\n      <span class=\"file-icon\" aria-hidden=\"true\">\n        <svg\n          width=\"20\"\n          height=\"20\"\n          viewBox=\"0 0 20 20\"\n          fill=\"none\"\n          stroke=\"currentColor\"\n          stroke-width=\"1.5\"\n          stroke-linecap=\"round\"\n          stroke-linejoin=\"round\"\n          focusable=\"false\"\n        >\n          <path d=\"M10 13V3M6 7l4-4 4 4\" />\n          <path d=\"M3 13v2.5A1.5 1.5 0 0 0 4.5 17h11a1.5 1.5 0 0 0 1.5-1.5V13\" />\n        </svg>\n      </span>\n\n      @if (hasFiles() && multiple()) {\n        <span class=\"file-title\">{{ selectedText()(selectedFiles().length) }}</span>\n        <span class=\"file-description\">{{ addMoreText() }}</span>\n      } @else if (hasFiles()) {\n        <span class=\"file-title\">{{ selectedFiles()[0].name }}</span>\n        <span class=\"file-description\">{{ formatSize(selectedFiles()[0].size) }}</span>\n      } @else {\n        <span class=\"file-title\">{{ titleText() }}</span>\n        <span class=\"file-description\">\n          {{ orText() }} <strong>{{ actionText() }}</strong>\n        </span>\n      }\n    </label>\n\n    @if (hasFiles()) {\n      <ul class=\"file-list\" aria-live=\"polite\">\n        @for (file of selectedFiles(); track file) {\n          <li>\n            <span class=\"file-name\">{{ file.name }}</span>\n            <span class=\"file-size\">{{ formatSize(file.size) }}</span>\n            @if (isInteractive()) {\n              <button\n                class=\"file-remove\"\n                type=\"button\"\n                [attr.aria-label]=\"removeLabel() + ' ' + file.name\"\n                (click)=\"removeFile(file)\"\n              >\n                <svg\n                  width=\"10\"\n                  height=\"10\"\n                  viewBox=\"0 0 16 16\"\n                  fill=\"none\"\n                  stroke=\"currentColor\"\n                  stroke-width=\"2.5\"\n                  stroke-linecap=\"round\"\n                  aria-hidden=\"true\"\n                  focusable=\"false\"\n                >\n                  <path d=\"M3 3l10 10M13 3L3 13\" />\n                </svg>\n              </button>\n            }\n          </li>\n        }\n      </ul>\n    }\n  </div>\n</ui-field>\n",
+		styles: [":host{display:block}.file{--_accent: var(--ui-input-file-dragging-color, var(--b6, #8ba7f9));box-sizing:border-box;width:100%;border:var(--ui-input-file-border, 1px dashed var(--b3, #c6d4fe));border-radius:var(--ui-input-file-border-radius, 20px);background-color:var(--ui-input-file-background, var(--b-white, #fff));transition:border-color .2s ease,background-color .2s ease,box-shadow .2s ease}.file:hover:not(.is-disabled){border-color:var(--ui-input-file-hover-border-color, var(--b5, #9bb3fa))}.file.is-dragging{border-color:var(--_accent);background-color:color-mix(in srgb,var(--_accent) 8%,var(--ui-input-file-background, var(--b-white, #fff)));box-shadow:0 0 0 4px color-mix(in srgb,var(--_accent) 15%,transparent)}.file.is-invalid{border-color:var(--ui-input-error-color, var(--erro, #b3261e));background-color:var(--ui-input-error-background, var(--bg-erro, transparent))}.file.is-disabled{opacity:var(--ui-input-file-disabled-opacity, .6)}.file-dropzone{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;min-height:var(--ui-input-file-min-height, 170px);padding:var(--ui-input-file-padding, 1.5rem);border-radius:inherit;text-align:center;cursor:pointer;transition:transform .2s ease}.is-dragging .file-dropzone{transform:scale(1.01)}.is-disabled .file-dropzone{cursor:not-allowed}.file-dropzone:has(.file-input:focus-visible) .file-icon{outline:2px solid var(--ui-input-focus-color, var(--b10, #1769aa));outline-offset:3px}.file-input{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}.file-icon{display:grid;place-items:center;width:48px;height:48px;border:1px solid var(--b2, #d9e2ff);border-radius:14px;background-color:var(--ui-input-file-icon-background, var(--b-white, #fff));color:var(--ui-input-file-icon-color, var(--c7, #707070))}.file-title{max-width:90%;overflow:hidden;color:var(--ui-input-file-title-color, var(--c8, #595959));font-size:.95rem;font-weight:500;text-overflow:ellipsis;white-space:nowrap}.file-description{color:var(--ui-input-file-description-color, var(--c7, #707070));font-size:.85rem}.file-description strong{color:var(--ui-input-file-action-color, var(--b10, #335cd6));font-weight:600}.file-list{display:grid;gap:.5rem;margin:0;padding:0 1.5rem 1rem;list-style:none}.file-list li{display:flex;align-items:center;gap:.75rem;padding:.5rem .75rem;border:1px solid var(--b2, #d9e2ff);border-radius:10px;background-color:var(--ui-input-file-item-background, var(--b-white, #fff));font-size:.85rem}.file-name{flex:1;min-width:0;overflow:hidden;color:var(--ui-input-file-title-color, var(--c8, #595959));font-weight:500;text-overflow:ellipsis;white-space:nowrap}.file-size{flex-shrink:0;color:var(--ui-input-file-description-color, var(--c7, #707070));font-size:.8rem}.file-remove{display:grid;flex-shrink:0;place-items:center;width:22px;height:22px;padding:0;border:none;border-radius:50%;background-color:var(--b1, #e7ecff);color:var(--c8, #595959);cursor:pointer;transition:background-color .15s ease}.file-remove:hover{background-color:var(--ui-input-file-remove-hover-background, var(--bg-erro, #ffebeb));color:var(--ui-input-file-remove-hover-color, var(--erro, #b3261e))}.file-remove:focus-visible{outline:2px solid var(--ui-input-focus-color, var(--b10, #1769aa));outline-offset:2px}@media(prefers-reduced-motion:reduce){.file,.file-dropzone,.file-remove{transition:none}}\n"],
+		dependencies: [{
+			kind: "component",
+			type: UiField,
+			selector: "ui-field",
+			inputs: [
+				"id",
+				"label",
+				"hint",
+				"required",
+				"errors",
+				"showErrors"
+			]
+		}],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiInputFile,
+	decorators: [{
+		type: Component,
+		args: [{
+			selector: "ui-input-file",
+			imports: [UiField],
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			host: { "[attr.id]": "null" },
+			template: "<ui-field\n  [id]=\"id()\"\n  [label]=\"label() || ''\"\n  [hint]=\"hint()\"\n  [required]=\"required()\"\n  [errors]=\"errors()\"\n  [showErrors]=\"showErrors()\"\n>\n  <div\n    class=\"file\"\n    [class.is-invalid]=\"showErrors()\"\n    [class.is-dragging]=\"isDragging()\"\n    [class.is-disabled]=\"disabled()\"\n    (dragover)=\"onDragOver($event)\"\n    (dragleave)=\"onDragLeave($event)\"\n    (drop)=\"onDrop($event)\"\n  >\n    <label class=\"file-dropzone\">\n      <input\n        class=\"file-input\"\n        type=\"file\"\n        [id]=\"id()\"\n        [name]=\"name()\"\n        [multiple]=\"multiple()\"\n        [disabled]=\"disabled()\"\n        [required]=\"required() && !hasFiles()\"\n        [attr.accept]=\"accept() || null\"\n        [attr.aria-readonly]=\"readonly() || null\"\n        [attr.aria-invalid]=\"showErrors()\"\n        [attr.aria-describedby]=\"describedBy()\"\n        (change)=\"handleChange($event)\"\n        (click)=\"handleClick($event)\"\n        (blur)=\"touch.emit()\"\n      />\n\n      <span class=\"file-icon\" aria-hidden=\"true\">\n        <svg\n          width=\"20\"\n          height=\"20\"\n          viewBox=\"0 0 20 20\"\n          fill=\"none\"\n          stroke=\"currentColor\"\n          stroke-width=\"1.5\"\n          stroke-linecap=\"round\"\n          stroke-linejoin=\"round\"\n          focusable=\"false\"\n        >\n          <path d=\"M10 13V3M6 7l4-4 4 4\" />\n          <path d=\"M3 13v2.5A1.5 1.5 0 0 0 4.5 17h11a1.5 1.5 0 0 0 1.5-1.5V13\" />\n        </svg>\n      </span>\n\n      @if (hasFiles() && multiple()) {\n        <span class=\"file-title\">{{ selectedText()(selectedFiles().length) }}</span>\n        <span class=\"file-description\">{{ addMoreText() }}</span>\n      } @else if (hasFiles()) {\n        <span class=\"file-title\">{{ selectedFiles()[0].name }}</span>\n        <span class=\"file-description\">{{ formatSize(selectedFiles()[0].size) }}</span>\n      } @else {\n        <span class=\"file-title\">{{ titleText() }}</span>\n        <span class=\"file-description\">\n          {{ orText() }} <strong>{{ actionText() }}</strong>\n        </span>\n      }\n    </label>\n\n    @if (hasFiles()) {\n      <ul class=\"file-list\" aria-live=\"polite\">\n        @for (file of selectedFiles(); track file) {\n          <li>\n            <span class=\"file-name\">{{ file.name }}</span>\n            <span class=\"file-size\">{{ formatSize(file.size) }}</span>\n            @if (isInteractive()) {\n              <button\n                class=\"file-remove\"\n                type=\"button\"\n                [attr.aria-label]=\"removeLabel() + ' ' + file.name\"\n                (click)=\"removeFile(file)\"\n              >\n                <svg\n                  width=\"10\"\n                  height=\"10\"\n                  viewBox=\"0 0 16 16\"\n                  fill=\"none\"\n                  stroke=\"currentColor\"\n                  stroke-width=\"2.5\"\n                  stroke-linecap=\"round\"\n                  aria-hidden=\"true\"\n                  focusable=\"false\"\n                >\n                  <path d=\"M3 3l10 10M13 3L3 13\" />\n                </svg>\n              </button>\n            }\n          </li>\n        }\n      </ul>\n    }\n  </div>\n</ui-field>\n",
+			styles: [":host{display:block}.file{--_accent: var(--ui-input-file-dragging-color, var(--b6, #8ba7f9));box-sizing:border-box;width:100%;border:var(--ui-input-file-border, 1px dashed var(--b3, #c6d4fe));border-radius:var(--ui-input-file-border-radius, 20px);background-color:var(--ui-input-file-background, var(--b-white, #fff));transition:border-color .2s ease,background-color .2s ease,box-shadow .2s ease}.file:hover:not(.is-disabled){border-color:var(--ui-input-file-hover-border-color, var(--b5, #9bb3fa))}.file.is-dragging{border-color:var(--_accent);background-color:color-mix(in srgb,var(--_accent) 8%,var(--ui-input-file-background, var(--b-white, #fff)));box-shadow:0 0 0 4px color-mix(in srgb,var(--_accent) 15%,transparent)}.file.is-invalid{border-color:var(--ui-input-error-color, var(--erro, #b3261e));background-color:var(--ui-input-error-background, var(--bg-erro, transparent))}.file.is-disabled{opacity:var(--ui-input-file-disabled-opacity, .6)}.file-dropzone{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;min-height:var(--ui-input-file-min-height, 170px);padding:var(--ui-input-file-padding, 1.5rem);border-radius:inherit;text-align:center;cursor:pointer;transition:transform .2s ease}.is-dragging .file-dropzone{transform:scale(1.01)}.is-disabled .file-dropzone{cursor:not-allowed}.file-dropzone:has(.file-input:focus-visible) .file-icon{outline:2px solid var(--ui-input-focus-color, var(--b10, #1769aa));outline-offset:3px}.file-input{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}.file-icon{display:grid;place-items:center;width:48px;height:48px;border:1px solid var(--b2, #d9e2ff);border-radius:14px;background-color:var(--ui-input-file-icon-background, var(--b-white, #fff));color:var(--ui-input-file-icon-color, var(--c7, #707070))}.file-title{max-width:90%;overflow:hidden;color:var(--ui-input-file-title-color, var(--c8, #595959));font-size:.95rem;font-weight:500;text-overflow:ellipsis;white-space:nowrap}.file-description{color:var(--ui-input-file-description-color, var(--c7, #707070));font-size:.85rem}.file-description strong{color:var(--ui-input-file-action-color, var(--b10, #335cd6));font-weight:600}.file-list{display:grid;gap:.5rem;margin:0;padding:0 1.5rem 1rem;list-style:none}.file-list li{display:flex;align-items:center;gap:.75rem;padding:.5rem .75rem;border:1px solid var(--b2, #d9e2ff);border-radius:10px;background-color:var(--ui-input-file-item-background, var(--b-white, #fff));font-size:.85rem}.file-name{flex:1;min-width:0;overflow:hidden;color:var(--ui-input-file-title-color, var(--c8, #595959));font-weight:500;text-overflow:ellipsis;white-space:nowrap}.file-size{flex-shrink:0;color:var(--ui-input-file-description-color, var(--c7, #707070));font-size:.8rem}.file-remove{display:grid;flex-shrink:0;place-items:center;width:22px;height:22px;padding:0;border:none;border-radius:50%;background-color:var(--b1, #e7ecff);color:var(--c8, #595959);cursor:pointer;transition:background-color .15s ease}.file-remove:hover{background-color:var(--ui-input-file-remove-hover-background, var(--bg-erro, #ffebeb));color:var(--ui-input-file-remove-hover-color, var(--erro, #b3261e))}.file-remove:focus-visible{outline:2px solid var(--ui-input-focus-color, var(--b10, #1769aa));outline-offset:2px}@media(prefers-reduced-motion:reduce){.file,.file-dropzone,.file-remove{transition:none}}\n"]
+		}]
+	}],
+	propDecorators: {
+		value: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "value",
+				required: false
+			}]
+		}, {
+			type: i0.Output,
+			args: ["valueChange"]
+		}],
+		touched: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "touched",
+				required: false
+			}]
+		}],
+		touch: [{
+			type: i0.Output,
+			args: ["touch"]
+		}],
+		disabled: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "disabled",
+				required: false
+			}]
+		}],
+		readonly: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "readonly",
+				required: false
+			}]
+		}],
+		invalid: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "invalid",
+				required: false
+			}]
+		}],
+		required: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "required",
+				required: false
+			}]
+		}],
+		errors: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "errors",
+				required: false
+			}]
+		}],
+		name: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "name",
+				required: false
+			}]
+		}],
+		label: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "label",
+				required: true
+			}]
+		}],
+		id: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "id",
+				required: true
+			}]
+		}],
+		hint: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "hint",
+				required: false
+			}]
+		}],
+		accept: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "accept",
+				required: false
+			}]
+		}],
+		multiple: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "multiple",
+				required: false
+			}]
+		}],
+		maxSize: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "maxSize",
+				required: false
+			}]
+		}],
+		titleText: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "titleText",
+				required: false
+			}]
+		}],
+		actionText: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "actionText",
+				required: false
+			}]
+		}],
+		orText: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "orText",
+				required: false
+			}]
+		}],
+		addMoreText: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "addMoreText",
+				required: false
+			}]
+		}],
+		removeLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "removeLabel",
+				required: false
+			}]
+		}],
+		selectedText: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "selectedText",
+				required: false
+			}]
+		}],
+		rejected: [{
+			type: i0.Output,
+			args: ["rejected"]
+		}]
+	}
+});
+function matchesAccept(file, accept) {
+	const rules = accept.split(",").map((rule) => rule.trim().toLowerCase()).filter(Boolean);
+	if (rules.length === 0) return true;
+	const name = file.name.toLowerCase();
+	const type = file.type.toLowerCase();
+	return rules.some((rule) => {
+		if (rule.startsWith(".")) return name.endsWith(rule);
+		if (rule.endsWith("/*")) return type.startsWith(rule.slice(0, -1));
+		return type === rule;
+	});
+}
 var UiInputNumber = class UiInputNumber {
 	value = model(null, ...ngDevMode ? [{ debugName: "value" }] : /* istanbul ignore next */ []);
 	touched = input(false, ...ngDevMode ? [{ debugName: "touched" }] : /* istanbul ignore next */ []);
@@ -2891,6 +3382,170 @@ i0.ɵɵngDeclareClassMetadata({
 		}]
 	}
 });
+var UiBreadcrumbTable = class UiBreadcrumbTable {
+	rootLabel = input.required(...ngDevMode ? [{ debugName: "rootLabel" }] : /* istanbul ignore next */ []);
+	items = input([], ...ngDevMode ? [{ debugName: "items" }] : /* istanbul ignore next */ []);
+	maxVisible = input(2, ...ngDevMode ? [{ debugName: "maxVisible" }] : /* istanbul ignore next */ []);
+	label = input("Navegação estrutural", ...ngDevMode ? [{ debugName: "label" }] : /* istanbul ignore next */ []);
+	moreLabel = input("Exibir pastas anteriores", ...ngDevMode ? [{ debugName: "moreLabel" }] : /* istanbul ignore next */ []);
+	rootSelected = output();
+	itemSelected = output();
+	menuOpen = signal(false, ...ngDevMode ? [{ debugName: "menuOpen" }] : /* istanbul ignore next */ []);
+	host = inject(ElementRef);
+	collapsed = computed(() => this.items().length > this.maxVisible() + 1, ...ngDevMode ? [{ debugName: "collapsed" }] : /* istanbul ignore next */ []);
+	hiddenItems = computed(() => this.collapsed() ? this.items().slice(0, -this.maxVisible()) : [], ...ngDevMode ? [{ debugName: "hiddenItems" }] : /* istanbul ignore next */ []);
+	visibleItems = computed(() => this.collapsed() ? this.items().slice(-this.maxVisible()) : this.items(), ...ngDevMode ? [{ debugName: "visibleItems" }] : /* istanbul ignore next */ []);
+	isRootCurrent = computed(() => this.items().length === 0, ...ngDevMode ? [{ debugName: "isRootCurrent" }] : /* istanbul ignore next */ []);
+	selectRoot() {
+		this.menuOpen.set(false);
+		this.rootSelected.emit();
+	}
+	selectItem(index) {
+		this.menuOpen.set(false);
+		this.itemSelected.emit(index);
+	}
+	toggleMenu(event) {
+		event.preventDefault();
+		this.menuOpen.update((open) => !open);
+	}
+	handleDocumentClick(event) {
+		if (this.menuOpen() && !this.host.nativeElement.contains(event.target)) this.menuOpen.set(false);
+	}
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiBreadcrumbTable,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.0.0",
+		version: "22.2.1",
+		type: UiBreadcrumbTable,
+		isStandalone: true,
+		selector: "ui-breadcrumb-table",
+		inputs: {
+			rootLabel: {
+				classPropertyName: "rootLabel",
+				publicName: "rootLabel",
+				isSignal: true,
+				isRequired: true,
+				transformFunction: null
+			},
+			items: {
+				classPropertyName: "items",
+				publicName: "items",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			maxVisible: {
+				classPropertyName: "maxVisible",
+				publicName: "maxVisible",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			label: {
+				classPropertyName: "label",
+				publicName: "label",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			moreLabel: {
+				classPropertyName: "moreLabel",
+				publicName: "moreLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		outputs: {
+			rootSelected: "rootSelected",
+			itemSelected: "itemSelected"
+		},
+		host: { listeners: {
+			"document:click": "handleDocumentClick($event)",
+			"document:keydown.escape": "menuOpen.set(false)"
+		} },
+		ngImport: i0,
+		template: "<nav class=\"breadcrumb\" [attr.aria-label]=\"label()\">\n  <ol class=\"breadcrumb-list\">\n    <li class=\"breadcrumb-entry breadcrumb-root\">\n      @if (isRootCurrent()) {\n        <span class=\"breadcrumb-item breadcrumb-current\" aria-current=\"location\" [title]=\"rootLabel()\">\n          <span class=\"breadcrumb-label\">{{ rootLabel() }}</span>\n        </span>\n      } @else {\n        <button type=\"button\" class=\"breadcrumb-item\" [title]=\"rootLabel()\" (click)=\"selectRoot()\">\n          <span class=\"breadcrumb-label\">{{ rootLabel() }}</span>\n        </button>\n      }\n    </li>\n\n    @if (hiddenItems().length > 0) {\n      <li class=\"breadcrumb-entry\">\n        <span class=\"breadcrumb-separator\" aria-hidden=\"true\">/</span>\n        <details class=\"breadcrumb-menu\" [open]=\"menuOpen()\">\n          <summary class=\"breadcrumb-menu-button\" [attr.aria-label]=\"moreLabel()\" [title]=\"moreLabel()\" (click)=\"toggleMenu($event)\">\n            <span aria-hidden=\"true\">...</span>\n          </summary>\n\n          <div class=\"breadcrumb-menu-content\">\n            @for (item of hiddenItems(); track item.index) {\n              <button\n                type=\"button\"\n                class=\"breadcrumb-menu-item\"\n                [title]=\"item.name\"\n                (click)=\"selectItem(item.index)\"\n              >\n                {{ item.name }}\n              </button>\n            }\n          </div>\n        </details>\n      </li>\n    }\n\n    @for (item of visibleItems(); track item.index; let last = $last) {\n      <li class=\"breadcrumb-entry\">\n        <span class=\"breadcrumb-separator\" aria-hidden=\"true\">/</span>\n        @if (last) {\n          <span class=\"breadcrumb-item breadcrumb-current\" aria-current=\"location\" [title]=\"item.name\">\n            <span class=\"breadcrumb-label\">{{ item.name }}</span>\n          </span>\n        } @else {\n          <button type=\"button\" class=\"breadcrumb-item\" [title]=\"item.name\" (click)=\"selectItem(item.index)\">\n            <span class=\"breadcrumb-label\">{{ item.name }}</span>\n          </button>\n        }\n      </li>\n    }\n  </ol>\n</nav>\n",
+		styles: [":host{display:block;min-width:0}.breadcrumb{display:flex;align-items:center;min-width:0;max-width:100%;padding:var(--ui-breadcrumb-table-padding, 10px);border:var(--ui-breadcrumb-table-border, 1px solid var(--b2, #d9e2ff));border-radius:var(--ui-breadcrumb-table-border-radius, 15px);background:var(--ui-breadcrumb-table-background, transparent)}.breadcrumb-list{display:flex;align-items:center;min-width:0;margin:0;padding:0;list-style:none}.breadcrumb-entry{display:flex;flex:0 1 auto;align-items:center;min-width:0}.breadcrumb-item,.breadcrumb-menu-button{display:flex;align-items:center;min-width:0;max-width:var(--ui-breadcrumb-table-item-max-width, 500px);padding:var(--ui-breadcrumb-table-item-padding, 10px);border:none;border-radius:10px;background:none;color:var(--ui-breadcrumb-table-color, var(--c9, #404040));font:inherit;cursor:pointer}.breadcrumb-item:hover,.breadcrumb-menu-button:hover{background-color:var(--ui-breadcrumb-table-hover-background, var(--b0, #f0f3ff))}.breadcrumb-item:focus-visible,.breadcrumb-menu-button:focus-visible{outline:2px solid var(--ui-breadcrumb-table-focus-color, var(--b10, #1769aa));outline-offset:2px}.breadcrumb-current{color:var(--ui-breadcrumb-table-current-color, var(--c10, #2e2e2e));font-weight:600;cursor:default}.breadcrumb-current:hover{background:none}.breadcrumb-label{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.breadcrumb-separator{flex:0 0 auto;margin:0 8px;color:var(--ui-breadcrumb-table-separator-color, var(--c6, #9c9c9c))}.breadcrumb-menu{position:relative;flex:0 0 auto}.breadcrumb-menu-button{justify-content:center;min-width:42px;max-width:42px;font-weight:700;letter-spacing:2px;list-style:none}.breadcrumb-menu-button::marker,.breadcrumb-menu-button::-webkit-details-marker{display:none;content:\"\"}.breadcrumb-menu-content{position:absolute;top:calc(100% + 6px);left:0;z-index:var(--ui-breadcrumb-table-z-index, 10);display:flex;flex-direction:column;min-width:220px;max-width:320px;max-height:var(--ui-breadcrumb-table-menu-max-height, 280px);overflow-y:auto;padding:6px;border:1px solid var(--b2, #d9e2ff);border-radius:10px;background-color:var(--ui-breadcrumb-table-menu-background, var(--b1, #e7ecff));box-shadow:var(--ui-breadcrumb-table-menu-shadow, 0 8px 20px rgba(0, 0, 0, .18))}.breadcrumb-menu-item{flex-shrink:0;width:100%;max-width:300px;padding:9px 10px;overflow:hidden;border:none;border-radius:7px;background:transparent;color:var(--ui-breadcrumb-table-color, var(--c9, #404040));font:inherit;text-align:left;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.breadcrumb-menu-item:hover,.breadcrumb-menu-item:focus-visible{background-color:var(--ui-breadcrumb-table-hover-background, var(--b0, #f0f3ff));outline:none}@media(max-width:768px){.breadcrumb-item{max-width:140px}.breadcrumb-separator{margin:0 4px}.breadcrumb-item,.breadcrumb-menu-button{padding:8px 6px}}\n"],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiBreadcrumbTable,
+	decorators: [{
+		type: Component,
+		args: [{
+			selector: "ui-breadcrumb-table",
+			imports: [],
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			host: {
+				"(document:click)": "handleDocumentClick($event)",
+				"(document:keydown.escape)": "menuOpen.set(false)"
+			},
+			template: "<nav class=\"breadcrumb\" [attr.aria-label]=\"label()\">\n  <ol class=\"breadcrumb-list\">\n    <li class=\"breadcrumb-entry breadcrumb-root\">\n      @if (isRootCurrent()) {\n        <span class=\"breadcrumb-item breadcrumb-current\" aria-current=\"location\" [title]=\"rootLabel()\">\n          <span class=\"breadcrumb-label\">{{ rootLabel() }}</span>\n        </span>\n      } @else {\n        <button type=\"button\" class=\"breadcrumb-item\" [title]=\"rootLabel()\" (click)=\"selectRoot()\">\n          <span class=\"breadcrumb-label\">{{ rootLabel() }}</span>\n        </button>\n      }\n    </li>\n\n    @if (hiddenItems().length > 0) {\n      <li class=\"breadcrumb-entry\">\n        <span class=\"breadcrumb-separator\" aria-hidden=\"true\">/</span>\n        <details class=\"breadcrumb-menu\" [open]=\"menuOpen()\">\n          <summary class=\"breadcrumb-menu-button\" [attr.aria-label]=\"moreLabel()\" [title]=\"moreLabel()\" (click)=\"toggleMenu($event)\">\n            <span aria-hidden=\"true\">...</span>\n          </summary>\n\n          <div class=\"breadcrumb-menu-content\">\n            @for (item of hiddenItems(); track item.index) {\n              <button\n                type=\"button\"\n                class=\"breadcrumb-menu-item\"\n                [title]=\"item.name\"\n                (click)=\"selectItem(item.index)\"\n              >\n                {{ item.name }}\n              </button>\n            }\n          </div>\n        </details>\n      </li>\n    }\n\n    @for (item of visibleItems(); track item.index; let last = $last) {\n      <li class=\"breadcrumb-entry\">\n        <span class=\"breadcrumb-separator\" aria-hidden=\"true\">/</span>\n        @if (last) {\n          <span class=\"breadcrumb-item breadcrumb-current\" aria-current=\"location\" [title]=\"item.name\">\n            <span class=\"breadcrumb-label\">{{ item.name }}</span>\n          </span>\n        } @else {\n          <button type=\"button\" class=\"breadcrumb-item\" [title]=\"item.name\" (click)=\"selectItem(item.index)\">\n            <span class=\"breadcrumb-label\">{{ item.name }}</span>\n          </button>\n        }\n      </li>\n    }\n  </ol>\n</nav>\n",
+			styles: [":host{display:block;min-width:0}.breadcrumb{display:flex;align-items:center;min-width:0;max-width:100%;padding:var(--ui-breadcrumb-table-padding, 10px);border:var(--ui-breadcrumb-table-border, 1px solid var(--b2, #d9e2ff));border-radius:var(--ui-breadcrumb-table-border-radius, 15px);background:var(--ui-breadcrumb-table-background, transparent)}.breadcrumb-list{display:flex;align-items:center;min-width:0;margin:0;padding:0;list-style:none}.breadcrumb-entry{display:flex;flex:0 1 auto;align-items:center;min-width:0}.breadcrumb-item,.breadcrumb-menu-button{display:flex;align-items:center;min-width:0;max-width:var(--ui-breadcrumb-table-item-max-width, 500px);padding:var(--ui-breadcrumb-table-item-padding, 10px);border:none;border-radius:10px;background:none;color:var(--ui-breadcrumb-table-color, var(--c9, #404040));font:inherit;cursor:pointer}.breadcrumb-item:hover,.breadcrumb-menu-button:hover{background-color:var(--ui-breadcrumb-table-hover-background, var(--b0, #f0f3ff))}.breadcrumb-item:focus-visible,.breadcrumb-menu-button:focus-visible{outline:2px solid var(--ui-breadcrumb-table-focus-color, var(--b10, #1769aa));outline-offset:2px}.breadcrumb-current{color:var(--ui-breadcrumb-table-current-color, var(--c10, #2e2e2e));font-weight:600;cursor:default}.breadcrumb-current:hover{background:none}.breadcrumb-label{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.breadcrumb-separator{flex:0 0 auto;margin:0 8px;color:var(--ui-breadcrumb-table-separator-color, var(--c6, #9c9c9c))}.breadcrumb-menu{position:relative;flex:0 0 auto}.breadcrumb-menu-button{justify-content:center;min-width:42px;max-width:42px;font-weight:700;letter-spacing:2px;list-style:none}.breadcrumb-menu-button::marker,.breadcrumb-menu-button::-webkit-details-marker{display:none;content:\"\"}.breadcrumb-menu-content{position:absolute;top:calc(100% + 6px);left:0;z-index:var(--ui-breadcrumb-table-z-index, 10);display:flex;flex-direction:column;min-width:220px;max-width:320px;max-height:var(--ui-breadcrumb-table-menu-max-height, 280px);overflow-y:auto;padding:6px;border:1px solid var(--b2, #d9e2ff);border-radius:10px;background-color:var(--ui-breadcrumb-table-menu-background, var(--b1, #e7ecff));box-shadow:var(--ui-breadcrumb-table-menu-shadow, 0 8px 20px rgba(0, 0, 0, .18))}.breadcrumb-menu-item{flex-shrink:0;width:100%;max-width:300px;padding:9px 10px;overflow:hidden;border:none;border-radius:7px;background:transparent;color:var(--ui-breadcrumb-table-color, var(--c9, #404040));font:inherit;text-align:left;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.breadcrumb-menu-item:hover,.breadcrumb-menu-item:focus-visible{background-color:var(--ui-breadcrumb-table-hover-background, var(--b0, #f0f3ff));outline:none}@media(max-width:768px){.breadcrumb-item{max-width:140px}.breadcrumb-separator{margin:0 4px}.breadcrumb-item,.breadcrumb-menu-button{padding:8px 6px}}\n"]
+		}]
+	}],
+	propDecorators: {
+		rootLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "rootLabel",
+				required: true
+			}]
+		}],
+		items: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "items",
+				required: false
+			}]
+		}],
+		maxVisible: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "maxVisible",
+				required: false
+			}]
+		}],
+		label: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "label",
+				required: false
+			}]
+		}],
+		moreLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "moreLabel",
+				required: false
+			}]
+		}],
+		rootSelected: [{
+			type: i0.Output,
+			args: ["rootSelected"]
+		}],
+		itemSelected: [{
+			type: i0.Output,
+			args: ["itemSelected"]
+		}]
+	}
+});
 var UiButton = class UiButton {
 	variant = input("primary", ...ngDevMode ? [{ debugName: "variant" }] : /* istanbul ignore next */ []);
 	size = input("md", ...ngDevMode ? [{ debugName: "size" }] : /* istanbul ignore next */ []);
@@ -4218,6 +4873,325 @@ i0.ɵɵngDeclareClassMetadata({
 		}]
 	}
 });
+const isFileEntry = (entry) => "key" in entry;
+var UiFileTable = class UiFileTable {
+	content = input(null, ...ngDevMode ? [{ debugName: "content" }] : /* istanbul ignore next */ []);
+	isLoading = input(false, ...ngDevMode ? [{ debugName: "isLoading" }] : /* istanbul ignore next */ []);
+	errorMessage = input(null, ...ngDevMode ? [{ debugName: "errorMessage" }] : /* istanbul ignore next */ []);
+	columns = input([
+		"Nome",
+		"Tamanho",
+		"Modificado em",
+		"Ações"
+	], ...ngDevMode ? [{ debugName: "columns" }] : /* istanbul ignore next */ []);
+	optionsMenu = input([], ...ngDevMode ? [{ debugName: "optionsMenu" }] : /* istanbul ignore next */ []);
+	optionsMenuFolder = input([], ...ngDevMode ? [{ debugName: "optionsMenuFolder" }] : /* istanbul ignore next */ []);
+	label = input("Arquivos", ...ngDevMode ? [{ debugName: "label" }] : /* istanbul ignore next */ []);
+	loadingRows = input(12, ...ngDevMode ? [{ debugName: "loadingRows" }] : /* istanbul ignore next */ []);
+	emptyText = input("Nenhuma pasta ou arquivo encontrado", ...ngDevMode ? [{ debugName: "emptyText" }] : /* istanbul ignore next */ []);
+	invalidDataText = input("Erro no retorno dos dados", ...ngDevMode ? [{ debugName: "invalidDataText" }] : /* istanbul ignore next */ []);
+	atText = input("às", ...ngDevMode ? [{ debugName: "atText" }] : /* istanbul ignore next */ []);
+	timezone = input(void 0, ...ngDevMode ? [{ debugName: "timezone" }] : /* istanbul ignore next */ []);
+	actionsLabel = input("Ações", ...ngDevMode ? [{ debugName: "actionsLabel" }] : /* istanbul ignore next */ []);
+	rowClick = output();
+	menuAction = output();
+	formatSize = formatBytes;
+	tableState = computed(() => {
+		const data = this.content();
+		const hasData = !!data && (data.folders.length > 0 || data.objects.length > 0);
+		if (this.errorMessage()) return "error";
+		if (this.isLoading() && !hasData) return "loading";
+		if (!data) return "invalid";
+		if (!hasData) return "empty";
+		return "content";
+	}, ...ngDevMode ? [{ debugName: "tableState" }] : /* istanbul ignore next */ []);
+	folderKey(folder) {
+		return folder.prefix ?? folder.name;
+	}
+	onRowClick(entry) {
+		this.rowClick.emit(entry);
+	}
+	onMenuAction(item, entry) {
+		this.menuAction.emit({
+			action: item.id,
+			entry
+		});
+	}
+	static ɵfac = i0.ɵɵngDeclareFactory({
+		minVersion: "12.0.0",
+		version: "22.2.1",
+		ngImport: i0,
+		type: UiFileTable,
+		deps: [],
+		target: i0.ɵɵFactoryTarget.Component
+	});
+	static ɵcmp = i0.ɵɵngDeclareComponent({
+		minVersion: "17.0.0",
+		version: "22.2.1",
+		type: UiFileTable,
+		isStandalone: true,
+		selector: "ui-file-table",
+		inputs: {
+			content: {
+				classPropertyName: "content",
+				publicName: "content",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			isLoading: {
+				classPropertyName: "isLoading",
+				publicName: "isLoading",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			errorMessage: {
+				classPropertyName: "errorMessage",
+				publicName: "errorMessage",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			columns: {
+				classPropertyName: "columns",
+				publicName: "columns",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			optionsMenu: {
+				classPropertyName: "optionsMenu",
+				publicName: "optionsMenu",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			optionsMenuFolder: {
+				classPropertyName: "optionsMenuFolder",
+				publicName: "optionsMenuFolder",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			label: {
+				classPropertyName: "label",
+				publicName: "label",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			loadingRows: {
+				classPropertyName: "loadingRows",
+				publicName: "loadingRows",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			emptyText: {
+				classPropertyName: "emptyText",
+				publicName: "emptyText",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			invalidDataText: {
+				classPropertyName: "invalidDataText",
+				publicName: "invalidDataText",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			atText: {
+				classPropertyName: "atText",
+				publicName: "atText",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			timezone: {
+				classPropertyName: "timezone",
+				publicName: "timezone",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			},
+			actionsLabel: {
+				classPropertyName: "actionsLabel",
+				publicName: "actionsLabel",
+				isSignal: true,
+				isRequired: false,
+				transformFunction: null
+			}
+		},
+		outputs: {
+			rowClick: "rowClick",
+			menuAction: "menuAction"
+		},
+		ngImport: i0,
+		template: "<div class=\"table-wrapper\">\n  <table class=\"storage-table\" [attr.aria-label]=\"label()\" [attr.aria-busy]=\"isLoading()\">\n    <colgroup>\n      <col class=\"column-name\" />\n      <col class=\"column-size\" />\n      <col class=\"column-date\" />\n      <col class=\"column-actions\" />\n    </colgroup>\n\n    <thead>\n      <tr>\n        @for (column of columns(); track $index; let last = $last) {\n          <th scope=\"col\">\n            @if (last) {\n              <span class=\"visually-hidden\">{{ column }}</span>\n            } @else {\n              {{ column }}\n            }\n          </th>\n        }\n      </tr>\n    </thead>\n\n    <tbody>\n      @switch (tableState()) {\n        @case ('loading') {\n          <tr class=\"state-row\">\n            <td colspan=\"4\" class=\"loading-cell\">\n              <ui-skeleton variant=\"table\" [quantity]=\"loadingRows()\" />\n            </td>\n          </tr>\n        }\n\n        @case ('error') {\n          <tr class=\"state-row\">\n            <td colspan=\"4\">\n              <div class=\"state-container state-error\" role=\"alert\">\n                <span class=\"state-icon\" aria-hidden=\"true\">⚠</span>\n                <p class=\"state-title\">{{ errorMessage() }}</p>\n              </div>\n            </td>\n          </tr>\n        }\n\n        @case ('invalid') {\n          <tr class=\"state-row\">\n            <td colspan=\"4\">\n              <div class=\"state-container state-error\" role=\"alert\">\n                <span class=\"state-icon\" aria-hidden=\"true\">⚠</span>\n                <p class=\"state-title\">{{ invalidDataText() }}</p>\n              </div>\n            </td>\n          </tr>\n        }\n\n        @case ('empty') {\n          <tr class=\"state-row\">\n            <td colspan=\"4\">\n              <div class=\"state-container empty-state\" role=\"status\">\n                <span class=\"state-icon\" aria-hidden=\"true\">\n                  <svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linejoin=\"round\" focusable=\"false\">\n                    <path d=\"M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\" />\n                  </svg>\n                </span>\n                <p class=\"state-title\">{{ emptyText() }}</p>\n              </div>\n            </td>\n          </tr>\n        }\n\n        @case ('content') {\n          @for (folder of content()!.folders; track folderKey(folder)) {\n            <tr class=\"storage-row\" (click)=\"onRowClick(folder)\">\n              <td>\n                <button class=\"name-cell\" type=\"button\" (click)=\"$event.stopPropagation(); onRowClick(folder)\">\n                  <span class=\"icon\" aria-hidden=\"true\">📁</span>\n                  <span class=\"name-label\">{{ folder.name }}</span>\n                </button>\n              </td>\n              <td></td>\n              <td></td>\n              <td class=\"actions-cell\" (click)=\"$event.stopPropagation()\">\n                @if (optionsMenuFolder().length) {\n                  <ui-menu\n                    [items]=\"optionsMenuFolder()\"\n                    [label]=\"actionsLabel() + ': ' + folder.name\"\n                    (itemSelect)=\"onMenuAction($event, folder)\"\n                  />\n                }\n              </td>\n            </tr>\n          }\n\n          @for (file of content()!.objects; track file.key) {\n            <tr class=\"storage-row\" (click)=\"onRowClick(file)\">\n              <td>\n                <button class=\"name-cell\" type=\"button\" (click)=\"$event.stopPropagation(); onRowClick(file)\">\n                  <span class=\"icon\" aria-hidden=\"true\">📄</span>\n                  <span class=\"name-label\">{{ file.name }}</span>\n                </button>\n              </td>\n              <td class=\"center\">{{ formatSize(file.size) }}</td>\n              <td class=\"center\">\n                {{ file.last_modified | date: 'dd/MM/yyyy' : timezone() }}\n                {{ atText() }} {{ file.last_modified | date: 'HH:mm' : timezone() }}\n              </td>\n              <td class=\"actions-cell\" (click)=\"$event.stopPropagation()\">\n                @if (optionsMenu().length) {\n                  <ui-menu\n                    [items]=\"optionsMenu()\"\n                    [label]=\"actionsLabel() + ': ' + file.name\"\n                    (itemSelect)=\"onMenuAction($event, file)\"\n                  />\n                }\n              </td>\n            </tr>\n          }\n        }\n      }\n    </tbody>\n  </table>\n</div>\n",
+		styles: [":host{display:flex;flex:1 1 auto;flex-direction:column;width:100%;height:100%;min-width:0;min-height:0;overflow:hidden;border:var(--ui-file-table-border, 1px solid var(--b2, #d9e2ff));border-radius:var(--ui-file-table-border-radius, 15px);color:var(--ui-file-table-color, var(--c7, #707070))}.table-wrapper{display:flex;flex:1 1 auto;flex-direction:column;width:100%;min-width:0;min-height:0;overflow-y:auto}.storage-table{flex-shrink:0;width:100%;border-collapse:collapse;table-layout:fixed;font-size:var(--ui-file-table-font-size, .875rem)}.storage-table thead{position:sticky;top:0;z-index:2;height:var(--ui-file-table-header-height, 58px);background-color:var(--ui-file-table-header-background, var(--b1, #e7ecff))}.storage-table thead tr{border-bottom:1px solid var(--ui-file-table-row-border-color, var(--b2, #d9e2ff))}.storage-table thead th{padding:.75rem 1rem;color:var(--ui-file-table-header-color, var(--c8, #595959));font-size:14px;font-weight:600;text-align:center;white-space:nowrap}.storage-table thead th:first-child{text-align:left}.storage-row{border-bottom:1px solid var(--ui-file-table-row-border-color, var(--b2, #d9e2ff));cursor:pointer;transition:background-color .15s ease}.storage-row:hover{background-color:var(--ui-file-table-row-hover-background, var(--b0, #f0f3ff))}.storage-row:last-child{border-bottom:none}.storage-row td{padding:var(--ui-file-table-cell-padding, .65rem 1rem);vertical-align:middle}.storage-row .center{text-align:center;white-space:nowrap}.name-cell{display:flex;align-items:center;gap:.5rem;width:100%;min-width:0;padding:0;border:0;background:none;color:var(--ui-file-table-name-color, var(--c9, #404040));font:inherit;font-weight:500;text-align:left;cursor:pointer}.name-cell:focus-visible{border-radius:4px;outline:2px solid var(--ui-file-table-focus-color, var(--b10, #1769aa));outline-offset:2px}.name-cell .icon{flex:0 0 auto;font-size:1rem;line-height:1}.name-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.actions-cell{text-align:center;cursor:default}.state-row{cursor:default}.state-row td{padding:2rem 1rem}.state-row .loading-cell{padding:.5rem}.state-container{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;color:var(--ui-file-table-state-color, var(--c8, #595959));text-align:center}.empty-state{min-height:var(--ui-file-table-empty-min-height, 220px)}.state-error{color:var(--ui-file-table-error-color, var(--erro, #b3261e))}.state-icon{font-size:1.5rem;line-height:1}.state-title{margin:0;font-size:1rem}.column-name{width:var(--ui-file-table-name-width, 45%)}.column-size{width:var(--ui-file-table-size-width, 20%)}.column-date{width:var(--ui-file-table-date-width, 28%)}.column-actions{width:var(--ui-file-table-actions-width, 64px)}.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}@media(prefers-reduced-motion:reduce){.storage-row{transition:none}}\n"],
+		dependencies: [
+			{
+				kind: "component",
+				type: UiMenu,
+				selector: "ui-menu",
+				inputs: ["items", "label"],
+				outputs: ["itemSelect"]
+			},
+			{
+				kind: "component",
+				type: UiSkeleton,
+				selector: "ui-skeleton",
+				inputs: [
+					"variant",
+					"quantity",
+					"label"
+				]
+			},
+			{
+				kind: "pipe",
+				type: DatePipe,
+				name: "date"
+			}
+		],
+		changeDetection: i0.ChangeDetectionStrategy.OnPush
+	});
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.1",
+	ngImport: i0,
+	type: UiFileTable,
+	decorators: [{
+		type: Component,
+		args: [{
+			imports: [
+				DatePipe,
+				UiMenu,
+				UiSkeleton
+			],
+			selector: "ui-file-table",
+			changeDetection: ChangeDetectionStrategy.OnPush,
+			template: "<div class=\"table-wrapper\">\n  <table class=\"storage-table\" [attr.aria-label]=\"label()\" [attr.aria-busy]=\"isLoading()\">\n    <colgroup>\n      <col class=\"column-name\" />\n      <col class=\"column-size\" />\n      <col class=\"column-date\" />\n      <col class=\"column-actions\" />\n    </colgroup>\n\n    <thead>\n      <tr>\n        @for (column of columns(); track $index; let last = $last) {\n          <th scope=\"col\">\n            @if (last) {\n              <span class=\"visually-hidden\">{{ column }}</span>\n            } @else {\n              {{ column }}\n            }\n          </th>\n        }\n      </tr>\n    </thead>\n\n    <tbody>\n      @switch (tableState()) {\n        @case ('loading') {\n          <tr class=\"state-row\">\n            <td colspan=\"4\" class=\"loading-cell\">\n              <ui-skeleton variant=\"table\" [quantity]=\"loadingRows()\" />\n            </td>\n          </tr>\n        }\n\n        @case ('error') {\n          <tr class=\"state-row\">\n            <td colspan=\"4\">\n              <div class=\"state-container state-error\" role=\"alert\">\n                <span class=\"state-icon\" aria-hidden=\"true\">⚠</span>\n                <p class=\"state-title\">{{ errorMessage() }}</p>\n              </div>\n            </td>\n          </tr>\n        }\n\n        @case ('invalid') {\n          <tr class=\"state-row\">\n            <td colspan=\"4\">\n              <div class=\"state-container state-error\" role=\"alert\">\n                <span class=\"state-icon\" aria-hidden=\"true\">⚠</span>\n                <p class=\"state-title\">{{ invalidDataText() }}</p>\n              </div>\n            </td>\n          </tr>\n        }\n\n        @case ('empty') {\n          <tr class=\"state-row\">\n            <td colspan=\"4\">\n              <div class=\"state-container empty-state\" role=\"status\">\n                <span class=\"state-icon\" aria-hidden=\"true\">\n                  <svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linejoin=\"round\" focusable=\"false\">\n                    <path d=\"M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\" />\n                  </svg>\n                </span>\n                <p class=\"state-title\">{{ emptyText() }}</p>\n              </div>\n            </td>\n          </tr>\n        }\n\n        @case ('content') {\n          @for (folder of content()!.folders; track folderKey(folder)) {\n            <tr class=\"storage-row\" (click)=\"onRowClick(folder)\">\n              <td>\n                <button class=\"name-cell\" type=\"button\" (click)=\"$event.stopPropagation(); onRowClick(folder)\">\n                  <span class=\"icon\" aria-hidden=\"true\">📁</span>\n                  <span class=\"name-label\">{{ folder.name }}</span>\n                </button>\n              </td>\n              <td></td>\n              <td></td>\n              <td class=\"actions-cell\" (click)=\"$event.stopPropagation()\">\n                @if (optionsMenuFolder().length) {\n                  <ui-menu\n                    [items]=\"optionsMenuFolder()\"\n                    [label]=\"actionsLabel() + ': ' + folder.name\"\n                    (itemSelect)=\"onMenuAction($event, folder)\"\n                  />\n                }\n              </td>\n            </tr>\n          }\n\n          @for (file of content()!.objects; track file.key) {\n            <tr class=\"storage-row\" (click)=\"onRowClick(file)\">\n              <td>\n                <button class=\"name-cell\" type=\"button\" (click)=\"$event.stopPropagation(); onRowClick(file)\">\n                  <span class=\"icon\" aria-hidden=\"true\">📄</span>\n                  <span class=\"name-label\">{{ file.name }}</span>\n                </button>\n              </td>\n              <td class=\"center\">{{ formatSize(file.size) }}</td>\n              <td class=\"center\">\n                {{ file.last_modified | date: 'dd/MM/yyyy' : timezone() }}\n                {{ atText() }} {{ file.last_modified | date: 'HH:mm' : timezone() }}\n              </td>\n              <td class=\"actions-cell\" (click)=\"$event.stopPropagation()\">\n                @if (optionsMenu().length) {\n                  <ui-menu\n                    [items]=\"optionsMenu()\"\n                    [label]=\"actionsLabel() + ': ' + file.name\"\n                    (itemSelect)=\"onMenuAction($event, file)\"\n                  />\n                }\n              </td>\n            </tr>\n          }\n        }\n      }\n    </tbody>\n  </table>\n</div>\n",
+			styles: [":host{display:flex;flex:1 1 auto;flex-direction:column;width:100%;height:100%;min-width:0;min-height:0;overflow:hidden;border:var(--ui-file-table-border, 1px solid var(--b2, #d9e2ff));border-radius:var(--ui-file-table-border-radius, 15px);color:var(--ui-file-table-color, var(--c7, #707070))}.table-wrapper{display:flex;flex:1 1 auto;flex-direction:column;width:100%;min-width:0;min-height:0;overflow-y:auto}.storage-table{flex-shrink:0;width:100%;border-collapse:collapse;table-layout:fixed;font-size:var(--ui-file-table-font-size, .875rem)}.storage-table thead{position:sticky;top:0;z-index:2;height:var(--ui-file-table-header-height, 58px);background-color:var(--ui-file-table-header-background, var(--b1, #e7ecff))}.storage-table thead tr{border-bottom:1px solid var(--ui-file-table-row-border-color, var(--b2, #d9e2ff))}.storage-table thead th{padding:.75rem 1rem;color:var(--ui-file-table-header-color, var(--c8, #595959));font-size:14px;font-weight:600;text-align:center;white-space:nowrap}.storage-table thead th:first-child{text-align:left}.storage-row{border-bottom:1px solid var(--ui-file-table-row-border-color, var(--b2, #d9e2ff));cursor:pointer;transition:background-color .15s ease}.storage-row:hover{background-color:var(--ui-file-table-row-hover-background, var(--b0, #f0f3ff))}.storage-row:last-child{border-bottom:none}.storage-row td{padding:var(--ui-file-table-cell-padding, .65rem 1rem);vertical-align:middle}.storage-row .center{text-align:center;white-space:nowrap}.name-cell{display:flex;align-items:center;gap:.5rem;width:100%;min-width:0;padding:0;border:0;background:none;color:var(--ui-file-table-name-color, var(--c9, #404040));font:inherit;font-weight:500;text-align:left;cursor:pointer}.name-cell:focus-visible{border-radius:4px;outline:2px solid var(--ui-file-table-focus-color, var(--b10, #1769aa));outline-offset:2px}.name-cell .icon{flex:0 0 auto;font-size:1rem;line-height:1}.name-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.actions-cell{text-align:center;cursor:default}.state-row{cursor:default}.state-row td{padding:2rem 1rem}.state-row .loading-cell{padding:.5rem}.state-container{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;color:var(--ui-file-table-state-color, var(--c8, #595959));text-align:center}.empty-state{min-height:var(--ui-file-table-empty-min-height, 220px)}.state-error{color:var(--ui-file-table-error-color, var(--erro, #b3261e))}.state-icon{font-size:1.5rem;line-height:1}.state-title{margin:0;font-size:1rem}.column-name{width:var(--ui-file-table-name-width, 45%)}.column-size{width:var(--ui-file-table-size-width, 20%)}.column-date{width:var(--ui-file-table-date-width, 28%)}.column-actions{width:var(--ui-file-table-actions-width, 64px)}.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}@media(prefers-reduced-motion:reduce){.storage-row{transition:none}}\n"]
+		}]
+	}],
+	propDecorators: {
+		content: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "content",
+				required: false
+			}]
+		}],
+		isLoading: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "isLoading",
+				required: false
+			}]
+		}],
+		errorMessage: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "errorMessage",
+				required: false
+			}]
+		}],
+		columns: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "columns",
+				required: false
+			}]
+		}],
+		optionsMenu: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "optionsMenu",
+				required: false
+			}]
+		}],
+		optionsMenuFolder: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "optionsMenuFolder",
+				required: false
+			}]
+		}],
+		label: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "label",
+				required: false
+			}]
+		}],
+		loadingRows: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "loadingRows",
+				required: false
+			}]
+		}],
+		emptyText: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "emptyText",
+				required: false
+			}]
+		}],
+		invalidDataText: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "invalidDataText",
+				required: false
+			}]
+		}],
+		atText: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "atText",
+				required: false
+			}]
+		}],
+		timezone: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "timezone",
+				required: false
+			}]
+		}],
+		actionsLabel: [{
+			type: i0.Input,
+			args: [{
+				isSignal: true,
+				alias: "actionsLabel",
+				required: false
+			}]
+		}],
+		rowClick: [{
+			type: i0.Output,
+			args: ["rowClick"]
+		}],
+		menuAction: [{
+			type: i0.Output,
+			args: ["menuAction"]
+		}]
+	}
+});
 var UiColumnGraph = class UiColumnGraph {
 	data = input.required(...ngDevMode ? [{ debugName: "data" }] : /* istanbul ignore next */ []);
 	title = input.required(...ngDevMode ? [{ debugName: "title" }] : /* istanbul ignore next */ []);
@@ -5304,23 +6278,6 @@ i0.ɵɵngDeclareClassMetadata({
 		}]
 	}
 });
-function formatBytes(bytes) {
-	if (!Number.isFinite(bytes) || bytes < 0) throw new Error("O valor de bytes não pode ser um número negativo.");
-	const units = [
-		"B",
-		"KB",
-		"MB",
-		"GB",
-		"TB"
-	];
-	let value = bytes;
-	let unitIndex = 0;
-	while (value >= 1024 && unitIndex < units.length - 1) {
-		value /= 1024;
-		unitIndex++;
-	}
-	return `${value.toFixed(unitIndex === 0 ? 0 : 2)} ${units[unitIndex]}`;
-}
-export { UiAuthLayout, UiAutocomplete, UiBanner, UiBreadcrumb, UiButton, UiCheckbox, UiColumnGraph, UiCopyTextButton, UiDashboardLayout, UiField, UiFieldset, UiInput, UiInputNumber, UiInputPassword, UiInputSearch, UiMenu, UiModal, UiOtpInput, UiPagination, UiPieChart, UiPopup, UiSelect, UiSkeleton, UiTable, UiTableCell, UiTableDetail, UiThemeToggle, formatBytes };
+export { UiAuthLayout, UiAutocomplete, UiBanner, UiBreadcrumb, UiBreadcrumbTable, UiButton, UiCheckbox, UiColumnGraph, UiCopyTextButton, UiDashboardLayout, UiField, UiFieldset, UiFileTable, UiInput, UiInputFile, UiInputNumber, UiInputPassword, UiInputSearch, UiMenu, UiModal, UiOtpInput, UiPagination, UiPieChart, UiPopup, UiSelect, UiSkeleton, UiTable, UiTableCell, UiTableDetail, UiThemeToggle, formatBytes, isFileEntry };
 
 //# sourceMappingURL=reusable-union-kit.mjs.map

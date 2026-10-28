@@ -411,6 +411,167 @@ export declare class UiInput implements FormValueControl<string | null> {
     "touch": "touch";
   }, never, never, true, never>;
 }
+export declare function formatBytes(bytes: number): string;
+export type UiInputFileValue = File | File[] | null;
+/** Motivo de um arquivo ter sido ignorado. */
+export interface UiInputFileRejection {
+  file: File;
+  reason: 'accept' | 'maxSize';
+}
+/**
+ * Área para arrastar ou escolher arquivos.
+ * O valor é `File | null` (padrão) ou `File[]` com [multiple]="true".
+ */
+export declare class UiInputFile implements FormValueControl<UiInputFileValue> {
+  readonly value: import("@angular/core").ModelSignal<UiInputFileValue>;
+  readonly touched: import("@angular/core").InputSignal<boolean>;
+  readonly touch: import("@angular/core").OutputEmitterRef<void>;
+  readonly disabled: import("@angular/core").InputSignal<boolean>;
+  readonly readonly: import("@angular/core").InputSignal<boolean>;
+  readonly invalid: import("@angular/core").InputSignal<boolean>;
+  readonly required: import("@angular/core").InputSignal<boolean>;
+  readonly errors: import("@angular/core").InputSignal<readonly ValidationError[]>;
+  readonly name: import("@angular/core").InputSignal<string>;
+  readonly label: import("@angular/core").InputSignal<string>;
+  readonly id: import("@angular/core").InputSignal<string>;
+  readonly hint: import("@angular/core").InputSignal<string>;
+  /** Tipos aceitos, no formato do atributo HTML (ex.: '.pdf,image/*'). Vazio aceita tudo. */
+  readonly accept: import("@angular/core").InputSignal<string>;
+  readonly multiple: import("@angular/core").InputSignal<boolean>;
+  /** Tamanho máximo por arquivo, em bytes. */
+  readonly maxSize: import("@angular/core").InputSignal<number | null>;
+  readonly titleText: import("@angular/core").InputSignal<string>;
+  readonly actionText: import("@angular/core").InputSignal<string>;
+  readonly orText: import("@angular/core").InputSignal<string>;
+  readonly addMoreText: import("@angular/core").InputSignal<string>;
+  readonly removeLabel: import("@angular/core").InputSignal<string>;
+  readonly selectedText: import("@angular/core").InputSignal<(count: number) => string>;
+  /** Arquivos ignorados por tipo ou tamanho (ex.: para mostrar um aviso). */
+  readonly rejected: import("@angular/core").OutputEmitterRef<UiInputFileRejection[]>;
+  readonly isDragging: import("@angular/core").WritableSignal<boolean>;
+  readonly selectedFiles: import("@angular/core").Signal<File[]>;
+  readonly hasFiles: import("@angular/core").Signal<boolean>;
+  protected readonly formatSize: typeof formatBytes;
+  protected readonly showErrors: import("@angular/core").Signal<boolean>;
+  protected readonly describedBy: import("@angular/core").Signal<string | null>;
+  protected readonly isInteractive: import("@angular/core").Signal<boolean>;
+  onDragOver(event: DragEvent): void;
+  onDragLeave(event: DragEvent): void;
+  onDrop(event: DragEvent): void;
+  handleChange(event: Event): void;
+  handleClick(event: MouseEvent): void;
+  removeFile(file: File): void;
+  private addFiles;
+  /** O atributo `accept` só filtra a janela de seleção; arquivos arrastados precisam ser conferidos. */
+  private rejectionReason;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiInputFile, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiInputFile, "ui-input-file", never, {
+    "value": {
+      "alias": "value";
+      "required": false;
+      "isSignal": true;
+    };
+    "touched": {
+      "alias": "touched";
+      "required": false;
+      "isSignal": true;
+    };
+    "disabled": {
+      "alias": "disabled";
+      "required": false;
+      "isSignal": true;
+    };
+    "readonly": {
+      "alias": "readonly";
+      "required": false;
+      "isSignal": true;
+    };
+    "invalid": {
+      "alias": "invalid";
+      "required": false;
+      "isSignal": true;
+    };
+    "required": {
+      "alias": "required";
+      "required": false;
+      "isSignal": true;
+    };
+    "errors": {
+      "alias": "errors";
+      "required": false;
+      "isSignal": true;
+    };
+    "name": {
+      "alias": "name";
+      "required": false;
+      "isSignal": true;
+    };
+    "label": {
+      "alias": "label";
+      "required": true;
+      "isSignal": true;
+    };
+    "id": {
+      "alias": "id";
+      "required": true;
+      "isSignal": true;
+    };
+    "hint": {
+      "alias": "hint";
+      "required": false;
+      "isSignal": true;
+    };
+    "accept": {
+      "alias": "accept";
+      "required": false;
+      "isSignal": true;
+    };
+    "multiple": {
+      "alias": "multiple";
+      "required": false;
+      "isSignal": true;
+    };
+    "maxSize": {
+      "alias": "maxSize";
+      "required": false;
+      "isSignal": true;
+    };
+    "titleText": {
+      "alias": "titleText";
+      "required": false;
+      "isSignal": true;
+    };
+    "actionText": {
+      "alias": "actionText";
+      "required": false;
+      "isSignal": true;
+    };
+    "orText": {
+      "alias": "orText";
+      "required": false;
+      "isSignal": true;
+    };
+    "addMoreText": {
+      "alias": "addMoreText";
+      "required": false;
+      "isSignal": true;
+    };
+    "removeLabel": {
+      "alias": "removeLabel";
+      "required": false;
+      "isSignal": true;
+    };
+    "selectedText": {
+      "alias": "selectedText";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {
+    "value": "valueChange";
+    "touch": "touch";
+    "rejected": "rejected";
+  }, never, never, true, never>;
+}
 /**
  * Campo numérico: o valor é `number | null` (vazio vira `null`), não texto.
  * `min`/`max` são preenchidos sozinhos pelos validadores min()/max() do Signal Forms.
@@ -903,6 +1064,68 @@ export declare class UiBreadcrumb {
     };
   }, {}, never, never, true, never>;
 }
+export interface UiBreadcrumbTableItem {
+  /** Posição do item no caminho; é o valor emitido em `itemSelected`. */
+  index: number;
+  name: string;
+}
+/**
+ * Caminho de pastas clicável (ex.: acima de um ui-file-table).
+ * Com muitos níveis, os do meio ficam recolhidos num menu "...".
+ */
+export declare class UiBreadcrumbTable {
+  readonly rootLabel: import("@angular/core").InputSignal<string>;
+  readonly items: import("@angular/core").InputSignal<readonly UiBreadcrumbTableItem[]>;
+  /** Quantos itens finais ficam sempre visíveis quando o caminho é recolhido. */
+  readonly maxVisible: import("@angular/core").InputSignal<number>;
+  readonly label: import("@angular/core").InputSignal<string>;
+  readonly moreLabel: import("@angular/core").InputSignal<string>;
+  readonly rootSelected: import("@angular/core").OutputEmitterRef<void>;
+  readonly itemSelected: import("@angular/core").OutputEmitterRef<number>;
+  protected readonly menuOpen: import("@angular/core").WritableSignal<boolean>;
+  private readonly host;
+  /** Só recolhe quando sobraria mais de um item escondido. */
+  private readonly collapsed;
+  protected readonly hiddenItems: import("@angular/core").Signal<UiBreadcrumbTableItem[]>;
+  protected readonly visibleItems: import("@angular/core").Signal<readonly UiBreadcrumbTableItem[]>;
+  protected readonly isRootCurrent: import("@angular/core").Signal<boolean>;
+  protected selectRoot(): void;
+  protected selectItem(index: number): void;
+  /** O signal controla o <details>; o comportamento nativo de abrir/fechar é cancelado. */
+  protected toggleMenu(event: Event): void;
+  handleDocumentClick(event: MouseEvent): void;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiBreadcrumbTable, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiBreadcrumbTable, "ui-breadcrumb-table", never, {
+    "rootLabel": {
+      "alias": "rootLabel";
+      "required": true;
+      "isSignal": true;
+    };
+    "items": {
+      "alias": "items";
+      "required": false;
+      "isSignal": true;
+    };
+    "maxVisible": {
+      "alias": "maxVisible";
+      "required": false;
+      "isSignal": true;
+    };
+    "label": {
+      "alias": "label";
+      "required": false;
+      "isSignal": true;
+    };
+    "moreLabel": {
+      "alias": "moreLabel";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {
+    "rootSelected": "rootSelected";
+    "itemSelected": "itemSelected";
+  }, never, never, true, never>;
+}
 export type UiButtonVariant = 'primary' | 'secondary' | 'ghost';
 export type UiButtonSize = 'sm' | 'md' | 'lg';
 export declare class UiButton {
@@ -1253,6 +1476,129 @@ export declare class UiBanner {
   }, {
     "buttonClick": "buttonClick";
   }, never, ["*"], true, never>;
+}
+export interface FolderEntry {
+  name: string;
+  /** Caminho/prefixo da pasta, usado como identidade da linha. Sem ele, usa `name`. */
+  prefix?: string;
+}
+export interface ObjectEntry {
+  /** Chave única do arquivo (ex.: caminho completo no storage). */
+  key: string;
+  name: string;
+  /** Tamanho em bytes. */
+  size: number;
+  /** Data ISO ou Date. */
+  last_modified: string | Date;
+}
+export interface FileTableContent {
+  folders: FolderEntry[];
+  objects: ObjectEntry[];
+}
+export type FileTableEntry = FolderEntry | ObjectEntry;
+export interface FileTableActionEvent {
+  action: string;
+  entry: FileTableEntry;
+}
+export declare const isFileEntry: (entry: FileTableEntry) => entry is ObjectEntry;
+/**
+ * Lista de pastas e arquivos (ex.: um bucket de storage).
+ * Pastas aparecem primeiro; cada linha é clicável e tem um menu de ações.
+ */
+export declare class UiFileTable {
+  readonly content: import("@angular/core").InputSignal<FileTableContent | null>;
+  readonly isLoading: import("@angular/core").InputSignal<boolean>;
+  readonly errorMessage: import("@angular/core").InputSignal<string | null>;
+  /** Cabeçalhos das 4 colunas: nome, tamanho, data e ações. */
+  readonly columns: import("@angular/core").InputSignal<readonly [string, string, string, string]>;
+  readonly optionsMenu: import("@angular/core").InputSignal<readonly UiMenuItem[]>;
+  readonly optionsMenuFolder: import("@angular/core").InputSignal<readonly UiMenuItem[]>;
+  readonly label: import("@angular/core").InputSignal<string>;
+  readonly loadingRows: import("@angular/core").InputSignal<number>;
+  readonly emptyText: import("@angular/core").InputSignal<string>;
+  readonly invalidDataText: import("@angular/core").InputSignal<string>;
+  readonly atText: import("@angular/core").InputSignal<string>;
+  /** Fuso usado na data (ex.: '-0300'). Sem ele, usa o fuso do navegador. */
+  readonly timezone: import("@angular/core").InputSignal<string | undefined>;
+  readonly actionsLabel: import("@angular/core").InputSignal<string>;
+  readonly rowClick: import("@angular/core").OutputEmitterRef<FileTableEntry>;
+  readonly menuAction: import("@angular/core").OutputEmitterRef<FileTableActionEvent>;
+  protected readonly formatSize: typeof formatBytes;
+  protected readonly tableState: import("@angular/core").Signal<"loading" | "error" | "empty" | "invalid" | "content">;
+  protected folderKey(folder: FolderEntry): string;
+  onRowClick(entry: FileTableEntry): void;
+  onMenuAction(item: UiMenuItem, entry: FileTableEntry): void;
+  static ɵfac: i0.ɵɵFactoryDeclaration<UiFileTable, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<UiFileTable, "ui-file-table", never, {
+    "content": {
+      "alias": "content";
+      "required": false;
+      "isSignal": true;
+    };
+    "isLoading": {
+      "alias": "isLoading";
+      "required": false;
+      "isSignal": true;
+    };
+    "errorMessage": {
+      "alias": "errorMessage";
+      "required": false;
+      "isSignal": true;
+    };
+    "columns": {
+      "alias": "columns";
+      "required": false;
+      "isSignal": true;
+    };
+    "optionsMenu": {
+      "alias": "optionsMenu";
+      "required": false;
+      "isSignal": true;
+    };
+    "optionsMenuFolder": {
+      "alias": "optionsMenuFolder";
+      "required": false;
+      "isSignal": true;
+    };
+    "label": {
+      "alias": "label";
+      "required": false;
+      "isSignal": true;
+    };
+    "loadingRows": {
+      "alias": "loadingRows";
+      "required": false;
+      "isSignal": true;
+    };
+    "emptyText": {
+      "alias": "emptyText";
+      "required": false;
+      "isSignal": true;
+    };
+    "invalidDataText": {
+      "alias": "invalidDataText";
+      "required": false;
+      "isSignal": true;
+    };
+    "atText": {
+      "alias": "atText";
+      "required": false;
+      "isSignal": true;
+    };
+    "timezone": {
+      "alias": "timezone";
+      "required": false;
+      "isSignal": true;
+    };
+    "actionsLabel": {
+      "alias": "actionsLabel";
+      "required": false;
+      "isSignal": true;
+    };
+  }, {
+    "rowClick": "rowClick";
+    "menuAction": "menuAction";
+  }, never, never, true, never>;
 }
 export interface ColumnGraphProps {
   y_axios: {
@@ -1629,4 +1975,3 @@ export declare class UiDashboardLayout {
     "logout": "logout";
   }, never, ["[uiDashboardHeader]", "*"], true, never>;
 }
-export declare function formatBytes(bytes: number): string;
