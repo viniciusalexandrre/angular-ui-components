@@ -955,16 +955,18 @@ acoes: UiTableAction<Arquivo>[] = [
 | --------------------------------------- | --------------------------- | --------------------------------- |
 | `--ui-table-font-size`                  | `14px`                      | Tamanho do texto                  |
 | `--ui-table-color`                      | `var(--c9)`                 | Cor do texto das células          |
-| `--ui-table-cell-padding`               | `10px 12px`                 | Espaçamento das células           |
+| `--ui-table-cell-padding`               | `0.65rem 1rem`              | Espaçamento das células           |
 | `--ui-table-cell-white-space`           | `normal`                    | `nowrap` impede a quebra de linha |
-| `--ui-table-header-color`               | `var(--c7)`                 | Cor do cabeçalho                  |
-| `--ui-table-header-background`          | `transparent`               | Fundo do cabeçalho                |
+| `--ui-table-header-height`              | `58px`                      | Altura do cabeçalho               |
+| `--ui-table-header-padding`             | `0.75rem 1rem`              | Espaçamento do cabeçalho          |
+| `--ui-table-header-color`               | `var(--c8)`                 | Cor do cabeçalho                  |
+| `--ui-table-header-background`          | `var(--b1)`                 | Fundo do cabeçalho                |
 | `--ui-table-header-font-weight`         | `600`                       | Peso do cabeçalho                 |
 | `--ui-table-header-border-color`        | `var(--b2)`                 | Linha abaixo do cabeçalho         |
-| `--ui-table-row-border-color`           | `var(--b1)`                 | Linha entre registros             |
+| `--ui-table-row-border-color`           | `var(--b2)`                 | Linha entre registros             |
 | `--ui-table-row-hover-background`       | `var(--b0)`                 | Fundo da linha no hover           |
-| `--ui-table-border`                     | `0`                         | Borda em volta da tabela          |
-| `--ui-table-border-radius`              | `0`                         | Arredondamento da tabela          |
+| `--ui-table-border`                     | `1px solid var(--b2)`       | Borda em volta da tabela          |
+| `--ui-table-border-radius`              | `15px`                      | Arredondamento da tabela          |
 | `--ui-table-detail-background`          | `var(--b0)`                 | Fundo da linha de detalhes        |
 | `--ui-table-detail-padding`             | `16px 12px 16px 52px`       | Espaçamento dos detalhes          |
 | `--ui-table-toggle-size`                | `28px`                      | Botão de abrir detalhes           |
