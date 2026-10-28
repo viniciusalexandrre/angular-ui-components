@@ -22,6 +22,7 @@ import {
   UiCopyTextButton,
   UiFieldset,
   UiInput,
+  UiInputFile,
   UiInputNumber,
   UiInputPassword,
   UiPopup,
@@ -40,6 +41,7 @@ interface Cadastro {
   convite: string;
   senha: string;
   confirmarSenha: string;
+  comprovante: File | null;
   novidades: boolean;
   termos: boolean;
 }
@@ -54,6 +56,7 @@ const INICIAL: Cadastro = {
   convite: 'CONVITE-2026-UI',
   senha: '',
   confirmarSenha: '',
+  comprovante: null,
   novidades: false,
   termos: false,
 };
@@ -85,6 +88,7 @@ const CIDADES: Record<string, string[]> = {
     UiCopyTextButton,
     UiFieldset,
     UiInput,
+    UiInputFile,
     UiInputNumber,
     UiInputPassword,
     UiPopup,
@@ -94,15 +98,20 @@ const CIDADES: Record<string, string[]> = {
     <header class="page-header">
       <h1>Formulário de cadastro</h1>
       <p>
-        Todos os campos de formulário integrados ao Signal Forms: validação, campo dependente,
-        busca assíncrona, somente leitura, envio e limpeza.
+        Todos os campos de formulário integrados ao Signal Forms: validação, campo dependente, busca
+        assíncrona, somente leitura, envio e limpeza.
       </p>
     </header>
 
     <form class="card stack" [formRoot]="cadastro" novalidate>
       <ui-fieldset title="Dados pessoais" description="Como vamos falar com você.">
         <div class="grid-2">
-          <ui-input id="nome" label="Nome completo" autocomplete="name" [formField]="cadastro.nome" />
+          <ui-input
+            id="nome"
+            label="Nome completo"
+            autocomplete="name"
+            [formField]="cadastro.nome"
+          />
           <ui-input
             id="email"
             label="E-mail"
@@ -183,6 +192,19 @@ const CIDADES: Record<string, string[]> = {
         </div>
       </ui-fieldset>
 
+      <ui-fieldset title="Documentos">
+        <ui-input-file
+          id="comprovante"
+          label="Comprovante de residência"
+          hint="PDF ou imagem, até 5 MB."
+          [multiple]="true"
+          accept=".pdf,.png,.jpg,.jpeg"
+          [maxSize]="5 * 1024 * 1024"
+          [formField]="cadastro.comprovante"
+          (rejected)="avisos.mostrar('warning', 'Arquivo ignorado: use PDF ou imagem de até 5 MB.')"
+        />
+      </ui-fieldset>
+
       <ui-fieldset title="Preferências">
         <ui-checkbox
           id="novidades"
@@ -190,7 +212,11 @@ const CIDADES: Record<string, string[]> = {
           hint="Opcional. Você pode cancelar quando quiser."
           [formField]="cadastro.novidades"
         />
-        <ui-checkbox id="termos" label="Li e aceito os termos de uso" [formField]="cadastro.termos" />
+        <ui-checkbox
+          id="termos"
+          label="Li e aceito os termos de uso"
+          [formField]="cadastro.termos"
+        />
       </ui-fieldset>
 
       <div class="actions">
@@ -238,7 +264,10 @@ export class FormComponent {
   protected readonly avisos = new Avisos();
 
   readonly model = signal<Cadastro>({ ...INICIAL });
-  protected readonly enviado = signal<Omit<Cadastro, 'senha' | 'confirmarSenha'> | null>(null);
+  protected readonly enviado = signal<
+    | (Omit<Cadastro, 'senha' | 'confirmarSenha' | 'comprovante'> & { comprovante: string | null })
+    | null
+  >(null);
 
   protected readonly opcoesCidade = signal<AutocompleteOption[]>([]);
   protected readonly buscandoCidade = signal(false);
@@ -269,6 +298,7 @@ export class FormComponent {
 
       required(p.senha, { message: 'Crie uma senha.' });
       minLength(p.senha, 8, { message: 'A senha precisa ter pelo menos 8 caracteres.' });
+      required(p.comprovante, { message: 'Envie o comprovante de residência.' });
       required(p.termos, { message: 'É preciso aceitar os termos para continuar.' });
 
       required(p.confirmarSenha, { message: 'Confirme a senha.' });
@@ -282,7 +312,8 @@ export class FormComponent {
       submission: {
         action: async () => {
           await esperar(800); // simula a chamada à API
-          const { senha, confirmarSenha, ...dados } = this.model();
+          const { senha, confirmarSenha, comprovante, ...resto } = this.model();
+          const dados = { ...resto, comprovante: comprovante?.name ?? null };
           this.enviado.set(dados);
           this.avisos.mostrar('success', 'Conta criada com sucesso!');
           return undefined;

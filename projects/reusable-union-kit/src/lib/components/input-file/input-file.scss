@@ -1,0 +1,169 @@
+@use '../../styles/input-base' as base;
+
+:host {
+  display: block;
+}
+
+.file {
+  --_accent: var(--ui-input-file-dragging-color, var(--b6, #8ba7f9));
+
+  box-sizing: border-box;
+  width: 100%;
+  border: var(--ui-input-file-border, 1px dashed var(--b3, #c6d4fe));
+  border-radius: var(--ui-input-file-border-radius, 20px);
+  background-color: var(--ui-input-file-background, var(--b-white, #fff));
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover:not(.is-disabled) {
+    border-color: var(--ui-input-file-hover-border-color, var(--b5, #9bb3fa));
+  }
+
+  &.is-dragging {
+    border-color: var(--_accent);
+    background-color: color-mix(in srgb, var(--_accent) 8%, var(--ui-input-file-background, var(--b-white, #fff)));
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--_accent) 15%, transparent);
+  }
+
+  &.is-invalid {
+    border-color: var(--ui-input-error-color, var(--erro, #b3261e));
+    background-color: var(--ui-input-error-background, var(--bg-erro, transparent));
+  }
+
+  &.is-disabled {
+    opacity: var(--ui-input-file-disabled-opacity, 0.6);
+  }
+}
+
+.file-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: var(--ui-input-file-min-height, 170px);
+  padding: var(--ui-input-file-padding, 1.5rem);
+  border-radius: inherit;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  .is-dragging & {
+    transform: scale(1.01);
+  }
+
+  .is-disabled & {
+    cursor: not-allowed;
+  }
+
+  // O input fica escondido; o foco aparece no ícone.
+  &:has(.file-input:focus-visible) .file-icon {
+    outline: 2px solid var(--ui-input-focus-color, var(--b10, #1769aa));
+    outline-offset: 3px;
+  }
+}
+
+.file-input {
+  @include base.visually-hidden;
+}
+
+.file-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--b2, #d9e2ff);
+  border-radius: 14px;
+  background-color: var(--ui-input-file-icon-background, var(--b-white, #fff));
+  color: var(--ui-input-file-icon-color, var(--c7, #707070));
+}
+
+.file-title {
+  max-width: 90%;
+  overflow: hidden;
+  color: var(--ui-input-file-title-color, var(--c8, #595959));
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-description {
+  color: var(--ui-input-file-description-color, var(--c7, #707070));
+  font-size: 0.85rem;
+
+  strong {
+    color: var(--ui-input-file-action-color, var(--b10, #335cd6));
+    font-weight: 600;
+  }
+}
+
+.file-list {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0 1.5rem 1rem;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--b2, #d9e2ff);
+    border-radius: 10px;
+    background-color: var(--ui-input-file-item-background, var(--b-white, #fff));
+    font-size: 0.85rem;
+  }
+}
+
+.file-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--ui-input-file-title-color, var(--c8, #595959));
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-size {
+  flex-shrink: 0;
+  color: var(--ui-input-file-description-color, var(--c7, #707070));
+  font-size: 0.8rem;
+}
+
+.file-remove {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--b1, #e7ecff);
+  color: var(--c8, #595959);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--ui-input-file-remove-hover-background, var(--bg-erro, #ffebeb));
+    color: var(--ui-input-file-remove-hover-color, var(--erro, #b3261e));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ui-input-focus-color, var(--b10, #1769aa));
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .file,
+  .file-dropzone,
+  .file-remove {
+    transition: none;
+  }
+}

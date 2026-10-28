@@ -1,0 +1,54 @@
+<nav class="breadcrumb" [attr.aria-label]="label()">
+  <ol class="breadcrumb-list">
+    <li class="breadcrumb-entry breadcrumb-root">
+      @if (isRootCurrent()) {
+        <span class="breadcrumb-item breadcrumb-current" aria-current="location" [title]="rootLabel()">
+          <span class="breadcrumb-label">{{ rootLabel() }}</span>
+        </span>
+      } @else {
+        <button type="button" class="breadcrumb-item" [title]="rootLabel()" (click)="selectRoot()">
+          <span class="breadcrumb-label">{{ rootLabel() }}</span>
+        </button>
+      }
+    </li>
+
+    @if (hiddenItems().length > 0) {
+      <li class="breadcrumb-entry">
+        <span class="breadcrumb-separator" aria-hidden="true">/</span>
+        <details class="breadcrumb-menu" [open]="menuOpen()">
+          <summary class="breadcrumb-menu-button" [attr.aria-label]="moreLabel()" [title]="moreLabel()" (click)="toggleMenu($event)">
+            <span aria-hidden="true">...</span>
+          </summary>
+
+          <div class="breadcrumb-menu-content">
+            @for (item of hiddenItems(); track item.index) {
+              <button
+                type="button"
+                class="breadcrumb-menu-item"
+                [title]="item.name"
+                (click)="selectItem(item.index)"
+              >
+                {{ item.name }}
+              </button>
+            }
+          </div>
+        </details>
+      </li>
+    }
+
+    @for (item of visibleItems(); track item.index; let last = $last) {
+      <li class="breadcrumb-entry">
+        <span class="breadcrumb-separator" aria-hidden="true">/</span>
+        @if (last) {
+          <span class="breadcrumb-item breadcrumb-current" aria-current="location" [title]="item.name">
+            <span class="breadcrumb-label">{{ item.name }}</span>
+          </span>
+        } @else {
+          <button type="button" class="breadcrumb-item" [title]="item.name" (click)="selectItem(item.index)">
+            <span class="breadcrumb-label">{{ item.name }}</span>
+          </button>
+        }
+      </li>
+    }
+  </ol>
+</nav>

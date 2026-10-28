@@ -327,6 +327,55 @@ Clicar no texto também marca. Dica e erro usam as variáveis `--ui-field-*`; a 
 | `--ui-checkbox-font-size`             | `14px`                    | Tamanho do texto                  |
 | `--ui-checkbox-disabled-opacity`      | `0.55`                    | Opacidade desabilitado            |
 
+### `ui-input-file`
+
+Área para arrastar ou escolher arquivos. O valor é `File | null`; com `[multiple]="true"`, é
+`File[]` (novos arquivos são somados, sem repetir).
+
+```ts
+model = signal({ comprovante: null as File | null, anexos: [] as File[] });
+cadastro = form(this.model, (p) => {
+  required(p.comprovante, { message: 'Envie o comprovante.' });
+});
+```
+
+```html
+<ui-input-file id="comprovante" label="Comprovante" accept=".pdf,.png,.jpg" [maxSize]="5 * 1024 * 1024"
+  [formField]="cadastro.comprovante" (rejected)="avisarArquivoInvalido($event)" />
+
+<ui-input-file id="anexos" label="Anexos" [multiple]="true" [formField]="cadastro.anexos" />
+```
+
+| Input          | Padrão | Para que serve                                                       |
+| -------------- | ------ | -------------------------------------------------------------------- |
+| `accept`       | `''`   | Tipos aceitos (`.pdf`, `image/*`…). Também vale para arquivos arrastados |
+| `multiple`     | `false`| Vários arquivos (`File[]`)                                           |
+| `maxSize`      | `null` | Tamanho máximo por arquivo, em bytes                                 |
+| `titleText`, `orText`, `actionText`, `addMoreText`, `removeLabel`, `selectedText` | português | Textos exibidos |
+
+Arquivos fora de `accept` ou acima de `maxSize` são ignorados e saem no evento `(rejected)`
+(`{ file, reason: 'accept' | 'maxSize' }[]`). Label, dica e erro vêm de `ui-field`; o estado de
+erro usa `--ui-input-error-color` e `--ui-input-error-background`.
+
+| Variável                                   | Padrão                    | Controla                        |
+| ------------------------------------------ | ------------------------- | ------------------------------- |
+| `--ui-input-file-border`                   | `1px dashed var(--b3)`    | Borda da área                   |
+| `--ui-input-file-border-radius`            | `20px`                    | Arredondamento                  |
+| `--ui-input-file-background`               | `var(--b-white)`          | Fundo                           |
+| `--ui-input-file-hover-border-color`       | `var(--b5)`               | Borda no hover                  |
+| `--ui-input-file-dragging-color`           | `var(--b6)`               | Borda e brilho ao arrastar      |
+| `--ui-input-file-min-height`               | `170px`                   | Altura mínima da área           |
+| `--ui-input-file-padding`                  | `1.5rem`                  | Espaçamento interno             |
+| `--ui-input-file-icon-background`          | `var(--b-white)`          | Fundo do ícone                  |
+| `--ui-input-file-icon-color`               | `var(--c7)`               | Cor do ícone                    |
+| `--ui-input-file-title-color`              | `var(--c8)`               | Título e nome dos arquivos      |
+| `--ui-input-file-description-color`        | `var(--c7)`               | Descrição e tamanhos            |
+| `--ui-input-file-action-color`             | `var(--b10)`              | "clique para escolher"          |
+| `--ui-input-file-item-background`          | `var(--b-white)`          | Fundo de cada arquivo da lista  |
+| `--ui-input-file-remove-hover-background`  | `var(--bg-erro)`          | Botão remover no hover          |
+| `--ui-input-file-remove-hover-color`       | `var(--erro)`             | Ícone remover no hover          |
+| `--ui-input-file-disabled-opacity`         | `0.6`                     | Opacidade desabilitado          |
+
 ### `ui-input-number`
 
 Para valores numéricos. O valor do formulário é `number | null` (campo vazio vira `null`), nunca
@@ -765,6 +814,41 @@ Os itens vêm de `data: { breadcrumb: 'Rótulo' }` nas rotas:
 | `--ui-breadcrumb-separator-color`     | `var(--c5)`  | Cor do separador              |
 | `--ui-breadcrumb-focus-color`         | `var(--b10)` | Contorno de foco              |
 
+### `ui-breadcrumb-table`
+
+Caminho de pastas clicável, controlado por você (diferente do `ui-breadcrumb`, que lê as rotas).
+Feito para ficar acima de um `ui-file-table`. Com muitos níveis, os do meio vão para um menu "...".
+
+```html
+<ui-breadcrumb-table rootLabel="Raiz" [items]="caminho()" [maxVisible]="2"
+  (rootSelected)="abrirPasta('')" (itemSelected)="abrirNivel($event)" />
+```
+
+```ts
+caminho = computed(() => this.pastas().map((name, index) => ({ index, name })));
+```
+
+O último item (ou a raiz, sem itens) é a pasta atual: não é clicável e recebe
+`aria-current="location"`. O menu fecha ao escolher, com `Esc` ou clique fora.
+
+| Variável                                   | Padrão                     | Controla                        |
+| ------------------------------------------ | -------------------------- | ------------------------------- |
+| `--ui-breadcrumb-table-padding`            | `10px`                     | Espaçamento interno             |
+| `--ui-breadcrumb-table-border`             | `1px solid var(--b2)`      | Borda                           |
+| `--ui-breadcrumb-table-border-radius`      | `15px`                     | Arredondamento                  |
+| `--ui-breadcrumb-table-background`         | `transparent`              | Fundo                           |
+| `--ui-breadcrumb-table-color`              | `var(--c9)`                | Texto dos itens                 |
+| `--ui-breadcrumb-table-current-color`      | `var(--c10)`               | Texto da pasta atual            |
+| `--ui-breadcrumb-table-separator-color`    | `var(--c6)`                | Cor da `/`                      |
+| `--ui-breadcrumb-table-hover-background`   | `var(--b0)`                | Fundo no hover                  |
+| `--ui-breadcrumb-table-focus-color`        | `var(--b10)`               | Contorno de foco                |
+| `--ui-breadcrumb-table-item-max-width`     | `500px`                    | Largura máxima de cada item     |
+| `--ui-breadcrumb-table-item-padding`       | `10px`                     | Espaçamento de cada item        |
+| `--ui-breadcrumb-table-menu-background`    | `var(--b1)`                | Fundo do menu "..."             |
+| `--ui-breadcrumb-table-menu-shadow`        | `0 8px 20px rgb(0 0 0/18%)` | Sombra do menu                 |
+| `--ui-breadcrumb-table-menu-max-height`    | `280px`                    | Altura máxima do menu (rola)    |
+| `--ui-breadcrumb-table-z-index`            | `10`                       | Camada do menu                  |
+
 ### `ui-column-graph`
 
 ```html
@@ -1045,10 +1129,57 @@ maior elemento da tela). O título do painel não é um `<h1>`: o `<h1>` fica co
 | `--ui-auth-content-padding`          | `32px 16px`                       | Espaçamento da área do conteúdo |
 | `--ui-auth-content-max-width`        | `420px`                           | Largura máxima do conteúdo     |
 
-### Em construção
+### `ui-file-table`
 
-`ui-file-table` ainda não tem template nem estilos e não é exportado. Ele pode ser montado sobre o `ui-table`
-(pastas e arquivos como linhas, `uiTableCell` para os ícones).
+Lista de pastas e arquivos (ex.: um bucket de storage). Pastas vêm primeiro; clicar na linha (ou
+Tab + Enter no nome) emite `(rowClick)`, e cada linha tem um menu de ações.
+
+```ts
+conteudo: FileTableContent = {
+  folders: [{ name: 'documentos', prefix: 'documentos/' }],
+  objects: [{ key: 'docs/relatorio.pdf', name: 'relatorio.pdf', size: 2048, last_modified: '2026-10-20T14:30:00Z' }],
+};
+acoesArquivo: UiMenuItem[] = [
+  { id: 'baixar', label: 'Baixar' },
+  { id: 'excluir', label: 'Excluir', danger: true },
+];
+```
+
+```html
+<ui-file-table [content]="conteudo()" [isLoading]="carregando()" [errorMessage]="erro()"
+  [optionsMenu]="acoesArquivo" [optionsMenuFolder]="acoesPasta" timezone="-0300"
+  (rowClick)="abrir($event)" (menuAction)="executar($event)" />
+```
+
+- `(menuAction)` emite `{ action, entry }`; use `isFileEntry(entry)` para saber se é arquivo ou pasta.
+- Estados automáticos: skeleton enquanto `isLoading` sem dados, `errorMessage`, `content` nulo
+  (`invalidDataText`) e lista vazia (`emptyText`).
+- `columns` troca os 4 cabeçalhos; `atText` troca o "às" da data.
+- O componente ocupa a altura do contêiner e o cabeçalho fica fixo ao rolar: dê uma altura ao pai.
+
+| Variável                                 | Padrão                | Controla                        |
+| ---------------------------------------- | --------------------- | ------------------------------- |
+| `--ui-file-table-border`                 | `1px solid var(--b2)` | Borda em volta                  |
+| `--ui-file-table-border-radius`          | `15px`                | Arredondamento                  |
+| `--ui-file-table-color`                  | `var(--c7)`           | Cor do texto                    |
+| `--ui-file-table-font-size`              | `0.875rem`            | Tamanho do texto                |
+| `--ui-file-table-header-height`          | `58px`                | Altura do cabeçalho             |
+| `--ui-file-table-header-background`      | `var(--b1)`           | Fundo do cabeçalho              |
+| `--ui-file-table-header-color`           | `var(--c8)`           | Texto do cabeçalho              |
+| `--ui-file-table-row-border-color`       | `var(--b2)`           | Linha entre registros           |
+| `--ui-file-table-row-hover-background`   | `var(--b0)`           | Fundo da linha no hover         |
+| `--ui-file-table-cell-padding`           | `0.65rem 1rem`        | Espaçamento das células         |
+| `--ui-file-table-name-color`             | `var(--c9)`           | Cor do nome                     |
+| `--ui-file-table-focus-color`            | `var(--b10)`          | Contorno de foco do nome        |
+| `--ui-file-table-state-color`            | `var(--c8)`           | Texto do estado vazio           |
+| `--ui-file-table-error-color`            | `var(--erro)`         | Texto dos estados de erro       |
+| `--ui-file-table-empty-min-height`       | `220px`               | Altura do estado vazio          |
+| `--ui-file-table-name-width`             | `45%`                 | Largura da coluna Nome          |
+| `--ui-file-table-size-width`             | `20%`                 | Largura da coluna Tamanho       |
+| `--ui-file-table-date-width`             | `28%`                 | Largura da coluna Data          |
+| `--ui-file-table-actions-width`          | `64px`                | Largura da coluna Ações         |
+
+O menu de cada linha usa `--ui-menu-*` e o carregamento usa `--ui-skeleton-*`.
 
 ---
 

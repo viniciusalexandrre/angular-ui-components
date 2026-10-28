@@ -88,12 +88,14 @@ Tudo é importado de `'reusable-union-kit'`. Estilos de cada um: [docs/ESTILOS.m
 |                        | `UiField`             | `<ui-field>`                           |
 |                        | `UiFieldset`          | `<ui-fieldset>`                        |
 |                        | `UiInput`             | `<ui-input>`                           |
+|                        | `UiInputFile`         | `<ui-input-file>`                      |
 |                        | `UiInputNumber`       | `<ui-input-number>`                    |
 |                        | `UiInputPassword`     | `<ui-input-password>`                  |
 |                        | `UiInputSearch`       | `<ui-input-search>`                    |
 |                        | `UiOtpInput`          | `<ui-otp-input>`                       |
 |                        | `UiSelect`            | `<ui-select>`                          |
 | Ações e navegação      | `UiBreadcrumb`        | `<ui-breadcrumb>`                      |
+|                        | `UiBreadcrumbTable`   | `<ui-breadcrumb-table>`                |
 |                        | `UiButton`            | `<button ui-button>` / `<a ui-button>` |
 |                        | `UiCopyTextButton`    | `<ui-copy-text-button>`                |
 |                        | `UiMenu`              | `<ui-menu>`                            |
@@ -105,6 +107,7 @@ Tudo é importado de `'reusable-union-kit'`. Estilos de cada um: [docs/ESTILOS.m
 | Exibição de dados      | `UiBanner`            | `<ui-banner>`                          |
 |                        | `UiColumnGraph`       | `<ui-column-graph>`                    |
 |                        | `UiPieChart`          | `<ui-pie-chart>`                       |
+|                        | `UiFileTable`         | `<ui-file-table>`                      |
 |                        | `UiTable`             | `<ui-table>` (+ `uiTableCell`, `uiTableDetail`) |
 | Layouts                | `UiAuthLayout`        | `<ui-layout-auth>`                     |
 |                        | `UiDashboardLayout`   | `<ui-layout-dashboard>`                |

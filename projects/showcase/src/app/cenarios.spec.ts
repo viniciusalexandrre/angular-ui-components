@@ -1,6 +1,7 @@
 import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { esperar } from './shared/avisos';
+import { ArmazenamentoComponent } from './armazenamento/armazenamento';
 import { ArquivosComponent } from './arquivos/arquivos';
 import { FormComponent } from './form/form';
 import { LoginComponent } from './login/login';
@@ -11,6 +12,7 @@ const CASOS: [string, Type<unknown>][] = [
   ['Formulário de cadastro', FormComponent],
   ['Login com verificação em duas etapas', LoginComponent],
   ['Lista de arquivos', ArquivosComponent],
+  ['Armazenamento', ArmazenamentoComponent],
   ['Painel', PainelComponent],
   ['Personalização de estilos', PersonalizacaoComponent],
 ];
@@ -66,6 +68,24 @@ describe('Cenários', () => {
       b.textContent!.includes('Excluir'),
     )!;
     expect(excluir.getAttribute('aria-disabled')).toBe('true');
+  });
+
+  it('armazenamento: entra numa pasta pelo clique na linha', async () => {
+    const fixture = TestBed.createComponent(ArmazenamentoComponent);
+    await esperar(800);
+    await fixture.whenStable();
+    const el: HTMLElement = fixture.nativeElement;
+    const nomes = () =>
+      Array.from(el.querySelectorAll('.name-label')).map((n) => n.textContent!.trim());
+
+    expect(nomes()).toEqual(['contratos', 'imagens', 'backup.zip', 'relatorio-outubro.xlsx']);
+
+    el.querySelector<HTMLElement>('.storage-row')!.click();
+    await esperar(800);
+    await fixture.whenStable();
+
+    expect(nomes()).toEqual(['2025', '2026']);
+    expect(el.querySelector('[aria-current="location"]')!.textContent).toContain('contratos');
   });
 
   it('painel: troca o skeleton pelos gráficos', async () => {

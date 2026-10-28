@@ -1,0 +1,189 @@
+@use '../../styles/input-base' as base;
+
+:host {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: var(--ui-file-table-border, 1px solid var(--b2, #d9e2ff));
+  border-radius: var(--ui-file-table-border-radius, 15px);
+  color: var(--ui-file-table-color, var(--c7, #707070));
+}
+
+.table-wrapper {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.storage-table {
+  flex-shrink: 0;
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: var(--ui-file-table-font-size, 0.875rem);
+
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    height: var(--ui-file-table-header-height, 58px);
+    background-color: var(--ui-file-table-header-background, var(--b1, #e7ecff));
+
+    tr {
+      border-bottom: 1px solid var(--ui-file-table-row-border-color, var(--b2, #d9e2ff));
+    }
+
+    th {
+      padding: 0.75rem 1rem;
+      color: var(--ui-file-table-header-color, var(--c8, #595959));
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      white-space: nowrap;
+
+      &:first-child {
+        text-align: left;
+      }
+    }
+  }
+}
+
+.storage-row {
+  border-bottom: 1px solid var(--ui-file-table-row-border-color, var(--b2, #d9e2ff));
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--ui-file-table-row-hover-background, var(--b0, #f0f3ff));
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  td {
+    padding: var(--ui-file-table-cell-padding, 0.65rem 1rem);
+    vertical-align: middle;
+  }
+
+  .center {
+    text-align: center;
+    white-space: nowrap;
+  }
+}
+
+// O nome é um botão: a linha também abre pelo teclado (Tab + Enter).
+.name-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ui-file-table-name-color, var(--c9, #404040));
+  font: inherit;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+
+  &:focus-visible {
+    border-radius: 4px;
+    outline: 2px solid var(--ui-file-table-focus-color, var(--b10, #1769aa));
+    outline-offset: 2px;
+  }
+
+  .icon {
+    flex: 0 0 auto;
+    font-size: 1rem;
+    line-height: 1;
+  }
+}
+
+.name-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.actions-cell {
+  text-align: center;
+  cursor: default;
+}
+
+.state-row {
+  cursor: default;
+
+  td {
+    padding: 2rem 1rem;
+  }
+
+  .loading-cell {
+    padding: 0.5rem;
+  }
+}
+
+.state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--ui-file-table-state-color, var(--c8, #595959));
+  text-align: center;
+}
+
+.empty-state {
+  min-height: var(--ui-file-table-empty-min-height, 220px);
+}
+
+.state-error {
+  color: var(--ui-file-table-error-color, var(--erro, #b3261e));
+}
+
+.state-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.state-title {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.column-name {
+  width: var(--ui-file-table-name-width, 45%);
+}
+
+.column-size {
+  width: var(--ui-file-table-size-width, 20%);
+}
+
+.column-date {
+  width: var(--ui-file-table-date-width, 28%);
+}
+
+.column-actions {
+  width: var(--ui-file-table-actions-width, 64px);
+}
+
+.visually-hidden {
+  @include base.visually-hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .storage-row {
+    transition: none;
+  }
+}

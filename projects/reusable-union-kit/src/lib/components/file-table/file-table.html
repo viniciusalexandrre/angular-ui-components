@@ -1,1 +1,122 @@
-<p>file-table works!</p>
+<div class="table-wrapper">
+  <table class="storage-table" [attr.aria-label]="label()" [attr.aria-busy]="isLoading()">
+    <colgroup>
+      <col class="column-name" />
+      <col class="column-size" />
+      <col class="column-date" />
+      <col class="column-actions" />
+    </colgroup>
+
+    <thead>
+      <tr>
+        @for (column of columns(); track $index; let last = $last) {
+          <th scope="col">
+            @if (last) {
+              <span class="visually-hidden">{{ column }}</span>
+            } @else {
+              {{ column }}
+            }
+          </th>
+        }
+      </tr>
+    </thead>
+
+    <tbody>
+      @switch (tableState()) {
+        @case ('loading') {
+          <tr class="state-row">
+            <td colspan="4" class="loading-cell">
+              <ui-skeleton variant="table" [quantity]="loadingRows()" />
+            </td>
+          </tr>
+        }
+
+        @case ('error') {
+          <tr class="state-row">
+            <td colspan="4">
+              <div class="state-container state-error" role="alert">
+                <span class="state-icon" aria-hidden="true">⚠</span>
+                <p class="state-title">{{ errorMessage() }}</p>
+              </div>
+            </td>
+          </tr>
+        }
+
+        @case ('invalid') {
+          <tr class="state-row">
+            <td colspan="4">
+              <div class="state-container state-error" role="alert">
+                <span class="state-icon" aria-hidden="true">⚠</span>
+                <p class="state-title">{{ invalidDataText() }}</p>
+              </div>
+            </td>
+          </tr>
+        }
+
+        @case ('empty') {
+          <tr class="state-row">
+            <td colspan="4">
+              <div class="state-container empty-state" role="status">
+                <span class="state-icon" aria-hidden="true">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" focusable="false">
+                    <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  </svg>
+                </span>
+                <p class="state-title">{{ emptyText() }}</p>
+              </div>
+            </td>
+          </tr>
+        }
+
+        @case ('content') {
+          @for (folder of content()!.folders; track folderKey(folder)) {
+            <tr class="storage-row" (click)="onRowClick(folder)">
+              <td>
+                <button class="name-cell" type="button" (click)="$event.stopPropagation(); onRowClick(folder)">
+                  <span class="icon" aria-hidden="true">📁</span>
+                  <span class="name-label">{{ folder.name }}</span>
+                </button>
+              </td>
+              <td></td>
+              <td></td>
+              <td class="actions-cell" (click)="$event.stopPropagation()">
+                @if (optionsMenuFolder().length) {
+                  <ui-menu
+                    [items]="optionsMenuFolder()"
+                    [label]="actionsLabel() + ': ' + folder.name"
+                    (itemSelect)="onMenuAction($event, folder)"
+                  />
+                }
+              </td>
+            </tr>
+          }
+
+          @for (file of content()!.objects; track file.key) {
+            <tr class="storage-row" (click)="onRowClick(file)">
+              <td>
+                <button class="name-cell" type="button" (click)="$event.stopPropagation(); onRowClick(file)">
+                  <span class="icon" aria-hidden="true">📄</span>
+                  <span class="name-label">{{ file.name }}</span>
+                </button>
+              </td>
+              <td class="center">{{ formatSize(file.size) }}</td>
+              <td class="center">
+                {{ file.last_modified | date: 'dd/MM/yyyy' : timezone() }}
+                {{ atText() }} {{ file.last_modified | date: 'HH:mm' : timezone() }}
+              </td>
+              <td class="actions-cell" (click)="$event.stopPropagation()">
+                @if (optionsMenu().length) {
+                  <ui-menu
+                    [items]="optionsMenu()"
+                    [label]="actionsLabel() + ': ' + file.name"
+                    (itemSelect)="onMenuAction($event, file)"
+                  />
+                }
+              </td>
+            </tr>
+          }
+        }
+      }
+    </tbody>
+  </table>
+</div>
