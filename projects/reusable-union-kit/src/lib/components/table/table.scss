@@ -1,13 +1,19 @@
 @use '../../styles/input-base' as base;
 
+// A borda fica no host: carregamento e estado vazio também ficam dentro da moldura.
 :host {
   display: block;
+  overflow: hidden;
+  border: var(--ui-table-border, 1px solid var(--b2, #d9e2ff));
+  border-radius: var(--ui-table-border-radius, 15px);
 }
 
 .table-wrapper {
   overflow-x: auto;
-  border: var(--ui-table-border, 0);
-  border-radius: var(--ui-table-border-radius, 0);
+}
+
+ui-skeleton {
+  padding: 0.5rem;
 }
 
 .table {
@@ -16,21 +22,34 @@
   color: var(--ui-table-color, var(--c9, #404040));
   font-size: var(--ui-table-font-size, 14px);
 
+  thead {
+    height: var(--ui-table-header-height, 58px);
+    background: var(--ui-table-header-background, var(--b1, #e7ecff));
+  }
+
   th {
-    padding: var(--ui-table-cell-padding, 10px 12px);
+    padding: var(--ui-table-header-padding, 0.75rem 1rem);
     border-bottom: 1px solid var(--ui-table-header-border-color, var(--b2, #d9e2ff));
-    background: var(--ui-table-header-background, transparent);
-    color: var(--ui-table-header-color, var(--c7, #707070));
+    color: var(--ui-table-header-color, var(--c8, #595959));
     font-weight: var(--ui-table-header-font-weight, 600);
     text-align: start;
     white-space: nowrap;
   }
 
   td {
-    padding: var(--ui-table-cell-padding, 10px 12px);
-    border-bottom: 1px solid var(--ui-table-row-border-color, var(--b1, #e7ecff));
+    padding: var(--ui-table-cell-padding, 0.65rem 1rem);
+    border-bottom: 1px solid var(--ui-table-row-border-color, var(--b2, #d9e2ff));
     white-space: var(--ui-table-cell-white-space, normal);
     vertical-align: middle;
+  }
+
+  // A borda do host já fecha a tabela; sem isso a última linha teria borda dupla.
+  tbody tr:last-child > td {
+    border-bottom: 0;
+  }
+
+  tbody tr:not(.detail-row) {
+    transition: background-color 0.15s ease;
   }
 
   tbody tr:not(.detail-row):hover {
@@ -100,6 +119,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .table tbody tr,
   .toggle svg {
     transition: none;
   }
