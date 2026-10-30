@@ -89,6 +89,8 @@ export class UiTable<T> {
   readonly loadingRows = input<number>(5);
   readonly loadingText = input<string>('Carregando...');
   readonly emptyText = input<string>('Nenhum registro encontrado.');
+  /** Quando preenchido, mostra a mensagem no corpo da tabela no lugar das linhas. */
+  readonly errorMessage = input<string | null>(null);
   readonly actionsLabel = input<string>('Ações');
   readonly detailsLabel = input<string>('Detalhes');
   readonly showDetailsLabel = input<string>('Mostrar detalhes');
@@ -106,6 +108,14 @@ export class UiTable<T> {
   protected readonly cellTemplateMap = computed(
     () => new Map(this.cellTemplates().map((cell) => [cell.column(), cell.template])),
   );
+
+  /** O cabeçalho é sempre exibido; só o corpo muda conforme o estado. */
+  protected readonly bodyState = computed<'error' | 'loading' | 'empty' | 'content'>(() => {
+    if (this.errorMessage()) return 'error';
+    if (this.loading()) return 'loading';
+    if (this.rows().length === 0) return 'empty';
+    return 'content';
+  });
 
   protected readonly colspan = computed(
     () => this.columns().length + (this.detail() ? 1 : 0) + (this.actions().length ? 1 : 0),

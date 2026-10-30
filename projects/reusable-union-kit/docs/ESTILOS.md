@@ -954,6 +954,9 @@ acoes: UiTableAction<Arquivo>[] = [
   fecham quando `rows` é recriado (ex.: depois de um `map`).
 - `(rowToggle)` emite `{ row, expanded }`, útil para carregar os detalhes só quando a linha abre.
 - Sem `uiTableDetail`, a coluna de detalhes não aparece. Sem `actions`, a coluna do menu não aparece.
+- O cabeçalho é sempre exibido. Carregamento (`[loading]`), erro (`[errorMessage]`) e lista vazia
+  (`emptyText`, ex.: uma pesquisa sem resultado) aparecem no corpo da tabela, ocupando todas as
+  colunas. O erro tem prioridade sobre o carregamento.
 
 | Variável                                | Padrão                      | Controla                          |
 | --------------------------------------- | --------------------------- | --------------------------------- |
@@ -978,7 +981,8 @@ acoes: UiTableAction<Arquivo>[] = [
 | `--ui-table-toggle-hover-background`    | `var(--b1)`                 | Hover do botão de detalhes        |
 | `--ui-table-focus-color`                | `var(--b10)`                | Contorno de foco                  |
 | `--ui-table-empty-color`                | `var(--c7)`                 | Texto de "nenhum registro"        |
-| `--ui-table-empty-padding`              | `32px`                      | Espaço do estado vazio            |
+| `--ui-table-empty-padding`              | `32px`                      | Espaço do estado vazio e do erro  |
+| `--ui-table-error-color`                | `var(--erro)`               | Texto da mensagem de erro         |
 
 O carregamento usa `ui-skeleton` (`--ui-skeleton-*`) e o menu de ações usa `ui-menu` (`--ui-menu-*`).
 

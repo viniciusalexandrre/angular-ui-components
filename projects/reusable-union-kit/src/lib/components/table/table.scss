@@ -1,6 +1,6 @@
 @use '../../styles/input-base' as base;
 
-// A borda fica no host: carregamento e estado vazio também ficam dentro da moldura.
+// A borda fica no host: o cabeçalho e os estados do corpo ficam dentro da mesma moldura.
 :host {
   display: block;
   overflow: hidden;
@@ -10,10 +10,6 @@
 
 .table-wrapper {
   overflow-x: auto;
-}
-
-ui-skeleton {
-  padding: 0.5rem;
 }
 
 .table {
@@ -48,11 +44,11 @@ ui-skeleton {
     border-bottom: 0;
   }
 
-  tbody tr:not(.detail-row) {
+  tbody tr:not(.detail-row, .state-row) {
     transition: background-color 0.15s ease;
   }
 
-  tbody tr:not(.detail-row):hover {
+  tbody tr:not(.detail-row, .state-row):hover {
     background: var(--ui-table-row-hover-background, var(--b0, #f0f3ff));
   }
 
@@ -106,12 +102,28 @@ ui-skeleton {
   white-space: normal;
 }
 
-.table-empty {
+// Linha única que ocupa o corpo inteiro durante carregamento, erro ou lista vazia.
+.state-row > td {
+  padding: 0;
+}
+
+.state-row > .loading-cell {
+  padding: 0.5rem;
+}
+
+.table-state {
   margin: 0;
   padding: var(--ui-table-empty-padding, 32px);
-  color: var(--ui-table-empty-color, var(--c7, #707070));
   font-size: var(--ui-table-font-size, 14px);
   text-align: center;
+}
+
+.table-empty {
+  color: var(--ui-table-empty-color, var(--c7, #707070));
+}
+
+.table-error {
+  color: var(--ui-table-error-color, var(--erro, #b3261e));
 }
 
 .visually-hidden {

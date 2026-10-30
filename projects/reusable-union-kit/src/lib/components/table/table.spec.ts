@@ -18,6 +18,8 @@ interface Pessoa {
       [rows]="rows()"
       [rowKey]="porId"
       [actions]="actions"
+      [loading]="loading()"
+      [errorMessage]="erro()"
       (action)="ultimaAcao = $event"
     >
       <ng-template uiTableCell="idade" let-value="value">
@@ -34,6 +36,8 @@ class Host {
     { id: 1, nome: 'Ana', idade: 30 },
     { id: 2, nome: 'Bruno', idade: 17 },
   ]);
+  readonly loading = signal(false);
+  readonly erro = signal<string | null>(null);
   readonly columns: UiTableColumn<Pessoa>[] = [
     { key: 'nome', header: 'Nome' },
     { key: 'idade', header: 'Idade', value: (p) => `${p.idade} anos`, align: 'end' },
@@ -110,11 +114,34 @@ describe('UiTable', () => {
     });
   });
 
-  it('mostra emptyText quando não há linhas', async () => {
+  it('mostra emptyText no corpo, mantendo o cabeçalho', async () => {
     const { fixture, el } = await criar();
 
     fixture.componentInstance.rows.set([]);
     await fixture.whenStable();
-    expect(el.querySelector('.table-empty')!.textContent).toContain('Nenhum registro');
+    expect(el.querySelectorAll('thead th').length).toBe(4);
+    expect(el.querySelector('tbody .table-empty')!.textContent).toContain('Nenhum registro');
+  });
+
+  it('carrega só o corpo: o cabeçalho continua visível', async () => {
+    const { fixture, el } = await criar();
+
+    fixture.componentInstance.loading.set(true);
+    await fixture.whenStable();
+    expect(el.querySelectorAll('thead th').length).toBe(4);
+    expect(el.querySelector('tbody ui-skeleton')).not.toBeNull();
+    expect(el.querySelector('tbody td')!.getAttribute('colspan')).toBe('4');
+    expect(el.querySelector('table')!.getAttribute('aria-busy')).toBe('true');
+  });
+
+  it('mostra o erro no corpo, com prioridade sobre carregamento e linhas', async () => {
+    const { fixture, el } = await criar();
+
+    fixture.componentInstance.loading.set(true);
+    fixture.componentInstance.erro.set('Falha ao carregar');
+    await fixture.whenStable();
+    expect(el.querySelectorAll('thead th').length).toBe(4);
+    expect(el.querySelector('tbody [role="alert"]')!.textContent).toContain('Falha ao carregar');
+    expect(el.querySelector('ui-skeleton')).toBeNull();
   });
 });
