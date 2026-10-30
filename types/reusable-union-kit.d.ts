@@ -36,7 +36,7 @@ export declare class UiAutocomplete implements FormValueControl<string | null> {
   readonly hasInvalidValue: import("@angular/core").WritableSignal<boolean>;
   protected readonly listboxId: import("@angular/core").Signal<string>;
   protected readonly showPanel: import("@angular/core").Signal<boolean>;
-  protected readonly panelState: import("@angular/core").Signal<"loading" | "error" | "empty" | "options">;
+  protected readonly panelState: import("@angular/core").Signal<"error" | "loading" | "empty" | "options">;
   protected readonly showErrors: import("@angular/core").Signal<boolean>;
   protected readonly displayedErrors: import("@angular/core").Signal<readonly ValidationError[]>;
   protected readonly describedBy: import("@angular/core").Signal<string | null>;
@@ -1524,7 +1524,7 @@ export declare class UiFileTable {
   readonly rowClick: import("@angular/core").OutputEmitterRef<FileTableEntry>;
   readonly menuAction: import("@angular/core").OutputEmitterRef<FileTableActionEvent>;
   protected readonly formatSize: typeof formatBytes;
-  protected readonly tableState: import("@angular/core").Signal<"loading" | "error" | "empty" | "invalid" | "content">;
+  protected readonly tableState: import("@angular/core").Signal<"error" | "loading" | "empty" | "content" | "invalid">;
   protected folderKey(folder: FolderEntry): string;
   onRowClick(entry: FileTableEntry): void;
   onMenuAction(item: UiMenuItem, entry: FileTableEntry): void;
@@ -1732,6 +1732,8 @@ export declare class UiTable<T> {
   readonly loadingRows: import("@angular/core").InputSignal<number>;
   readonly loadingText: import("@angular/core").InputSignal<string>;
   readonly emptyText: import("@angular/core").InputSignal<string>;
+  /** Quando preenchido, mostra a mensagem no corpo da tabela no lugar das linhas. */
+  readonly errorMessage: import("@angular/core").InputSignal<string | null>;
   readonly actionsLabel: import("@angular/core").InputSignal<string>;
   readonly detailsLabel: import("@angular/core").InputSignal<string>;
   readonly showDetailsLabel: import("@angular/core").InputSignal<string>;
@@ -1746,6 +1748,8 @@ export declare class UiTable<T> {
   private readonly expandedKeys;
   private readonly tableId;
   protected readonly cellTemplateMap: import("@angular/core").Signal<Map<string, TemplateRef<UiTableCellContext<any>>>>;
+  /** O cabeçalho é sempre exibido; só o corpo muda conforme o estado. */
+  protected readonly bodyState: import("@angular/core").Signal<"error" | "loading" | "empty" | "content">;
   protected readonly colspan: import("@angular/core").Signal<number>;
   /** Itens do menu por linha, calculados uma vez por mudança de `rows`/`actions`. */
   protected readonly menuItems: import("@angular/core").Signal<Map<T, UiMenuItem[]>>;
@@ -1800,6 +1804,11 @@ export declare class UiTable<T> {
     };
     "emptyText": {
       "alias": "emptyText";
+      "required": false;
+      "isSignal": true;
+    };
+    "errorMessage": {
+      "alias": "errorMessage";
       "required": false;
       "isSignal": true;
     };
@@ -1890,7 +1899,7 @@ export declare class UiDashboardLayout {
   /** Gaveta do menu no celular. */
   readonly mobileOpen: import("@angular/core").WritableSignal<boolean>;
   protected readonly sidebarId: string;
-  protected readonly userState: import("@angular/core").Signal<"loading" | "error" | "content" | "none">;
+  protected readonly userState: import("@angular/core").Signal<"error" | "loading" | "content" | "none">;
   protected readonly initials: import("@angular/core").Signal<string>;
   toggle(): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<UiDashboardLayout, never>;
